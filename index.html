@@ -21,7 +21,9 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Unbounded:wght@500;600;700&display=swap">
+  <!-- Fonts load without blocking the first paint; css/style.css has size-matched fallbacks meanwhile. -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Unbounded:wght@500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Unbounded:wght@500;600;700&display=swap"></noscript>
   <link rel="stylesheet" href="assets/vendor/lenis.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="preload" as="image" href="assets/img/susler/sus-iyi-ki-dogdun.webp">
@@ -550,24 +552,39 @@
         <a href="#iletisim">İletişim</a>
       </nav>
     </div>
+    <!-- Floating WhatsApp button for phones; inside the footer so it belongs to a landmark. -->
+    <a class="wa-float" data-wa-text="Merhaba, pastanem için süs standı hakkında bilgi almak istiyorum." href="https://wa.me/905306656373" aria-label="WhatsApp’tan yazın" target="_blank" rel="noopener">
+      <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><path fill="currentColor" d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3Zm0 23.6c-2 0-4-.6-5.7-1.6l-.4-.2-3.9 1 1-3.8-.3-.4A10.6 10.6 0 1 1 16 26.6Zm5.8-7.9c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.2-.7.1a8.7 8.7 0 0 1-4.3-3.8c-.3-.6.3-.5.9-1.6.1-.2 0-.4 0-.5l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.4 1.4 3.6c.2.2 2.4 3.7 5.9 5.2 2.2.9 3 1 4.1.8.7-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4Z"/></svg>
+    </a>
   </footer>
-
-  <a class="wa-float" data-wa-text="Merhaba, pastanem için süs standı hakkında bilgi almak istiyorum." href="https://wa.me/905306656373" aria-label="WhatsApp’tan yazın" target="_blank" rel="noopener">
-    <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><path fill="currentColor" d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3Zm0 23.6c-2 0-4-.6-5.7-1.6l-.4-.2-3.9 1 1-3.8-.3-.4A10.6 10.6 0 1 1 16 26.6Zm5.8-7.9c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.2-.7.1a8.7 8.7 0 0 1-4.3-3.8c-.3-.6.3-.5.9-1.6.1-.2 0-.4 0-.5l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.4 1.4 3.6c.2.2 2.4 3.7 5.9 5.2 2.2.9 3 1 4.1.8.7-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4Z"/></svg>
-  </a>
 
   <dialog class="lightbox" id="lightbox" aria-label="Büyük görsel">
     <form method="dialog"><button class="lightbox-close" type="submit">Kapat</button></form>
     <img src="" alt="">
   </dialog>
 
-  <script src="js/main.js" defer></script>
-  <script src="assets/vendor/gsap.min.js" defer></script>
-  <script src="assets/vendor/ScrollTrigger.min.js" defer></script>
-  <script src="assets/vendor/SplitText.min.js" defer></script>
-  <script src="assets/vendor/DrawSVGPlugin.min.js" defer></script>
-  <script src="assets/vendor/lenis.min.js" defer></script>
-  <script src="assets/vendor/confetti.browser.js" defer></script>
-  <script src="js/animations.js" defer></script>
+  <script>
+    // The scripts are added after the first paint, so the page shows before the animation
+    // libraries download and run (a phone on a slow line would otherwise see nothing until then).
+    // async = false keeps their order. The timer covers tabs opened in the background, where
+    // animation frames do not run.
+    (function () {
+      var loaded = false;
+      function load() {
+        if (loaded) return;
+        loaded = true;
+        ['js/main.js', 'assets/vendor/gsap.min.js', 'assets/vendor/ScrollTrigger.min.js',
+          'assets/vendor/SplitText.min.js', 'assets/vendor/DrawSVGPlugin.min.js', 'assets/vendor/lenis.min.js',
+          'assets/vendor/confetti.browser.js', 'js/animations.js'].forEach(function (src) {
+          var script = document.createElement('script');
+          script.src = src;
+          script.async = false;
+          document.body.append(script);
+        });
+      }
+      requestAnimationFrame(function () { setTimeout(load); });
+      setTimeout(load, 1000);
+    })();
+  </script>
 </body>
 </html>

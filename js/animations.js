@@ -16,14 +16,25 @@
   // Used by the hero and final scenes. Fewer pieces on phones.
   const CONFETTI_COLORS = ['#F4A7BB', '#D9B15C', '#F3D98F', '#45E0D8', '#7CC6F0', '#D6457A'];
   const mobileQuery = window.matchMedia('(max-width: 860px)');
-  const party = (options = {}) => window.confetti?.({
-    particleCount: mobileQuery.matches ? 45 : 110,
-    spread: 75,
-    startVelocity: 38,
-    colors: CONFETTI_COLORS,
-    disableForReducedMotion: true,
-    ...options,
-  });
+  // Drawn on our own canvas (.konfeti in the CSS) so it can be hidden from screen readers.
+  let fire = null;
+  const party = (options = {}) => {
+    if (!window.confetti) return;
+    if (!fire) {
+      const canvas = document.createElement('canvas');
+      canvas.className = 'konfeti';
+      canvas.setAttribute('aria-hidden', 'true');
+      document.body.append(canvas);
+      fire = window.confetti.create(canvas, { resize: true, useWorker: true, disableForReducedMotion: true });
+    }
+    fire({
+      particleCount: mobileQuery.matches ? 45 : 110,
+      spread: 75,
+      startVelocity: 38,
+      colors: CONFETTI_COLORS,
+      ...options,
+    });
+  };
 
   // ---------- Entrances ----------
   // The opening and the hero play once per page load, so they live outside gsap.matchMedia and are
@@ -51,6 +62,7 @@
 
   // Scene 1: the title letters bounce in, the text and balloons follow. On the first scroll
   // (or a moment later) the topper drops into the cake, the candles light and confetti bursts.
+  // The text under the title slides without fading, so it counts as painted from the first frame (LCP).
   const playHero = delay => {
     splitTitle = new SplitText('.hero h1', { type: 'words,chars' });
     gsap.set('.hero h1', { visibility: 'visible' });
@@ -64,7 +76,7 @@
       stagger: 0.025,
       onComplete() { splitTitle.revert(); },
     })
-      .fromTo(['.hero .lede', '.hero-actions'], { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.6, ease: 'power2.out', stagger: 0.12 }, 0.45)
+      .fromTo(['.hero .lede', '.hero-actions'], { y: 18 }, { y: 0, duration: 0.6, ease: 'power2.out', stagger: 0.12 }, 0.45)
       .fromTo('.hero-balloons .balon', { y: 160, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 2.2, ease: 'power2.out', stagger: 0.25 }, 0.2);
     entrances.push(intro);
 
@@ -106,6 +118,14 @@
   // listeners returns a function that removes them.
   const scenes = [];
   const scene = (name, build) => scenes.push({ name, build });
+
+  // The stand and tower scenes cut a lazy-loaded photo into tiles. The tiles get the photo only once
+  // the <img> has loaded, so building a scene does not download it ahead of the browser's lazy loading.
+  const paintWhenLoaded = (img, layers) => {
+    const paint = () => layers.forEach(el => { el.style.backgroundImage = `url("${img.getAttribute('src')}")`; });
+    if (img.complete && img.naturalWidth) paint();
+    else img.addEventListener('load', paint, { once: true });
+  };
 
   // Sprinkles behind the hero drift up more slowly than the page.
   scene('serpinti', () => {
@@ -151,14 +171,12 @@
     const stage = document.querySelector('.stand-sahne');
     const stand = stage.querySelector('.sahne-stand');
     const topper = stage.querySelector('.sahne-sus');
-    const src = stand.querySelector('img').getAttribute('src');
 
     // Tile edges follow the stand's shelves and columns (pixels of the 1040×976 photo).
     const W = 1040, H = 976;
     const rows = [0, 212, 400, 590, H], cols = [0, 220, 420, 625, 825, W];
     const ghost = document.createElement('div');
     ghost.className = 'sahne-hayalet';
-    ghost.style.backgroundImage = `url("${src}")`;
     const tiles = [];
     for (let r = 0; r < rows.length - 1; r++) {
       for (let k = 0; k < cols.length - 1; k++) {
@@ -167,7 +185,6 @@
         tile.className = 'sahne-karo';
         Object.assign(tile.style, {
           left: `${(x / W) * 100}%`, top: `${(y / H) * 100}%`, width: `${(w / W) * 100}%`, height: `${(h / H) * 100}%`,
-          backgroundImage: `url("${src}")`,
           backgroundSize: `${(W / w) * 100}% ${(H / h) * 100}%`,
           backgroundPosition: `${x ? (x / (W - w)) * 100 : 0}% ${y ? (y / (H - h)) * 100 : 0}%`,
         });
@@ -175,6 +192,7 @@
       }
     }
     stand.prepend(ghost, ...tiles);
+    paintWhenLoaded(stand.querySelector('img'), [ghost, ...tiles]);
 
     // Where the topper starts: on the stand's second shelf, in the middle (layout offsets, unaffected by transforms).
     const fromStand = axis => (axis === 'x'
@@ -277,7 +295,6 @@
   scene('kule', ({ mobile }) => {
     const photo = document.querySelector('.kule-foto');
     const img = photo.querySelector('img');
-    const src = img.getAttribute('src');
 
     // Shelf edges of the 471×1040 photo, top to bottom; the four floors start at strips 0, 4, 8 and 11.
     const H = 1040;
@@ -285,20 +302,19 @@
     const floorStarts = [0, 4, 8, 11];
     const ghost = document.createElement('div');
     ghost.className = 'sahne-hayalet';
-    ghost.style.backgroundImage = `url("${src}")`;
     const strips = rows.slice(0, -1).map((y, i) => {
       const h = rows[i + 1] - y;
       const strip = document.createElement('div');
       strip.className = 'sahne-karo';
       Object.assign(strip.style, {
         left: '0', width: '100%', top: `${(y / H) * 100}%`, height: `${(h / H) * 100}%`,
-        backgroundImage: `url("${src}")`,
         backgroundSize: `100% ${(H / h) * 100}%`,
         backgroundPosition: `0 ${y ? (y / (H - h)) * 100 : 0}%`,
       });
       return strip;
     });
     photo.prepend(ghost, ...strips);
+    paintWhenLoaded(img, [ghost, ...strips]);
 
     // From the floor up. Ends with the top of the tower still on screen.
     const STEP = 0.1;
@@ -312,10 +328,10 @@
       .fromTo(img, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.15 }, '>-0.05');
 
     if (!mobile) {
-      // A floor lights up when its lowest strip starts to rise.
+      // A floor lights up when its lowest strip starts to rise. Dimmed at .7, its text still passes contrast.
       gsap.utils.toArray('.kule-katlar li').forEach((li, f) => {
         const lowest = (floorStarts[f + 1] ?? strips.length) - 1;
-        tl.fromTo(li, { opacity: 0.4 }, { opacity: 1, duration: 0.2 }, (strips.length - 1 - lowest) * STEP);
+        tl.fromTo(li, { opacity: 0.7 }, { opacity: 1, duration: 0.2 }, (strips.length - 1 - lowest) * STEP);
       });
     }
 
@@ -331,7 +347,8 @@
     gsap.utils.toArray('.adimlar li').forEach((li, i) => {
       const line = li.querySelector('.adim-cizgi path');
       tl.fromTo(li.querySelector('.adim-ikon'), { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.3, ease: 'back.out(2.5)' }, i)
-        .fromTo(li.querySelectorAll('h3, p'), { autoAlpha: 0.3, x: 12 }, { autoAlpha: 1, x: 0, duration: 0.3 }, i);
+        // The text only slides: faded, it would fall below readable contrast on white.
+        .fromTo(li.querySelectorAll('h3, p'), { x: 12 }, { x: 0, duration: 0.3 }, i);
       if (line) tl.fromTo(line, { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.7 }, i + 0.3);
     });
   });

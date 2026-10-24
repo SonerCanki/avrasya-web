@@ -48,6 +48,21 @@ node tools/svg/ciz.mjs
 
 Açılış perdesi (logo, mum, perde kalkışı) her tarayıcıda yalnızca ilk ziyarette oynar; tarayıcının yerel deposuna `avrasya-acilis` kaydı düşer. Yeniden görmek için tarayıcı konsolunda `localStorage.removeItem('avrasya-acilis')` çalıştırıp sayfayı yenileyin.
 
+Animasyon betikleri sayfanın ilk çiziminden hemen sonra yüklenir; `index.html` sonundaki küçük betik onları sırayla ekler. Yeni bir betik eklenecekse oradaki listeye yazın.
+
+## Testler
+
+`tools/test/` içinde tarayıcı testleri (Playwright ve axe erişilebilirlik denetimi) ve Lighthouse ölçümü var. Testler masaüstü ve telefonda, "hareketi azalt" açıkken ve JavaScript kapalıyken çalışır. Son sonuçlar ve yapılan düzeltmeler [tools/test/RAPOR.md](tools/test/RAPOR.md) dosyasında. Makinede Google Chrome kurulu olmalı.
+
+```bash
+cd tools/test
+npm install
+npx playwright test
+npm run lighthouse
+```
+
+Sayfada bir bölüm, süzgeç konusu ya da stand sayısı değişirse `tools/test/tests/site.spec.mjs` içindeki ilgili beklentiyi de güncelleyin; örneğin süzgeç sayıları ve 11 stand.
+
 ## Logo
 
 Logo, lacivert-altın "Avrasya Toptan Pasta Süsleri" görselinden üretildi.
