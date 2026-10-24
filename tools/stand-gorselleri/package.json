@@ -1,0 +1,16 @@
+{
+  "name": "stand-gorselleri",
+  "private": true,
+  "type": "module",
+  "description": "Stand fotoğraflarının arka planını kaldırıp site için webp üretir.",
+  "scripts": {
+    "build": "node build.mjs",
+    "susler": "node susler.mjs"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "3.5.1",
+    "@techstark/opencv-js": "4.11.0-release.1",
+    "onnxruntime-node": "1.21.0",
+    "sharp": "0.34.4"
+  }
+}

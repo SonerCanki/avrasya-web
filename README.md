@@ -18,6 +18,8 @@ npx --yes http-server@14.1.1 . -p 5500 -c-1
 
 "Hazır standlarımızdan örnekler" galerisinde dört stand var: `assets/img/stand-kral`, `stand-pembe`, `stand-yazili`, `stand-ayna` (her biri `-640.webp` galeri, `-1040.webp` büyütülmüş görünüm). Bu fotoğraflar WhatsApp videolarından kare alınarak üretildi: stand arka plandan ayrıldı ve sitenin renklerinde sade bir stüdyo zeminine yerleştirildi. Kaynak videolar 480 px genişliğinde olduğu için büyütüldüğünde hafif yumuşak görünürler; telefonla çekilmiş net fotoğraflar gelirse aynı dosya adlarıyla değiştirilebilir.
 
+Yeni stand görselleri (`assets/img/standlar/`, `assets/img/susler/`) telefon fotoğraflarından `tools/stand-gorselleri/` hattıyla üretilir; nasıl çalıştığı o klasörün README dosyasında. Bu görseller animasyonlu sürümde galeriye ve sahnelere bağlanacak (bkz. `PLAN.md`).
+
 Yeni stand eklemek için galerideki bir `<li>` satırını kopyalayıp dosya adlarını ve `alt` metnini değiştirin. Fotoğraflar kare olarak gösterilir.
 
 Sayfanın üstündeki büyük stand fotoğrafı `assets/img/stand-600.webp` ve `stand-1000.webp` dosyalarıdır; yenisi gelirse bunlar değiştirilebilir.
