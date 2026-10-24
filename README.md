@@ -1,40 +1,110 @@
 # Avrasya Toptan Pasta Süsleri — tanıtım sitesi
 
-Tek sayfalık statik site: `index.html`, `css/style.css`, `js/main.js`, `assets/`.
-Derleme adımı yok; klasörü olduğu gibi herhangi bir statik barındırmaya yükleyebilirsiniz.
+Pastanelere süs standı tanıtan, doğum günü temalı, kaydırdıkça ilerleyen tek sayfalık statik site.
+Derleme adımı yok: dosyalar olduğu gibi yayına girer.
 
-Yerelde açmak için:
+| Yol | Ne |
+|---|---|
+| `index.html` | Sayfanın tamamı: içerik, açılış perdesi, sahneler, iletişim |
+| `css/style.css` | Renkler (`:root`), düzen, animasyonların başlangıç hâlleri |
+| `js/main.js` | Animasyon dışı davranışlar: WhatsApp bağlantıları, menü, video, süzgeç, büyük görsel, mumlar |
+| `js/animations.js` | Kaydırma hikâyesi: açılış, sahneler, konfeti |
+| `assets/` | Görseller, videolar, SVG çizimler ve sabit sürümlü kütüphaneler (`assets/vendor/`) |
+| `tools/stand-gorselleri/` | Telefon fotoğraflarından stand ve süs görsellerini üreten hat |
+| `tools/svg/ciz.mjs` | Doğum günü çizimlerini (pasta, mum, balon…) üreten betik |
+| `tools/test/` | Tarayıcı testleri ve Lighthouse ölçümü |
+| `PLAN.md` | Animasyonlu sitenin planı ve alınan kararlar |
+
+`sirket-bilgileri/` (ham fotoğraflar, logo PDF'i, WhatsApp arşivleri) depoya girmez; yalnızca bu bilgisayarda durur.
+
+## Yerelde açmak
+
+Proje kökünde:
 
 ```bash
 npx --yes http-server@14.1.1 . -p 5500 -c-1
 ```
 
-## Sosyal medya
+Ardından tarayıcıda `http://localhost:5500` açın. `index.html` dosyasına çift tıklamak yetmez; bazı tarayıcılar yerel dosyada betik ve video yüklemeyi kısıtlar.
 
-- Instagram: `@avrasyapastasusleri34`, iletişim kartında ve JSON-LD'deki `sameAs` içinde.
-- Facebook: "Avrasya Pastasüsleri", `https://www.facebook.com/profile.php?id=61595280272926`; iletişim kartında ve `sameAs` içinde.
+## Yayına almak
+
+Barındırmaya yalnızca şunları yükleyin: `index.html`, `css/`, `js/`, `assets/`. `tools/`, `sirket-bilgileri/`, `PLAN.md` ve `README.md` sitenin parçası değil.
+
+- **HTTPS:** Site HTTPS ile açılmalı. WhatsApp ve sosyal medya önizlemeleri ile kopyala-yapıştır bağlantıları buna güveniyor.
+- **Sıkıştırma:** Barındırmanın gzip ya da brotli sıkıştırması açık olsun. Netlify, Cloudflare Pages, GitHub Pages ve çoğu cPanel hostingde varsayılan olarak açıktır. Lighthouse ölçümleri sıkıştırma açıkken yapıldı.
+- **Önbellek:** Uzun önbellek süresi verilecekse `assets/` için verin. `index.html`, `css/` ve `js/` dosyalarının adı değişmediği için onlara kısa süre ya da `no-cache` uygundur. Aksi hâlde güncellemeler ziyaretçiye geç ulaşır.
+- **Alan adı:** Site `https://www.avrasyasus.com/` adresine göre ayarlı. Başka bir adreste yayınlanacaksa `index.html` başındaki şu yerleri birlikte değiştirin:
+  - `<link rel="canonical">`;
+  - `og:url` ve `og:image`;
+  - JSON-LD'deki `url`, `image`, `logo`.
+
+  WhatsApp ve Facebook önizlemesindeki kapak görseli yalnızca tam adresle (`https://…`) çalışır.
+
+Yayından sonra bağlantıyı WhatsApp'ta kendinize gönderip kapak görselinin göründüğünü kontrol edin.
+
+## Yeni stand eklemek (baştan sona)
+
+1. **Fotoğraf:** Standın fotoğrafını `sirket-bilgileri/stant-gorseleri/` içine koyun.
+   - Düz, önden ve standın tamamı kadrajda olsun.
+   - Arka planı sade olursa kesim daha temiz çıkar.
+2. **Görseller:** `tools/stand-gorselleri/` hattıyla görselleri üretin; adımlar [o klasörün README dosyasında](tools/stand-gorselleri/README.md).
+   - Kısaca: `standlar.mjs` listesine ekleyin, `npm run build -- <ad>` çalıştırın, gerekirse dış hattı çizip yeniden üretin.
+   - Sonuçta `assets/img/standlar/<ad>-640.webp` ve `<ad>-1040.webp` oluşur.
+3. **Sayfaya ekleme:** `index.html` içindeki koleksiyon listesinde (`id="gallery"`) bir `<li>` satırını kopyalayın. Şunları değiştirin:
+   - iki dosya adını (`data-full` içinde `-1040`, `<img src>` içinde `-640`);
+   - `alt` metnini: görme engelli ziyaretçiler için standda ne olduğunu bir cümleyle anlatın;
+   - kart adını (`kart-ad`).
+4. **Süzgeç:** `data-kategori` standın hangi süzgeçlerde görüneceğini belirler.
+   - Birden fazla konu boşlukla yazılır: `data-kategori="ayna rakam yazi"`.
+   - Kullanılabilen konular süzgeç düğmelerindeki `data-filtre` değerleridir: `cocuk`, `rakam`, `yazi`, `esprili`, `kadin`, `erkek`, `futbol`, `ayna`.
+   - Yeni bir konu için aynı biçimde bir düğme ekleyin.
+5. **Testler:** `tools/test/tests/site.spec.mjs` içinde iki sayıyı güncelleyin:
+   - toplam stand sayısı (şu an 11);
+   - eklediğiniz konuların süzgeç sayıları.
+
+   Sonra testleri çalıştırın (aşağıda, "Testler").
 
 ## Stand fotoğrafları
 
-Stand ve süs görselleri (`assets/img/standlar/`, `assets/img/susler/`) telefon fotoğraflarından `tools/stand-gorselleri/` hattıyla üretilir; nasıl çalıştığı o klasörün README dosyasında.
+Stand ve süs görselleri (`assets/img/standlar/`, `assets/img/susler/`) telefon fotoğraflarından `tools/stand-gorselleri/` hattıyla üretilir. Her stand için üç dosya çıkar:
+- `-640`: koleksiyon kartı;
+- `-1040`: tıklanınca açılan büyük görsel;
+- `-kesik`: şeffaf zeminli, animasyon sahneleri için.
 
-"Hazır standlarımızdan örnekler" koleksiyonunda 11 stand var (`#gallery` listesi). Her kart `standlar/stand-…-640.webp` gösterir, tıklanınca `-1040.webp` büyük açılır. Geniş ekranda şerit kaydırdıkça yana kayar, telefonda parmakla kaydırılır.
+"Hazır standlarımızdan örnekler" koleksiyonunda 11 stand var. Geniş ekranda şerit kaydırdıkça yana kayar, telefonda parmakla kaydırılır.
 
-Yeni stand eklemek için listedeki bir `<li>` satırını kopyalayın; dosya adlarını, `alt` metnini ve kart adını değiştirin. `data-kategori` standın hangi süzgeçlerde görüneceğini belirler; birden fazla konu boşlukla yazılır (`data-kategori="ayna rakam yazi"`). Kullanılabilen konular süzgeç düğmelerindeki `data-filtre` değerleridir: `cocuk`, `rakam`, `yazi`, `esprili`, `kadin`, `erkek`, `futbol`, `ayna`. Yeni bir konu için aynı biçimde bir düğme ekleyin.
+**"Stand nasıl çalışır" sahnesi** `standlar/stand-cocuk-karakter-kesik.webp` ile `susler/sus-canim-kizim.webp` görsellerini kullanır.
+- Raflara tek tek dolan süsler, bu stand fotoğrafının raf ve sütun çizgilerine göre kesilir: `js/animations.js` içinde `stand` sahnesindeki `rows` ve `cols`.
+- Sayılar 1040 px genişliğindeki kesik görselin piksel koordinatlarıdır. Stand fotoğrafı değişirse yeni fotoğrafa göre güncelleyin.
 
-"Stand nasıl çalışır" sahnesi `standlar/stand-cocuk-karakter-kesik.webp` ile `susler/sus-canim-kizim.webp` görsellerini kullanır. Raflara tek tek dolan süsler bu stand fotoğrafının raf ve sütun çizgilerine göre kesilir (`js/animations.js` içindeki `rows` ve `cols`); stand fotoğrafı değişirse bu sayıları da yeni fotoğrafa göre güncelleyin.
+**"Kule stand" bölümü** `standlar/kule-stand-kesik.webp` kullanır. Kaydırınca stand yerden yukarı doğru raf raf kurulur.
+- Raf çizgileri `kule` sahnesindeki `rows` içindedir.
+- Fotoğraf değişirse bu sayılar da güncellenmeli.
 
-"Kule stand" bölümü `standlar/kule-stand-kesik.webp` kullanır. Kaydırınca stand yerden yukarı doğru raf raf kurulur; raf çizgileri yine `js/animations.js` içinde (`kule` sahnesindeki `rows`). Fotoğraf değişirse bu sayılar da güncellenmeli.
+**Sayfanın üstündeki pasta** fotoğraf değil, çizimdir; üstündeki süs ise gerçek bir süs fotoğrafıdır (`assets/img/susler/sus-iyi-ki-dogdun.webp`). Başka bir süs koymak için `tools/svg/ciz.mjs` içindeki `HERO_TOPPER` satırını değiştirip betiği çalıştırın.
 
-Eski galeri fotoğrafları (`assets/img/stand-kral`, `stand-pembe`, `stand-yazili`, `stand-ayna`) artık sayfada kullanılmıyor.
+## Videolar
 
-Sayfanın üstünde fotoğraf yerine çizim pasta durur; üstündeki süs gerçek bir süs fotoğrafıdır (`assets/img/susler/sus-iyi-ki-dogdun.webp`). Başka bir süs koymak için `tools/svg/ciz.mjs` içindeki `HERO_TOPPER` satırını değiştirip betiği çalıştırın. Eski üst fotoğraf `assets/img/stand-600.webp` ve `stand-1000.webp` şu an sayfada kullanılmıyor.
+`assets/video/` içinde iki video var:
+- stand tanıtımı (`stand-tanitim.mp4`);
+- UV baskı (`uv-baski.mp4`).
+
+Videoların sesi kapalıdır ve ekrana gelince kendiliğinden oynar, ekrandan çıkınca durur. Bunu `js/main.js` yönetir. Video, oynayana kadar hiç indirilmez; o sırada `-poster.jpg` kapak görseli görünür.
+
+"Hareketi azalt" açıksa videolar kendiliğinden oynamaz; oynatma düğmeleri görünür. Bir videoyu değiştirirken kapak görselini de ilk kareden yeniden çıkarın, `width` ve `height` değerlerini videonun boyutuna göre güncelleyin.
 
 ## Renkler ve çizimler
 
-Renkler `css/style.css` başındaki `:root` içindedir: logodaki lacivert ve altın ana renk, krema, pasta pembesi ve konfeti renkleri kutlama vurgusu.
+Renkler `css/style.css` başındaki `:root` içindedir. Logodaki lacivert ve altın ana renktir; krema, pasta pembesi ve konfeti renkleri kutlama vurgusudur.
 
-Doğum günü çizimleri (`assets/svg/`: pasta, mum, balon, yıldız, krema damlası, şeker serpintisi) elle değil `tools/svg/ciz.mjs` ile üretilir. Bu betik `index.html` içindeki `<!-- ciz:sprite -->` (balon sembolü), `<!-- ciz:pasta -->` (üstteki pasta), `<!-- ciz:acilis-mum -->` (açılış mumu) ve `<!-- ciz:final-pasta -->` (iletişim bölümündeki beş mumlu pasta) aralarını da yeniler; oraları elle düzenlemeyin. Değişiklikten sonra proje kökünde:
+Doğum günü çizimleri (`assets/svg/`: pasta, mum, balon, yıldız, krema damlası, şeker serpintisi) elle değil `tools/svg/ciz.mjs` ile üretilir. Bu betik `index.html` içindeki şu aralıkları da yeniler; oraları elle düzenlemeyin:
+- `<!-- ciz:sprite -->`: balon sembolü;
+- `<!-- ciz:pasta -->`: üstteki pasta;
+- `<!-- ciz:acilis-mum -->`: açılış mumu;
+- `<!-- ciz:final-pasta -->`: iletişim bölümündeki beş mumlu pasta.
+
+Değişiklikten sonra proje kökünde:
 
 ```bash
 node tools/svg/ciz.mjs
@@ -42,17 +112,48 @@ node tools/svg/ciz.mjs
 
 ## Animasyonlar
 
-`js/animations.js` kaydırma hikâyesini kurar (GSAP, ScrollTrigger, Lenis yumuşak kaydırma, konfeti). Kütüphaneler `assets/vendor/` içinde sabit sürümlerle durur; sürümler ve lisanslar o klasörün README dosyasında. Ziyaretçi "hareketi azalt" ayarını açtıysa, JavaScript kapalıysa ya da bir kütüphane yüklenmezse sayfa animasyonsuz, son hâliyle görünür.
+`js/animations.js` kaydırma hikâyesini kurar: GSAP, ScrollTrigger, Lenis yumuşak kaydırma ve konfeti. Kütüphaneler `assets/vendor/` içinde sabit sürümlerle durur; sürümler, lisanslar ve güncelleme yolu [o klasörün README dosyasında](assets/vendor/README.md).
 
-İletişim bölümündeki pastanın mumları tıklayınca (ya da fare üzerlerinden geçince) söner; son mum sönünce konfeti patlar ve WhatsApp butonu parlar. Pastaya yeniden tıklamak mumları yakar. Mum söndürme `js/main.js` içindedir ve hareket azaltma açıkken de çalışır (konfeti ve titreme olmadan).
+Her sahne `scene('<ad>', …)` ile ayrı bir bölümde yazılı:
 
-Açılış perdesi (logo, mum, perde kalkışı) her tarayıcıda yalnızca ilk ziyarette oynar; tarayıcının yerel deposuna `avrasya-acilis` kaydı düşer. Yeniden görmek için tarayıcı konsolunda `localStorage.removeItem('avrasya-acilis')` çalıştırıp sayfayı yenileyin.
+| Sahne | Bölüm | Ne olur |
+|---|---|---|
+| `serpinti`, `balonlar`, `mumlar` | Üst kısım | Şeker serpintisi ve balonlar kaydırınca süzülür, mumların alevi titrer |
+| `stand` | Stand nasıl çalışır | Boş stand süslerle dolar, bir süs standdan kalkıp pastaya iner |
+| `koleksiyon` | Hazır standlar | Geniş ekranda şerit sabitlenip yana kayar |
+| `kule` | Kule stand | Stand yerden yukarı raf raf kurulur |
+| `uretim` | Atölyeden vitrine | Adımlar sırayla gelir, aralarındaki çizgi çizilir |
+| `final` | İletişim | Mumların alevi titrer; hepsi sönünce konfeti patlar, WhatsApp butonu parlar |
 
-Animasyon betikleri sayfanın ilk çiziminden hemen sonra yüklenir; `index.html` sonundaki küçük betik onları sırayla ekler. Yeni bir betik eklenecekse oradaki listeye yazın.
+Açılış perdesi (logo, mum, perde kalkışı) ve üstteki ilk giriş, sahnelerden önce `Entrances` bölümünde kurulur.
+- Perde her tarayıcıda yalnızca ilk ziyarette oynar; tarayıcının yerel deposuna `avrasya-acilis` kaydı düşer.
+- Yeniden görmek için tarayıcı konsolunda `localStorage.removeItem('avrasya-acilis')` çalıştırıp sayfayı yenileyin.
+
+**Mumlar.** İletişim bölümündeki pastanın mumları tıklayınca ya da fare üzerlerinden geçince söner. Son mum sönünce konfeti patlar ve WhatsApp butonu parlar; pastaya yeniden tıklamak mumları yakar. Mum söndürme `js/main.js` içindedir ve hareket azaltma açıkken de çalışır, yalnızca konfeti ve titreme olmadan.
+
+**Animasyonsuz son hâl.** Sayfa üç durumda animasyonsuz, son hâliyle görünür:
+- ziyaretçi "hareketi azalt" ayarını açtıysa;
+- JavaScript kapalıysa;
+- kütüphaneler 3 saniye içinde yüklenmezse.
+
+İçerik hiçbir zaman animasyona bağlı kalmaz. Animasyonların başlangıç hâlleri yalnızca `html.anim` sınıfı varken uygulanır (`css/style.css`); bu sınıfı `index.html` başındaki küçük betik ekler.
+
+**Betiklerin yüklenmesi.** Animasyon betikleri sayfanın ilk çiziminden hemen sonra yüklenir: `index.html` sonundaki küçük betik onları sırayla ekler. Böylece telefonda sayfa, kütüphaneleri beklemeden görünür. Yeni bir betik eklenecekse oradaki listeye yazın; `<script defer>` ile eklemeyin.
+
+**Animasyon yazarken:**
+- Yalnızca `transform` ve `opacity` canlandırın.
+- Okunacak yazıları saydamdan başlatmayın, kaydırarak getirin. Yarı saydam yazı renk karşıtlığı denetiminden geçmez.
+- Telefonda sabitlenen sahneleri kısa tutun.
 
 ## Testler
 
-`tools/test/` içinde tarayıcı testleri (Playwright ve axe erişilebilirlik denetimi) ve Lighthouse ölçümü var. Testler masaüstü ve telefonda, "hareketi azalt" açıkken ve JavaScript kapalıyken çalışır. Son sonuçlar ve yapılan düzeltmeler [tools/test/RAPOR.md](tools/test/RAPOR.md) dosyasında. Makinede Google Chrome kurulu olmalı.
+`tools/test/` içinde tarayıcı testleri (Playwright ve axe erişilebilirlik denetimi) ve Lighthouse ölçümü var. Testler beş durumda çalışır:
+- masaüstü;
+- telefon;
+- masaüstü ve telefonda "hareketi azalt" açıkken;
+- JavaScript kapalıyken.
+
+Son sonuçlar ve yapılan düzeltmeler [tools/test/RAPOR.md](tools/test/RAPOR.md) dosyasında. Testler için makinede Google Chrome kurulu olmalı.
 
 ```bash
 cd tools/test
@@ -61,19 +162,39 @@ npx playwright test
 npm run lighthouse
 ```
 
-Sayfada bir bölüm, süzgeç konusu ya da stand sayısı değişirse `tools/test/tests/site.spec.mjs` içindeki ilgili beklentiyi de güncelleyin; örneğin süzgeç sayıları ve 11 stand.
+Sayfada bir bölüm, süzgeç konusu ya da stand sayısı değişirse `tools/test/tests/site.spec.mjs` içindeki ilgili beklentiyi de güncelleyin. Yayına almadan önce testlerin geçtiğini görün.
 
 ## Logo
 
 Logo, lacivert-altın "Avrasya Toptan Pasta Süsleri" görselinden üretildi.
 
-- `assets/img/logo-160.webp`: ortadaki yuvarlak amblem; üst menüde ve alt bilgide kullanılır.
-- `assets/img/logo.png`: aynı amblemin 512 px PNG'si (arama motorları için, JSON-LD içinde).
-- `assets/img/favicon-32.png`, `favicon-180.png`, `favicon-512.png`: amblemdeki pasta ve yıldızlar; küçük boyutta yazı okunmadığı için yalnızca bu kısım alındı.
-- `assets/img/og.jpg`: görselin tamamı, 1200×670; site WhatsApp'ta veya sosyal medyada paylaşıldığında görünen kapak.
+- `assets/img/logo-160.webp`: ortadaki yuvarlak amblem; üst menüde, alt bilgide ve açılış perdesinde kullanılır.
+- `assets/img/logo.png`: aynı amblemin 512 px PNG'si. Arama motorları için JSON-LD içinde kullanılır.
+- `assets/img/favicon-32.png` ve `favicon-180.png`: amblemdeki pasta ve yıldızlar; küçük boyutta yazı okunmadığı için yalnızca bu kısım alındı.
+  - 32 px olan tarayıcı sekmesinde görünür.
+  - 180 px olan, iPhone'da ana ekrana eklenince görünür.
+- `assets/img/og.jpg`: görselin tamamı, 1200×670. Site WhatsApp'ta ya da sosyal medyada paylaşıldığında görünen kapak.
 
 ## İletişim bilgileri nerede
 
-- WhatsApp numarası `<body data-wa="905306656373">` içinde (ülke koduyla, boşluksuz, `+` olmadan). Hazır mesajlı butonların bağlantılarını `js/main.js` bu numarayla oluşturur. `href` içindeki numaralar JavaScript kapalıyken kullanılır; numara değişirse ikisini birlikte güncelleyin.
-- Telefon, e-posta ve adres hem iletişim kartında hem de sayfanın başındaki JSON-LD bloğunda yer alır.
-- Alan adı `https://www.avrasyasus.com/` olarak `<link rel="canonical">` içinde. Site başka bir adreste yayınlanacaksa burayı değiştirin.
+- **WhatsApp numarası** `<body data-wa="905306656373">` içinde: ülke koduyla, boşluksuz, `+` olmadan.
+  - Hazır mesajlı butonların bağlantılarını `js/main.js` bu numarayla oluşturur. Mesajlar her bağlantının `data-wa-text` değerindedir.
+  - `href` içindeki numaralar JavaScript kapalıyken kullanılır. Numara değişirse ikisini birlikte güncelleyin.
+- **Telefon, e-posta ve adres** hem iletişim kartında hem de sayfanın başındaki JSON-LD bloğunda yer alır; ikisini birlikte değiştirin.
+- **Sosyal medya:**
+  - Instagram `@avrasyapastasusleri34`;
+  - Facebook "Avrasya Pastasüsleri", `https://www.facebook.com/profile.php?id=61595280272926`.
+
+  İkisi de iletişim kartında ve JSON-LD'deki `sameAs` içinde.
+- **Alan adı** için yukarıdaki "Yayına almak" bölümüne bakın.
+
+## Kullanılmayan dosyalar
+
+Şu dosyalar depoda duruyor ama sayfada kullanılmıyor:
+- eski galeri fotoğrafları: `assets/img/stand-kral-*`, `stand-pembe-*`, `stand-yazili-*`, `stand-ayna-*`;
+- eski üst fotoğraf: `assets/img/stand-600.webp`, `stand-1000.webp`;
+- `assets/img/favicon-512.png`;
+- `assets/img/standlar/kule-stand-640.webp` ve `kule-stand-1040.webp`;
+- kesik stand ve süs görsellerinin sahnelerde yer almayanları.
+
+Yüklenseler de ziyaretçiye inmezler. Siteyi küçük tutmak için eski galeri ve üst fotoğraflar silinebilir. Kesik görseller ileride başka sahnelerde kullanılabilir.

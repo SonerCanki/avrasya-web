@@ -13,6 +13,13 @@ const WA = 'https://wa.me/905306656373';
 
 // ---------- Helpers ----------
 
+// The page adds its scripts after the first paint, so the load event can come before they run.
+// Wait until js/animations.js has finished (it sets animReady with or without motion).
+const open = async page => {
+  await page.goto('/');
+  if (hasJs()) await page.waitForFunction(() => window.animReady === true);
+};
+
 // Scrolls so the element's bottom edge sits at the given fraction of the viewport (0 = top).
 const scrollPast = (page, selector, at = 0.2) => page.evaluate(([sel, at]) => {
   const r = document.querySelector(sel).getBoundingClientRect();
@@ -53,7 +60,7 @@ test.afterEach(() => {
 // ---------- Whole page ----------
 
 test('sayfa yüklenir, baştan sona kaydırılınca yana taşma olmaz', async ({ page }) => {
-  await page.goto('/');
+  await open(page);
   await expect(page.locator('h1')).toHaveText('Pastaneniz için süslerle dolu teşhir standı');
   expect(await horizontalOverflow(page)).toBe(0);
 
@@ -87,7 +94,7 @@ test('açılış perdesi yalnızca ilk ziyarette oynar', async ({ page }) => {
 });
 
 test('üstteki başlık bozulmadan kalır, süs pastaya iner', async ({ page }) => {
-  await page.goto('/');
+  await open(page);
   await expect.poll(() => opacity(page, '#sus'), { timeout: 6000 }).toBe(1);
   await expect(page.locator('h1')).toHaveText('Pastaneniz için süslerle dolu teşhir standı');
   // SplitText is reverted after the letters land, so screen readers get the plain title.
@@ -99,7 +106,7 @@ test('üstteki başlık bozulmadan kalır, süs pastaya iner', async ({ page }) 
 // ---------- Scene 2: the stand ----------
 
 test('stand sahnesi kaydırınca son hâline varır', async ({ page }) => {
-  await page.goto('/');
+  await open(page);
   if (hasMotion()) await expect(page.locator('.sahne-stand .sahne-karo')).toHaveCount(20);
   await scrollPast(page, '.stand-copy .steps', 0.3);
   await expect.poll(() => opacity(page, '.sahne-stand img'), { timeout: 5000 }).toBe(1);
@@ -120,7 +127,7 @@ test('stand sahnesi kaydırınca son hâline varır', async ({ page }) => {
 
 test('koleksiyon geniş ekranda sabitlenip yana kayar', async ({ page }) => {
   test.skip(!hasMotion() || isPhone(), 'yalnızca geniş ekranda, hareket açıkken');
-  await page.goto('/');
+  await open(page);
   const pin = await page.evaluate(() => {
     const st = window.ScrollTrigger.getAll().find(s => s.pin?.classList.contains('koleksiyon'));
     return { start: st.start, end: st.end };
@@ -142,7 +149,7 @@ test('koleksiyon geniş ekranda sabitlenip yana kayar', async ({ page }) => {
 
 test('koleksiyon telefonda parmakla kaydırılır', async ({ page }) => {
   test.skip(!isPhone(), 'yalnızca telefonda');
-  await page.goto('/');
+  await open(page);
   await page.locator('#gallery').scrollIntoViewIfNeeded();
   const scrollable = await page.evaluate(() => {
     const g = document.getElementById('gallery');
@@ -155,7 +162,7 @@ test('koleksiyon telefonda parmakla kaydırılır', async ({ page }) => {
 
 test('süzgeç doğru sayıda stand gösterir', async ({ page }) => {
   test.skip(!hasJs(), 'süzgeç JavaScript ister');
-  await page.goto('/');
+  await open(page);
   const filter = page.getByRole('group', { name: 'Standları konuya göre süzün' });
   await expect(filter).toBeVisible();
   const visible = page.locator('#gallery li:not([hidden])');
@@ -175,7 +182,7 @@ test('süzgeç doğru sayıda stand gösterir', async ({ page }) => {
 
 test('stand kartı büyük görseli açar, Esc kapatır', async ({ page }) => {
   test.skip(!hasJs(), 'büyük görsel JavaScript ister');
-  await page.goto('/');
+  await open(page);
   const card = page.locator('#gallery li button').first();
   await card.scrollIntoViewIfNeeded();
   await page.waitForTimeout(700);
@@ -196,7 +203,7 @@ test('stand kartı büyük görseli açar, Esc kapatır', async ({ page }) => {
 test('kule stand kaydırınca tamamen kurulur', async ({ page }) => {
   const photo = [];
   page.on('request', req => { if (req.url().includes('kule-stand-kesik.webp')) photo.push(req.url()); });
-  await page.goto('/');
+  await open(page);
   await page.waitForLoadState('networkidle');
   // The scene must not fetch the photo ahead of lazy loading: it is far below the first screen.
   // (Without JavaScript the browser turns lazy loading off, so every image loads at once there.)
@@ -215,7 +222,7 @@ test('kule stand kaydırınca tamamen kurulur', async ({ page }) => {
 });
 
 test('atölye adımlarının çizgileri sonuna kadar çizilir', async ({ page }) => {
-  await page.goto('/');
+  await open(page);
   await scrollPast(page, '.adimlar', 0.3);
   // Share of each gold line that is drawn (1 when there is no dash at all).
   await expect.poll(() => page.evaluate(() => [...document.querySelectorAll('.adim-cizgi path')].map(p => {
@@ -245,7 +252,7 @@ test('final pastasının mumları söner ve yeniden yanar', async ({ page }) => 
       },
     });
   });
-  await page.goto('/');
+  await open(page);
   const button = page.locator('.final-dugme');
   const hint = page.locator('.final-ipucu');
   await button.scrollIntoViewIfNeeded();
@@ -272,7 +279,7 @@ test('final pastasının mumları söner ve yeniden yanar', async ({ page }) => 
 
 test('fare tek bir mumun üzerinden geçince o mum söner', async ({ page }) => {
   test.skip(!hasJs() || isPhone(), 'fare yalnızca masaüstünde');
-  await page.goto('/');
+  await open(page);
   await page.locator('.final-dugme').scrollIntoViewIfNeeded();
   await page.waitForTimeout(400);
   await page.locator('.final-pasta .mum').first().hover();
@@ -282,7 +289,7 @@ test('fare tek bir mumun üzerinden geçince o mum söner', async ({ page }) => 
 // ---------- Links and navigation ----------
 
 test('WhatsApp bağlantıları numarayı ve hazır mesajı taşır', async ({ page }) => {
-  await page.goto('/');
+  await open(page);
   const links = await page.locator('a[href*="wa.me"]').evaluateAll(as => as.map(a => ({
     href: a.href, text: a.dataset.waText ?? null, target: a.target, rel: a.rel,
   })));
@@ -296,7 +303,7 @@ test('WhatsApp bağlantıları numarayı ve hazır mesajı taşır', async ({ pa
 });
 
 test('ilk Tab "İçeriğe geç" bağlantısına gider', async ({ page }) => {
-  await page.goto('/');
+  await open(page);
   await page.keyboard.press('Tab');
   const skip = page.locator('.skip-link');
   await expect(skip).toBeFocused();
@@ -307,7 +314,7 @@ test('ilk Tab "İçeriğe geç" bağlantısına gider', async ({ page }) => {
 
 test('telefonda menü açılır ve bağlantıya basınca kapanır', async ({ page }) => {
   test.skip(!isPhone(), 'menü düğmesi yalnızca telefonda');
-  await page.goto('/');
+  await open(page);
   const toggle = page.locator('.menu-toggle');
   const nav = page.locator('#site-nav');
   await expect(toggle).toBeVisible();
@@ -327,7 +334,7 @@ test('telefonda menü açılır ve bağlantıya basınca kapanır', async ({ pag
 
 test('hareket azaltılınca sayfa animasyonsuz, son hâliyle görünür', async ({ page }) => {
   test.skip(hasMotion(), 'yalnızca hareketsiz ve JavaScript\'siz projelerde');
-  await page.goto('/');
+  await open(page);
   await expect(page.locator('html')).not.toHaveClass(/\banim\b|acilis-on|lenis/);
   await expect(page.locator('.sahne-karo, .sahne-hayalet')).toHaveCount(0);
   for (const sel of ['#sus', '.sahne-stand img', '.sahne-sus', '.sahne-pasta', '.kule-foto img', '.adimlar li:last-child .adim-ikon']) {
@@ -340,7 +347,7 @@ test('hareket azaltılınca sayfa animasyonsuz, son hâliyle görünür', async 
 
 test('JavaScript kapalıyken içerik görünür, etkileşimli parçalar gizli', async ({ page }) => {
   test.skip(hasJs(), 'yalnızca JavaScript\'siz projede');
-  await page.goto('/');
+  await open(page);
   await expect(page.locator('#gallery li:not([hidden])')).toHaveCount(11);
   await expect(page.locator('.filtre')).toBeHidden();
   await expect(page.locator('.filtre-sayi')).toBeHidden();
@@ -354,7 +361,7 @@ test('JavaScript kapalıyken içerik görünür, etkileşimli parçalar gizli', 
 
 test('erişilebilirlik: axe ciddi ya da kritik ihlal bulmaz', async ({ page }) => {
   test.skip(!hasJs(), 'axe sayfaya betik olarak yüklenir; JavaScript kapalıyken çalışamaz');
-  await page.goto('/');
+  await open(page);
   // Let the entrances finish, then walk the page so every scene reaches its end state.
   await page.waitForTimeout(2500);
   const height = await page.evaluate(() => document.documentElement.scrollHeight);

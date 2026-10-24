@@ -7,7 +7,7 @@
 //   crop     arka plan kaldırmadan önce kırpma, [sol, üst, sağ, alt] oranları (0–1)
 //   outline  standın kaba dış hattı, [x, y] yüzde noktaları (kırpılmış görsele göre).
 //            Arka panelin üst kenarından başlar; panelin üstüne taşan süsleri model ayrıca bulur.
-//            Hattı çizmek için: node work/grid.mjs <name> → work/grid-<name>.jpg üzerinde %5 ızgara.
+//            Hattı çizmek için: node izgara.mjs <name> → work/izgara-<name>.jpg üzerinde %5 ızgara.
 //   erase    silinecek yazılar (telefon damgası), [x0, y0, x1, y1] yüzde dikdörtgenleri
 //   mask     standMask ayarları, ör. { reach: 2 } (maske.mjs)
 //   fit      stüdyo karesinde standın kaplayacağı genişlik oranı
