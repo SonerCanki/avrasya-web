@@ -12,14 +12,14 @@
     <linearGradient id="mum-golge" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".12"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".2"/></linearGradient>
     <linearGradient id="alev-dis" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFB627"/><stop offset=".7" stop-color="#FF8A1F"/><stop offset="1" stop-color="#E8590C"/></linearGradient>
     <radialGradient id="isik"><stop offset="0" stop-color="#FFD66B" stop-opacity=".6"/><stop offset="1" stop-color="#FFD66B" stop-opacity="0"/></radialGradient>
-    <linearGradient id="tabak" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBEBB5"/><stop offset="1" stop-color="#D9B15C"/></linearGradient>
+    <linearGradient id="tabak-renk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBEBB5"/><stop offset="1" stop-color="#D9B15C"/></linearGradient>
   </defs>
   <g id="tabak">
     <path d="M182,428 C186,436 190,440 190,446 H210 C210,440 214,436 218,428 Z" fill="#9C7424"/>
     <ellipse cx="200" cy="449" rx="58" ry="8" fill="#9C7424"/>
     <ellipse cx="200" cy="446" rx="58" ry="7" fill="#D9B15C"/>
     <path d="M28,410 A172,16 0 0 0 372,410 V417 A172,16 0 0 1 28,417 Z" fill="#9C7424"/>
-    <ellipse cx="200" cy="410" rx="172" ry="16" fill="url(#tabak)"/>
+    <ellipse cx="200" cy="410" rx="172" ry="16" fill="url(#tabak-renk)"/>
     <ellipse cx="200" cy="417" rx="150" ry="9" fill="#131C3A" opacity=".2"/>
   </g>
   <g id="kat-1">
@@ -42,34 +42,32 @@
     <path class="krema" d="M122.5,125 A77.5,9 0 0 1 277.5,125 L277.5,132 L276,133.8 L274.5,134.5 L273,135 L271.5,135.5 L270,135.9 L268.5,136.2 L267,136.5 L265.5,143.6 L264,149.9 L262.5,152.3 L261,153.4 L259.5,153.8 L258,153.9 L256.5,153.5 L255,152 L253.5,148.1 L252,138.7 L250.5,138.8 L249,139 L247.5,139.1 L246,139.2 L244.5,139.4 L243,148.8 L241.5,159.7 L240,163.9 L238.5,166.2 L237,167.4 L235.5,167.9 L234,168.1 L232.5,168 L231,167.5 L229.5,166.2 L228,163.7 L226.5,158.8 L225,140.5 L223.5,140.6 L222,140.6 L220.5,140.7 L219,140.7 L217.5,140.8 L216,140.8 L214.5,144.8 L213,151.5 L211.5,153.6 L210,154.6 L208.5,154.9 L207,155 L205.5,154.7 L204,154 L202.5,152.2 L201,147.6 L199.5,141 L198,141 L196.5,141 L195,141 L193.5,141 L192,141 L190.5,140.9 L189,140.9 L187.5,140.9 L186,160.5 L184.5,166.4 L183,169.5 L181.5,171.3 L180,172.2 L178.5,172.6 L177,172.6 L175.5,172.4 L174,171.8 L172.5,170.6 L171,168.4 L169.5,164.7 L168,157.3 L166.5,140.1 L165,140 L163.5,139.9 L162,139.8 L160.5,139.7 L159,139.6 L157.5,139.5 L156,139.4 L154.5,148.2 L153,155.8 L151.5,158.7 L150,160.1 L148.5,160.6 L147,160.6 L145.5,160.3 L144,159.7 L142.5,158.2 L141,155.5 L139.5,149.7 L138,137.4 L136.5,137.2 L135,136.9 L133.5,136.6 L132,136.3 L130.5,136 L129,135.6 L127.5,135.2 L126,134.7 L124.5,134 L123,133 Z" fill="url(#krema-beyaz)"/>
     <ellipse cx="184.8" cy="123.2" rx="41.8" ry="4" fill="#fff" opacity=".35"/>
   </g>
-  <!-- Faz 4: gerçek süs fotoğrafı (assets/img/susler) buraya iner. -->
-  <g id="sus-yeri" transform="translate(200 128)"/>
   <g id="mum-1" class="mum">
-    <clipPath id="mum-1-kesit"><rect x="160" y="78" width="12" height="50" rx="3"/></clipPath>
-    <rect x="160" y="78" width="12" height="50" rx="3" fill="#FFFBF3"/>
+    <clipPath id="mum-1-kesit"><rect x="142" y="78" width="12" height="50" rx="3"/></clipPath>
+    <rect x="142" y="78" width="12" height="50" rx="3" fill="#FFFBF3"/>
     <g clip-path="url(#mum-1-kesit)" fill="#D6457A">
-      <path d="M158,88 l16,-8 v5 l-16,8 Z"/><path d="M158,101 l16,-8 v5 l-16,8 Z"/><path d="M158,114 l16,-8 v5 l-16,8 Z"/><path d="M158,127 l16,-8 v5 l-16,8 Z"/>
+      <path d="M140,88 l16,-8 v5 l-16,8 Z"/><path d="M140,101 l16,-8 v5 l-16,8 Z"/><path d="M140,114 l16,-8 v5 l-16,8 Z"/><path d="M140,127 l16,-8 v5 l-16,8 Z"/>
     </g>
-    <rect x="160" y="78" width="12" height="50" rx="3" fill="url(#mum-golge)"/>
-    <path d="M166,78 v-7" stroke="#3B2A1A" stroke-width="1.6" stroke-linecap="round"/>
+    <rect x="142" y="78" width="12" height="50" rx="3" fill="url(#mum-golge)"/>
+    <path d="M148,78 v-7" stroke="#3B2A1A" stroke-width="1.6" stroke-linecap="round"/>
     <g class="alev">
-      <circle class="alev-isik" cx="166" cy="60" r="24" fill="url(#isik)"/>
-      <path d="M166,38 C169,47 174,59 174,65 A8,8 0 0 1 158,65 C158,59 163,47 166,38 Z" fill="url(#alev-dis)"/>
-      <path d="M166,51 C167.5,56 170,62 170,66 A4,4 0 0 1 162,66 C162,62 164.5,56 166,51 Z" fill="#FFF6C9"/>
+      <circle class="alev-isik" cx="148" cy="60" r="24" fill="url(#isik)"/>
+      <path d="M148,38 C151,47 156,59 156,65 A8,8 0 0 1 140,65 C140,59 145,47 148,38 Z" fill="url(#alev-dis)"/>
+      <path d="M148,51 C149.5,56 152,62 152,66 A4,4 0 0 1 144,66 C144,62 146.5,56 148,51 Z" fill="#FFF6C9"/>
     </g>
   </g>
   <g id="mum-2" class="mum">
-    <clipPath id="mum-2-kesit"><rect x="228" y="78" width="12" height="50" rx="3"/></clipPath>
-    <rect x="228" y="78" width="12" height="50" rx="3" fill="#FFFBF3"/>
+    <clipPath id="mum-2-kesit"><rect x="246" y="78" width="12" height="50" rx="3"/></clipPath>
+    <rect x="246" y="78" width="12" height="50" rx="3" fill="#FFFBF3"/>
     <g clip-path="url(#mum-2-kesit)" fill="#D6457A">
-      <path d="M226,88 l16,-8 v5 l-16,8 Z"/><path d="M226,101 l16,-8 v5 l-16,8 Z"/><path d="M226,114 l16,-8 v5 l-16,8 Z"/><path d="M226,127 l16,-8 v5 l-16,8 Z"/>
+      <path d="M244,88 l16,-8 v5 l-16,8 Z"/><path d="M244,101 l16,-8 v5 l-16,8 Z"/><path d="M244,114 l16,-8 v5 l-16,8 Z"/><path d="M244,127 l16,-8 v5 l-16,8 Z"/>
     </g>
-    <rect x="228" y="78" width="12" height="50" rx="3" fill="url(#mum-golge)"/>
-    <path d="M234,78 v-7" stroke="#3B2A1A" stroke-width="1.6" stroke-linecap="round"/>
+    <rect x="246" y="78" width="12" height="50" rx="3" fill="url(#mum-golge)"/>
+    <path d="M252,78 v-7" stroke="#3B2A1A" stroke-width="1.6" stroke-linecap="round"/>
     <g class="alev">
-      <circle class="alev-isik" cx="234" cy="60" r="24" fill="url(#isik)"/>
-      <path d="M234,38 C237,47 242,59 242,65 A8,8 0 0 1 226,65 C226,59 231,47 234,38 Z" fill="url(#alev-dis)"/>
-      <path d="M234,51 C235.5,56 238,62 238,66 A4,4 0 0 1 230,66 C230,62 232.5,56 234,51 Z" fill="#FFF6C9"/>
+      <circle class="alev-isik" cx="252" cy="60" r="24" fill="url(#isik)"/>
+      <path d="M252,38 C255,47 260,59 260,65 A8,8 0 0 1 244,65 C244,59 249,47 252,38 Z" fill="url(#alev-dis)"/>
+      <path d="M252,51 C253.5,56 256,62 256,66 A4,4 0 0 1 248,66 C248,62 250.5,56 252,51 Z" fill="#FFF6C9"/>
     </g>
   </g>
 </svg>

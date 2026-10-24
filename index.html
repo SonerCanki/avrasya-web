@@ -24,13 +24,19 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Unbounded:wght@500;600;700&display=swap">
   <link rel="stylesheet" href="assets/vendor/lenis.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="preload" as="image" href="assets/img/susler/sus-iyi-ki-dogdun.webp">
   <script>
     // Starting states for animations (html.anim) only when motion is allowed; js/animations.js
     // confirms with window.animReady, otherwise the page falls back to its static look.
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      document.documentElement.classList.add('anim');
-      setTimeout(function () { if (!window.animReady) document.documentElement.classList.remove('anim'); }, 3000);
-    }
+    // The opening curtain (html.acilis-on) plays once per browser.
+    (function () {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var root = document.documentElement, seen = true;
+      try { seen = localStorage.getItem('avrasya-acilis') === '1'; } catch (e) {}
+      root.classList.add('anim');
+      if (!seen) root.classList.add('acilis-on');
+      setTimeout(function () { if (!window.animReady) root.classList.remove('anim', 'acilis-on'); }, 3000);
+    })();
   </script>
 
   <script type="application/ld+json">
@@ -77,6 +83,36 @@
   </svg>
   <!-- /ciz:sprite -->
 
+  <!-- Opening curtain (scene 0); decorative, shown only with html.acilis-on. -->
+  <div class="acilis" aria-hidden="true">
+    <div class="acilis-perde">
+      <div class="acilis-icerik">
+        <img class="acilis-logo" src="assets/img/logo-160.webp" alt="" width="160" height="160">
+        <!-- ciz:acilis-mum -->
+      <svg class="acilis-mum" viewBox="142 28 48 104" aria-hidden="true" focusable="false">
+        <defs><linearGradient id="acilis-mum-golge" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".12"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".2"/></linearGradient>
+    <linearGradient id="acilis-alev-dis" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFB627"/><stop offset=".7" stop-color="#FF8A1F"/><stop offset="1" stop-color="#E8590C"/></linearGradient>
+    <radialGradient id="acilis-isik"><stop offset="0" stop-color="#FFD66B" stop-opacity=".6"/><stop offset="1" stop-color="#FFD66B" stop-opacity="0"/></radialGradient></defs>
+        <g id="acilis-mum" class="mum">
+    <clipPath id="acilis-mum-kesit"><rect x="160" y="78" width="12" height="50" rx="3"/></clipPath>
+    <rect x="160" y="78" width="12" height="50" rx="3" fill="#FFFBF3"/>
+    <g clip-path="url(#acilis-mum-kesit)" fill="#D6457A">
+      <path d="M158,88 l16,-8 v5 l-16,8 Z"/><path d="M158,101 l16,-8 v5 l-16,8 Z"/><path d="M158,114 l16,-8 v5 l-16,8 Z"/><path d="M158,127 l16,-8 v5 l-16,8 Z"/>
+    </g>
+    <rect x="160" y="78" width="12" height="50" rx="3" fill="url(#acilis-mum-golge)"/>
+    <path d="M166,78 v-7" stroke="#3B2A1A" stroke-width="1.6" stroke-linecap="round"/>
+    <g class="alev">
+      <circle class="alev-isik" cx="166" cy="60" r="24" fill="url(#acilis-isik)"/>
+      <path d="M166,38 C169,47 174,59 174,65 A8,8 0 0 1 158,65 C158,59 163,47 166,38 Z" fill="url(#acilis-alev-dis)"/>
+      <path d="M166,51 C167.5,56 170,62 170,66 A4,4 0 0 1 162,66 C162,62 164.5,56 166,51 Z" fill="#FFF6C9"/>
+    </g>
+  </g>
+      </svg>
+        <!-- /ciz:acilis-mum -->
+      </div>
+    </div>
+  </div>
+
   <header class="site-header">
     <div class="wrap header-inner">
       <a class="brand" href="#" aria-label="Avrasya Toptan Pasta Süsleri ana sayfa">
@@ -112,9 +148,91 @@
             <svg class="balon balon-2" viewBox="0 0 120 232"><use href="#balon"/></svg>
             <svg class="balon balon-3" viewBox="0 0 120 232"><use href="#balon"/></svg>
           </div>
-          <figure class="hero-photo acrylic acrylic-lg">
-          <img src="assets/img/stand-1000.webp" srcset="assets/img/stand-600.webp 600w, assets/img/stand-1000.webp 1000w" sizes="(min-width: 861px) 440px, 90vw" alt="Bir pastanede rakam, ayna pleksi yazı ve karakterli süslerle dolu teşhir standı" width="600" height="778">
-          </figure>
+          <!-- ciz:pasta -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -125 400 585" class="pasta" role="img" aria-labelledby="pasta-baslik">
+  <title id="pasta-baslik">Üstünde "İyi ki doğdun" pasta süsü olan, mumları yanan üç katlı doğum günü pastası</title>
+  <defs>
+    <linearGradient id="govde-lacivert" x1="0" x2="1"><stop offset="0" stop-color="#0C1330"/><stop offset=".38" stop-color="#26366B"/><stop offset="1" stop-color="#0C1330"/></linearGradient>
+    <linearGradient id="govde-krem" x1="0" x2="1"><stop offset="0" stop-color="#EAD8BC"/><stop offset=".38" stop-color="#FFF9EF"/><stop offset="1" stop-color="#E3CFAF"/></linearGradient>
+    <linearGradient id="govde-pembe" x1="0" x2="1"><stop offset="0" stop-color="#E383A0"/><stop offset=".38" stop-color="#FAC6D4"/><stop offset="1" stop-color="#DC7895"/></linearGradient>
+    <linearGradient id="krema-altin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F3D98F"/><stop offset=".55" stop-color="#D9B15C"/><stop offset="1" stop-color="#9C7424"/></linearGradient>
+    <linearGradient id="krema-pembe" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FDDCE5"/><stop offset="1" stop-color="#EE93AE"/></linearGradient>
+    <linearGradient id="krema-beyaz" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#F1E3CB"/></linearGradient>
+    <linearGradient id="altin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBE9A6"/><stop offset=".5" stop-color="#D9B15C"/><stop offset="1" stop-color="#9C7424"/></linearGradient>
+    <radialGradient id="inci" cx=".35" cy=".35" r=".7"><stop offset="0" stop-color="#FFF4C8"/><stop offset=".6" stop-color="#D9B15C"/><stop offset="1" stop-color="#9C7424"/></radialGradient>
+    <linearGradient id="mum-golge" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".12"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".2"/></linearGradient>
+    <linearGradient id="alev-dis" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFB627"/><stop offset=".7" stop-color="#FF8A1F"/><stop offset="1" stop-color="#E8590C"/></linearGradient>
+    <radialGradient id="isik"><stop offset="0" stop-color="#FFD66B" stop-opacity=".6"/><stop offset="1" stop-color="#FFD66B" stop-opacity="0"/></radialGradient>
+    <linearGradient id="tabak-renk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBEBB5"/><stop offset="1" stop-color="#D9B15C"/></linearGradient>
+  </defs>
+
+  <g id="tabak">
+    <path d="M182,428 C186,436 190,440 190,446 H210 C210,440 214,436 218,428 Z" fill="#9C7424"/>
+    <ellipse cx="200" cy="449" rx="58" ry="8" fill="#9C7424"/>
+    <ellipse cx="200" cy="446" rx="58" ry="7" fill="#D9B15C"/>
+    <path d="M28,410 A172,16 0 0 0 372,410 V417 A172,16 0 0 1 28,417 Z" fill="#9C7424"/>
+    <ellipse cx="200" cy="410" rx="172" ry="16" fill="url(#tabak-renk)"/>
+    <ellipse cx="200" cy="417" rx="150" ry="9" fill="#131C3A" opacity=".2"/>
+  </g>
+
+  <g id="kat-1">
+    <path d="M50,300 V405 A150,14 0 0 0 350,405 V300 Z" fill="url(#govde-lacivert)"/>
+    <path d="M95,363 L97.2,368.9 L103.6,369.2 L98.6,373.2 L100.3,379.3 L95,375.8 L89.7,379.3 L91.4,373.2 L86.4,369.2 L92.8,368.9 Z" fill="url(#altin)"/><path d="M150,382 L151.5,386 L155.7,386.1 L152.4,388.8 L153.5,392.9 L150,390.5 L146.5,392.9 L147.6,388.8 L144.3,386.1 L148.5,386 Z" fill="url(#altin)"/><path d="M255,377 L256.7,381.6 L261.7,381.8 L257.8,384.9 L259.1,389.7 L255,386.9 L250.9,389.7 L252.2,384.9 L248.3,381.8 L253.3,381.6 Z" fill="url(#altin)"/><path d="M312,360 L314,365.3 L319.6,365.5 L315.2,369 L316.7,374.5 L312,371.4 L307.3,374.5 L308.8,369 L304.4,365.5 L310,365.3 Z" fill="url(#altin)"/><path d="M205,363 L206.2,366.3 L209.8,366.5 L207,368.6 L207.9,372 L205,370.1 L202.1,372 L203,368.6 L200.2,366.5 L203.8,366.3 Z" fill="url(#altin)"/>
+    <g fill="url(#inci)"><circle cx="50" cy="403" r="4.2"/><circle cx="51.8" cy="405.2" r="4.2"/><circle cx="57.3" cy="407.3" r="4.2"/><circle cx="66.3" cy="409.4" r="4.2"/><circle cx="78.6" cy="411.2" r="4.2"/><circle cx="93.9" cy="412.9" r="4.2"/><circle cx="111.8" cy="414.3" r="4.2"/><circle cx="131.9" cy="415.5" r="4.2"/><circle cx="153.6" cy="416.3" r="4.2"/><circle cx="176.5" cy="416.8" r="4.2"/><circle cx="200" cy="417" r="4.2"/><circle cx="223.5" cy="416.8" r="4.2"/><circle cx="246.4" cy="416.3" r="4.2"/><circle cx="268.1" cy="415.5" r="4.2"/><circle cx="288.2" cy="414.3" r="4.2"/><circle cx="306.1" cy="412.9" r="4.2"/><circle cx="321.4" cy="411.2" r="4.2"/><circle cx="333.7" cy="409.4" r="4.2"/><circle cx="342.7" cy="407.3" r="4.2"/><circle cx="348.2" cy="405.2" r="4.2"/><circle cx="350" cy="403" r="4.2"/></g>
+    <path class="krema" d="M48.5,300 A151.5,14 0 0 1 351.5,300 L351.5,307 L350,309 L348.5,309.8 L347,310.4 L345.5,310.9 L344,311.4 L342.5,311.8 L341,312.1 L339.5,312.5 L338,312.8 L336.5,313.1 L335,313.4 L333.5,313.6 L332,313.9 L330.5,314.1 L329,314.3 L327.5,323.3 L326,328.8 L324.5,331.3 L323,332.6 L321.5,333.3 L320,333.5 L318.5,333.6 L317,333.3 L315.5,332.4 L314,330.3 L312.5,325.2 L311,316.5 L309.5,316.7 L308,316.8 L306.5,317 L305,317.1 L303.5,317.2 L302,317.4 L300.5,317.5 L299,317.6 L297.5,317.7 L296,317.8 L294.5,317.9 L293,318.1 L291.5,318.2 L290,318.3 L288.5,343.3 L287,349.7 L285.5,353.5 L284,356 L282.5,357.5 L281,358.4 L279.5,358.8 L278,359 L276.5,359 L275,358.7 L273.5,358 L272,356.6 L270.5,354.4 L269,350.7 L267.5,344.5 L266,319.6 L264.5,319.7 L263,319.7 L261.5,319.8 L260,319.9 L258.5,319.9 L257,320 L255.5,320 L254,320.1 L252.5,320.1 L251,320.2 L249.5,320.2 L248,320.3 L246.5,320.3 L245,336.9 L243.5,340.8 L242,342.8 L240.5,344 L239,344.4 L237.5,344.6 L236,344.5 L234.5,344.1 L233,343.1 L231.5,341 L230,337.2 L228.5,320.8 L227,320.8 L225.5,320.8 L224,320.8 L222.5,320.8 L221,320.9 L219.5,320.9 L218,320.9 L216.5,320.9 L215,320.9 L213.5,320.9 L212,321 L210.5,321 L209,321 L207.5,321 L206,321 L204.5,345.2 L203,354.1 L201.5,359.2 L200,362.4 L198.5,364.5 L197,365.9 L195.5,366.6 L194,366.9 L192.5,367 L191,366.9 L189.5,366.6 L188,365.8 L186.5,364.5 L185,362.3 L183.5,359.1 L182,354 L180.5,345.1 L179,320.9 L177.5,320.8 L176,320.8 L174.5,320.8 L173,320.8 L171.5,320.8 L170,320.7 L168.5,320.7 L167,320.7 L165.5,320.6 L164,320.6 L162.5,328.4 L161,333 L159.5,335 L158,336 L156.5,336.3 L155,336.4 L153.5,336.2 L152,335.8 L150.5,334.7 L149,332.7 L147.5,327.9 L146,320.1 L144.5,320 L143,320 L141.5,319.9 L140,319.9 L138.5,319.8 L137,319.7 L135.5,319.7 L134,319.6 L132.5,319.5 L131,319.5 L129.5,319.4 L128,319.3 L126.5,319.2 L125,319.2 L123.5,319.1 L122,319 L120.5,342.6 L119,348.5 L117.5,352 L116,354.1 L114.5,355.4 L113,356.1 L111.5,356.3 L110,356.3 L108.5,356.1 L107,355.7 L105.5,354.8 L104,353.3 L102.5,350.9 L101,347.3 L99.5,341.2 L98,317.4 L96.5,317.2 L95,317.1 L93.5,317 L92,316.8 L90.5,316.7 L89,316.5 L87.5,316.4 L86,316.2 L84.5,316.1 L83,315.9 L81.5,315.7 L80,315.5 L78.5,329.1 L77,332.1 L75.5,333.6 L74,334.3 L72.5,334.5 L71,334.3 L69.5,334 L68,333.4 L66.5,332.3 L65,330.3 L63.5,326.8 L62,312.8 L60.5,312.5 L59,312.1 L57.5,311.8 L56,311.4 L54.5,310.9 L53,310.4 L51.5,309.8 L50,309 L48.5,307 Z" fill="url(#krema-altin)"/>
+    <ellipse cx="170" cy="297.2" rx="82.5" ry="6.3" fill="#fff" opacity=".35"/>
+  </g>
+  <g id="kat-2">
+    <path d="M88,205 V300 A112,11 0 0 0 312,300 V205 Z" fill="url(#govde-krem)"/>
+    <rect x="143.8" y="291.5" width="8" height="3.2" rx="1.6" fill="#F4A7BB" transform="rotate(110 147.8 293.1)"/><rect x="281.4" y="262.1" width="8" height="3.2" rx="1.6" fill="#45E0D8" transform="rotate(154 285.4 263.7)"/><rect x="168.2" y="262.2" width="8" height="3.2" rx="1.6" fill="#D9B15C" transform="rotate(12 172.2 263.8)"/><rect x="292.8" y="293.5" width="8" height="3.2" rx="1.6" fill="#7CC6F0" transform="rotate(96 296.8 295.1)"/><rect x="186.4" y="279" width="8" height="3.2" rx="1.6" fill="#D6457A" transform="rotate(109 190.4 280.6)"/><rect x="251.5" y="286.9" width="8" height="3.2" rx="1.6" fill="#F4A7BB" transform="rotate(75 255.5 288.5)"/><rect x="190.8" y="289.4" width="8" height="3.2" rx="1.6" fill="#45E0D8" transform="rotate(65 194.8 291)"/><rect x="192.3" y="263.5" width="8" height="3.2" rx="1.6" fill="#D9B15C" transform="rotate(135 196.3 265.1)"/><rect x="262.8" y="272.6" width="8" height="3.2" rx="1.6" fill="#7CC6F0" transform="rotate(32 266.8 274.2)"/><rect x="292.4" y="264.6" width="8" height="3.2" rx="1.6" fill="#D6457A" transform="rotate(82 296.4 266.2)"/><rect x="187.3" y="264.1" width="8" height="3.2" rx="1.6" fill="#F4A7BB" transform="rotate(21 191.3 265.7)"/><rect x="220.3" y="286.7" width="8" height="3.2" rx="1.6" fill="#45E0D8" transform="rotate(15 224.3 288.3)"/><rect x="217.1" y="291.9" width="8" height="3.2" rx="1.6" fill="#D9B15C" transform="rotate(48 221.1 293.5)"/><rect x="214.1" y="272.4" width="8" height="3.2" rx="1.6" fill="#7CC6F0" transform="rotate(56 218.1 274)"/><rect x="198.5" y="284.6" width="8" height="3.2" rx="1.6" fill="#D6457A" transform="rotate(56 202.5 286.2)"/><rect x="127.6" y="290.1" width="8" height="3.2" rx="1.6" fill="#F4A7BB" transform="rotate(113 131.6 291.7)"/><rect x="171.9" y="294.3" width="8" height="3.2" rx="1.6" fill="#45E0D8" transform="rotate(87 175.9 295.9)"/><rect x="131.6" y="269" width="8" height="3.2" rx="1.6" fill="#D9B15C" transform="rotate(166 135.6 270.6)"/><rect x="213.6" y="277.2" width="8" height="3.2" rx="1.6" fill="#7CC6F0" transform="rotate(31 217.6 278.8)"/><rect x="182.8" y="266.5" width="8" height="3.2" rx="1.6" fill="#D6457A" transform="rotate(0 186.8 268.1)"/><rect x="234.3" y="286.2" width="8" height="3.2" rx="1.6" fill="#F4A7BB" transform="rotate(26 238.3 287.8)"/><rect x="204.6" y="285.6" width="8" height="3.2" rx="1.6" fill="#45E0D8" transform="rotate(159 208.6 287.2)"/><rect x="170.3" y="274.2" width="8" height="3.2" rx="1.6" fill="#D9B15C" transform="rotate(115 174.3 275.8)"/><rect x="261.7" y="277.5" width="8" height="3.2" rx="1.6" fill="#7CC6F0" transform="rotate(87 265.7 279.1)"/><rect x="253.1" y="292.9" width="8" height="3.2" rx="1.6" fill="#D6457A" transform="rotate(58 257.1 294.5)"/><rect x="273" y="267.4" width="8" height="3.2" rx="1.6" fill="#F4A7BB" transform="rotate(50 277 269)"/>
+    <g fill="url(#inci)"><circle cx="88" cy="298" r="4.2"/><circle cx="90.4" cy="300.3" r="4.2"/><circle cx="97.7" cy="302.5" r="4.2"/><circle cx="109.4" cy="304.5" r="4.2"/><circle cx="125.1" cy="306.2" r="4.2"/><circle cx="144" cy="307.5" r="4.2"/><circle cx="165.4" cy="308.5" r="4.2"/><circle cx="188.3" cy="308.9" r="4.2"/><circle cx="211.7" cy="308.9" r="4.2"/><circle cx="234.6" cy="308.5" r="4.2"/><circle cx="256" cy="307.5" r="4.2"/><circle cx="274.9" cy="306.2" r="4.2"/><circle cx="290.6" cy="304.5" r="4.2"/><circle cx="302.3" cy="302.5" r="4.2"/><circle cx="309.6" cy="300.3" r="4.2"/><circle cx="312" cy="298" r="4.2"/></g>
+    <path class="krema" d="M86.5,205 A113.5,11 0 0 1 313.5,205 L313.5,212 L312,213.8 L310.5,214.5 L309,215.1 L307.5,215.5 L306,215.9 L304.5,216.3 L303,216.6 L301.5,216.9 L300,217.2 L298.5,217.5 L297,229.6 L295.5,239.3 L294,243.7 L292.5,246.2 L291,247.7 L289.5,248.6 L288,248.9 L286.5,249.1 L285,249 L283.5,248.5 L282,247.2 L280.5,244.8 L279,240.4 L277.5,228.4 L276,220.2 L274.5,220.3 L273,220.4 L271.5,220.5 L270,220.7 L268.5,220.8 L267,220.9 L265.5,221 L264,221.1 L262.5,235.5 L261,238.8 L259.5,240.4 L258,241.2 L256.5,241.5 L255,241.6 L253.5,241.3 L252,240.4 L250.5,238.5 L249,234.4 L247.5,222 L246,222.1 L244.5,222.1 L243,222.2 L241.5,222.2 L240,222.3 L238.5,222.3 L237,222.4 L235.5,222.4 L234,222.5 L232.5,222.5 L231,233.9 L229.5,249.2 L228,255.2 L226.5,258.7 L225,260.8 L223.5,262.1 L222,262.6 L220.5,262.8 L219,262.8 L217.5,262.5 L216,261.6 L214.5,260 L213,257.3 L211.5,252.7 L210,243.9 L208.5,223 L207,223 L205.5,223 L204,223 L202.5,223 L201,223 L199.5,223 L198,223 L196.5,223 L195,223 L193.5,231.3 L192,235.8 L190.5,237.7 L189,238.6 L187.5,238.9 L186,238.9 L184.5,238.7 L183,237.9 L181.5,236.3 L180,232.8 L178.5,222.8 L177,222.8 L175.5,222.7 L174,222.7 L172.5,222.7 L171,222.6 L169.5,222.6 L168,222.6 L166.5,222.5 L165,222.5 L163.5,222.4 L162,222.4 L160.5,230.8 L159,245.9 L157.5,251.3 L156,254.5 L154.5,256.3 L153,257.3 L151.5,257.8 L150,257.9 L148.5,257.8 L147,257.4 L145.5,256.6 L144,255 L142.5,252.5 L141,248.4 L139.5,240.7 L138,221.2 L136.5,221.1 L135,221 L133.5,220.9 L132,220.8 L130.5,220.7 L129,220.6 L127.5,220.5 L126,220.3 L124.5,220.2 L123,220.1 L121.5,227.5 L120,238.2 L118.5,242 L117,243.9 L115.5,244.8 L114,245.1 L112.5,245 L111,244.7 L109.5,244 L108,242.5 L106.5,240 L105,235.3 L103.5,217.8 L102,217.5 L100.5,217.3 L99,217 L97.5,216.7 L96,216.4 L94.5,216.1 L93,215.7 L91.5,215.2 L90,214.7 L88.5,214.1 L87,213 Z" fill="url(#krema-pembe)"/>
+    <ellipse cx="177.6" cy="202.8" rx="61.6" ry="5" fill="#fff" opacity=".35"/>
+  </g>
+  <g id="kat-3">
+    <path d="M124,125 V205 A76,9 0 0 0 276,205 V125 Z" fill="url(#govde-pembe)"/>
+    
+    <g fill="url(#inci)"><circle cx="124" cy="203" r="4.2"/><circle cx="127.7" cy="205.8" r="4.2"/><circle cx="138.5" cy="208.3" r="4.2"/><circle cx="155.3" cy="210.3" r="4.2"/><circle cx="176.5" cy="211.6" r="4.2"/><circle cx="200" cy="212" r="4.2"/><circle cx="223.5" cy="211.6" r="4.2"/><circle cx="244.7" cy="210.3" r="4.2"/><circle cx="261.5" cy="208.3" r="4.2"/><circle cx="272.3" cy="205.8" r="4.2"/><circle cx="276" cy="203" r="4.2"/></g>
+    <path class="krema" d="M122.5,125 A77.5,9 0 0 1 277.5,125 L277.5,132 L276,133.8 L274.5,134.5 L273,135 L271.5,135.5 L270,135.9 L268.5,136.2 L267,136.5 L265.5,143.6 L264,149.9 L262.5,152.3 L261,153.4 L259.5,153.8 L258,153.9 L256.5,153.5 L255,152 L253.5,148.1 L252,138.7 L250.5,138.8 L249,139 L247.5,139.1 L246,139.2 L244.5,139.4 L243,148.8 L241.5,159.7 L240,163.9 L238.5,166.2 L237,167.4 L235.5,167.9 L234,168.1 L232.5,168 L231,167.5 L229.5,166.2 L228,163.7 L226.5,158.8 L225,140.5 L223.5,140.6 L222,140.6 L220.5,140.7 L219,140.7 L217.5,140.8 L216,140.8 L214.5,144.8 L213,151.5 L211.5,153.6 L210,154.6 L208.5,154.9 L207,155 L205.5,154.7 L204,154 L202.5,152.2 L201,147.6 L199.5,141 L198,141 L196.5,141 L195,141 L193.5,141 L192,141 L190.5,140.9 L189,140.9 L187.5,140.9 L186,160.5 L184.5,166.4 L183,169.5 L181.5,171.3 L180,172.2 L178.5,172.6 L177,172.6 L175.5,172.4 L174,171.8 L172.5,170.6 L171,168.4 L169.5,164.7 L168,157.3 L166.5,140.1 L165,140 L163.5,139.9 L162,139.8 L160.5,139.7 L159,139.6 L157.5,139.5 L156,139.4 L154.5,148.2 L153,155.8 L151.5,158.7 L150,160.1 L148.5,160.6 L147,160.6 L145.5,160.3 L144,159.7 L142.5,158.2 L141,155.5 L139.5,149.7 L138,137.4 L136.5,137.2 L135,136.9 L133.5,136.6 L132,136.3 L130.5,136 L129,135.6 L127.5,135.2 L126,134.7 L124.5,134 L123,133 Z" fill="url(#krema-beyaz)"/>
+    <ellipse cx="184.8" cy="123.2" rx="41.8" ry="4" fill="#fff" opacity=".35"/>
+  </g>
+
+  <g id="sus" class="sus">
+    <rect x="166" y="10" width="6" height="120" rx="2" fill="#E6F0FA" fill-opacity=".75" stroke="#fff" stroke-opacity=".9"/><rect x="228" y="10" width="6" height="120" rx="2" fill="#E6F0FA" fill-opacity=".75" stroke="#fff" stroke-opacity=".9"/>
+    <image href="assets/img/susler/sus-iyi-ki-dogdun.webp" x="114" y="-124.9" width="172" height="146.9"/>
+  </g>
+
+  <g id="mum-1" class="mum">
+    <clipPath id="mum-1-kesit"><rect x="142" y="78" width="12" height="50" rx="3"/></clipPath>
+    <rect x="142" y="78" width="12" height="50" rx="3" fill="#FFFBF3"/>
+    <g clip-path="url(#mum-1-kesit)" fill="#D6457A">
+      <path d="M140,88 l16,-8 v5 l-16,8 Z"/><path d="M140,101 l16,-8 v5 l-16,8 Z"/><path d="M140,114 l16,-8 v5 l-16,8 Z"/><path d="M140,127 l16,-8 v5 l-16,8 Z"/>
+    </g>
+    <rect x="142" y="78" width="12" height="50" rx="3" fill="url(#mum-golge)"/>
+    <path d="M148,78 v-7" stroke="#3B2A1A" stroke-width="1.6" stroke-linecap="round"/>
+    <g class="alev">
+      <circle class="alev-isik" cx="148" cy="60" r="24" fill="url(#isik)"/>
+      <path d="M148,38 C151,47 156,59 156,65 A8,8 0 0 1 140,65 C140,59 145,47 148,38 Z" fill="url(#alev-dis)"/>
+      <path d="M148,51 C149.5,56 152,62 152,66 A4,4 0 0 1 144,66 C144,62 146.5,56 148,51 Z" fill="#FFF6C9"/>
+    </g>
+  </g>
+
+  <g id="mum-2" class="mum">
+    <clipPath id="mum-2-kesit"><rect x="246" y="78" width="12" height="50" rx="3"/></clipPath>
+    <rect x="246" y="78" width="12" height="50" rx="3" fill="#FFFBF3"/>
+    <g clip-path="url(#mum-2-kesit)" fill="#D6457A">
+      <path d="M244,88 l16,-8 v5 l-16,8 Z"/><path d="M244,101 l16,-8 v5 l-16,8 Z"/><path d="M244,114 l16,-8 v5 l-16,8 Z"/><path d="M244,127 l16,-8 v5 l-16,8 Z"/>
+    </g>
+    <rect x="246" y="78" width="12" height="50" rx="3" fill="url(#mum-golge)"/>
+    <path d="M252,78 v-7" stroke="#3B2A1A" stroke-width="1.6" stroke-linecap="round"/>
+    <g class="alev">
+      <circle class="alev-isik" cx="252" cy="60" r="24" fill="url(#isik)"/>
+      <path d="M252,38 C255,47 260,59 260,65 A8,8 0 0 1 244,65 C244,59 249,47 252,38 Z" fill="url(#alev-dis)"/>
+      <path d="M252,51 C253.5,56 256,62 256,66 A4,4 0 0 1 248,66 C248,62 250.5,56 252,51 Z" fill="#FFF6C9"/>
+    </g>
+  </g>
+</svg>
+          <!-- /ciz:pasta -->
         </div>
       </div>
     </section>

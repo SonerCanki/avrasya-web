@@ -22,13 +22,13 @@ Yeni stand görselleri (`assets/img/standlar/`, `assets/img/susler/`) telefon fo
 
 Yeni stand eklemek için galerideki bir `<li>` satırını kopyalayıp dosya adlarını ve `alt` metnini değiştirin. Fotoğraflar kare olarak gösterilir.
 
-Sayfanın üstündeki büyük stand fotoğrafı `assets/img/stand-600.webp` ve `stand-1000.webp` dosyalarıdır; yenisi gelirse bunlar değiştirilebilir.
+Sayfanın üstünde fotoğraf yerine çizim pasta durur; üstündeki süs gerçek bir süs fotoğrafıdır (`assets/img/susler/sus-iyi-ki-dogdun.webp`). Başka bir süs koymak için `tools/svg/ciz.mjs` içindeki `HERO_TOPPER` satırını değiştirip betiği çalıştırın. Eski üst fotoğraf `assets/img/stand-600.webp` ve `stand-1000.webp` şu an sayfada kullanılmıyor.
 
 ## Renkler ve çizimler
 
 Renkler `css/style.css` başındaki `:root` içindedir: logodaki lacivert ve altın ana renk, krema, pasta pembesi ve konfeti renkleri kutlama vurgusu.
 
-Doğum günü çizimleri (`assets/svg/`: pasta, mum, balon, yıldız, krema damlası, şeker serpintisi) elle değil `tools/svg/ciz.mjs` ile üretilir. Bu betik `index.html` içindeki `<!-- ciz:sprite -->` arasını da yeniler (balon sembolü); orayı elle düzenlemeyin. Değişiklikten sonra proje kökünde:
+Doğum günü çizimleri (`assets/svg/`: pasta, mum, balon, yıldız, krema damlası, şeker serpintisi) elle değil `tools/svg/ciz.mjs` ile üretilir. Bu betik `index.html` içindeki `<!-- ciz:sprite -->` (balon sembolü), `<!-- ciz:pasta -->` (üstteki pasta) ve `<!-- ciz:acilis-mum -->` (açılış mumu) aralarını da yeniler; oraları elle düzenlemeyin. Değişiklikten sonra proje kökünde:
 
 ```bash
 node tools/svg/ciz.mjs
@@ -37,6 +37,8 @@ node tools/svg/ciz.mjs
 ## Animasyonlar
 
 `js/animations.js` kaydırma hikâyesini kurar (GSAP, ScrollTrigger, Lenis yumuşak kaydırma, konfeti). Kütüphaneler `assets/vendor/` içinde sabit sürümlerle durur; sürümler ve lisanslar o klasörün README dosyasında. Ziyaretçi "hareketi azalt" ayarını açtıysa, JavaScript kapalıysa ya da bir kütüphane yüklenmezse sayfa animasyonsuz, son hâliyle görünür.
+
+Açılış perdesi (logo, mum, perde kalkışı) her tarayıcıda yalnızca ilk ziyarette oynar; tarayıcının yerel deposuna `avrasya-acilis` kaydı düşer. Yeniden görmek için tarayıcı konsolunda `localStorage.removeItem('avrasya-acilis')` çalıştırıp sayfayı yenileyin.
 
 ## Logo
 
