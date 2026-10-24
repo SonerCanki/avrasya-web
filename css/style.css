@@ -31,7 +31,9 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; }
+/* The scrollbar's space stays reserved, so the page does not shift when Lenis stops scrolling behind the lightbox. */
+html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; scrollbar-gutter: stable; }
+html.lenis { scroll-behavior: auto; } /* Lenis does the smoothing itself (js/animations.js). */
 
 body {
   margin: 0;
@@ -154,10 +156,10 @@ h3 { font-size: 1.125rem; line-height: 1.3; font-weight: 700; margin: 0 0 0.35em
 /* ---------- Hero ---------- */
 
 .hero { position: relative; isolation: isolate; overflow: hidden; padding-block: clamp(2.5rem, 6vw, 5rem) var(--section); }
-/* Sprinkles scattered behind the photo, fading out before they reach the text. */
-.hero::before {
-  content: "";
-  position: absolute; inset: 0; z-index: -1;
+/* Sprinkles scattered behind the photo, fading out before they reach the text.
+   Taller than the hero so the parallax in js/animations.js never shows its edge. */
+.hero-serpinti {
+  position: absolute; inset: 0 0 -20%; z-index: -1;
   background: url("../assets/svg/serpinti.svg") 0 0 / 220px;
   opacity: .55;
   -webkit-mask-image: linear-gradient(to left, #000 25%, transparent 65%);
@@ -329,7 +331,7 @@ h3 { font-size: 1.125rem; line-height: 1.3; font-weight: 700; margin: 0 0 0.35em
   .hero-grid, .section-head, .stand-grid, .production-grid, .contact-grid { grid-template-columns: minmax(0, 1fr); }
   .production-media { max-width: 300px; }
   .hero-art { margin: 3.5rem auto 0; max-width: 380px; }
-  .hero::before {
+  .hero-serpinti {
     -webkit-mask-image: linear-gradient(to top, #000 40%, transparent 62%);
             mask-image: linear-gradient(to top, #000 40%, transparent 62%);
   }

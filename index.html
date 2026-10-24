@@ -22,7 +22,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Unbounded:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="assets/vendor/lenis.css">
   <link rel="stylesheet" href="css/style.css">
+  <script>
+    // Starting states for animations (html.anim) only when motion is allowed; js/animations.js
+    // confirms with window.animReady, otherwise the page falls back to its static look.
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('anim');
+      setTimeout(function () { if (!window.animReady) document.documentElement.classList.remove('anim'); }, 3000);
+    }
+  </script>
 
   <script type="application/ld+json">
   {
@@ -86,6 +95,7 @@
 
   <main id="icerik">
     <section class="hero">
+      <div class="hero-serpinti" aria-hidden="true"></div>
       <div class="wrap hero-grid">
         <div class="hero-copy">
           <h1>Pastaneniz için süslerle dolu teşhir standı</h1>
@@ -223,5 +233,12 @@
   </dialog>
 
   <script src="js/main.js" defer></script>
+  <script src="assets/vendor/gsap.min.js" defer></script>
+  <script src="assets/vendor/ScrollTrigger.min.js" defer></script>
+  <script src="assets/vendor/SplitText.min.js" defer></script>
+  <script src="assets/vendor/DrawSVGPlugin.min.js" defer></script>
+  <script src="assets/vendor/lenis.min.js" defer></script>
+  <script src="assets/vendor/confetti.browser.js" defer></script>
+  <script src="js/animations.js" defer></script>
 </body>
 </html>

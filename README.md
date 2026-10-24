@@ -34,6 +34,10 @@ Doğum günü çizimleri (`assets/svg/`: pasta, mum, balon, yıldız, krema daml
 node tools/svg/ciz.mjs
 ```
 
+## Animasyonlar
+
+`js/animations.js` kaydırma hikâyesini kurar (GSAP, ScrollTrigger, Lenis yumuşak kaydırma, konfeti). Kütüphaneler `assets/vendor/` içinde sabit sürümlerle durur; sürümler ve lisanslar o klasörün README dosyasında. Ziyaretçi "hareketi azalt" ayarını açtıysa, JavaScript kapalıysa ya da bir kütüphane yüklenmezse sayfa animasyonsuz, son hâliyle görünür.
+
 ## Logo
 
 Logo, lacivert-altın "Avrasya Toptan Pasta Süsleri" görselinden üretildi.
