@@ -1,15 +1,23 @@
 /* Avrasya Toptan Pasta Süsleri
-   Cool palette; the colour on the page comes from the stand photos.
+   Logo palette: navy and gold carry the page; cream, cake pink and confetti colours
+   are celebration accents. The stand photos sit on a cool studio white, so the paper stays cool.
    Signature device: the "acrylic edge" — a clear, slightly glinting border like the
-   transparent margin left around every cut-out topper. */
+   transparent margin left around every cut-out topper.
+   Illustrations (assets/svg, the #balon symbol in index.html) come from tools/svg/ciz.mjs and use the same colours. */
 
 :root {
   --paper: #F5F8FB;      /* pleksi beyazı */
-  --ink: #142033;        /* gece laciverti */
+  --navy: #131C3A;       /* logodaki lacivert */
+  --navy-2: #1E2A55;
+  --ink: var(--navy);
   --ink-soft: #4A5870;
-  --petrol: #0A6FA8;     /* petrol mavi */
-  --petrol-dark: #085A89;
-  --turquoise: #45E0D8;
+  --gold: #D9B15C;       /* logodaki altın */
+  --gold-light: #F3D98F;
+  --gold-deep: #9C7424;
+  --gold-text: #7A5A16;  /* açık zeminde okunur altın (4.5:1 üstü) */
+  --blush: #FBEAEF;
+  --pink: #F4A7BB;       /* pasta pembesi */
+  --turquoise: #45E0D8;  /* konfeti: pembe, turkuaz, altın (+ çizimlerde gök mavisi ve vişne) */
   --steel: #BCC4D8;      /* çelik gri */
   --mist: #E7EEF5;
 
@@ -49,7 +57,7 @@ h1 { font-size: clamp(2.05rem, 1.1rem + 3.6vw, 3.6rem); line-height: 1.08; }
 h2 { font-size: clamp(1.55rem, 1.05rem + 1.9vw, 2.45rem); line-height: 1.15; }
 h3 { font-size: 1.125rem; line-height: 1.3; font-weight: 700; margin: 0 0 0.35em; }
 
-:focus-visible { outline: 3px solid var(--petrol); outline-offset: 3px; }
+:focus-visible { outline: 3px solid var(--navy-2); outline-offset: 3px; }
 
 .wrap { width: min(100% - 2 * var(--gutter), var(--wrap)); margin-inline: auto; }
 
@@ -69,12 +77,19 @@ h3 { font-size: 1.125rem; line-height: 1.3; font-weight: 700; margin: 0 0 0.35em
   text-decoration: none; cursor: pointer;
   transition: background-color .15s, border-color .15s, color .15s;
 }
-.btn-primary, .btn-wa { background: var(--petrol); color: #fff; }
-.btn-primary:hover, .btn-wa:hover { background: var(--petrol-dark); }
+.btn-primary { background: var(--navy); color: #fff; box-shadow: inset 0 -2px 0 var(--gold); }
+.btn-primary:hover { background: var(--navy-2); }
+/* Gold like the logo lettering; navy text keeps it readable. */
+.btn-wa {
+  background: linear-gradient(180deg, var(--gold-light), var(--gold) 70%);
+  border-color: var(--gold-deep);
+  color: var(--navy);
+}
+.btn-wa:hover { background: var(--gold-light); }
 .btn-ghost { border-color: var(--ink); color: var(--ink); }
 .btn-ghost:hover { background: var(--ink); color: #fff; }
 .btn-light { background: var(--paper); color: var(--ink); }
-.btn-light:hover { background: #fff; }
+.btn-light:hover { background: var(--gold-light); }
 .btn-block { width: 100%; }
 
 /* ---------- Acrylic edge ---------- */
@@ -86,17 +101,23 @@ h3 { font-size: 1.125rem; line-height: 1.3; font-weight: 700; margin: 0 0 0.35em
   display: block;
   padding: var(--edge);
   border-radius: var(--r);
-  background: linear-gradient(140deg, rgba(255,255,255,.95), rgba(214,226,238,.6) 55%, rgba(255,255,255,.85));
+  /* Thick clear acrylic: a cool body, a bright top-left bevel and a darker bottom-right one. */
+  background: linear-gradient(140deg, rgba(255,255,255,.98), rgba(220,230,242,.55) 38%, rgba(203,216,232,.5) 62%, rgba(255,255,255,.9));
   border: 1px solid rgba(150,166,192,.55);
-  box-shadow: inset 0 1px 0 #fff, inset 0 -1px 0 rgba(150,166,192,.3);
+  box-shadow:
+    inset 1px 1px 0 #fff,
+    inset -1px -1px 0 rgba(120,138,170,.28),
+    0 1px 2px rgba(19,28,58,.06),
+    0 18px 40px -22px rgba(19,28,58,.35);
 }
-/* Glint that only lights the clear rim, never the content inside it. */
+/* Glint that only lights the clear rim, never the content inside it.
+   Its trailing edge splits into gold and pink, like light through a cut acrylic edge. */
 .acrylic::after {
   content: "";
   position: absolute; inset: -1px;
   padding: calc(var(--edge) + 1px);
   border-radius: inherit;
-  background: linear-gradient(115deg, transparent 28%, rgba(255,255,255,.95) 42%, transparent 56%) 0 0 / 250% 100%;
+  background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.95) 41%, rgba(243,217,143,.75) 46%, rgba(244,167,187,.5) 50%, transparent 58%) 0 0 / 250% 100%;
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
           mask-composite: exclude;
@@ -108,9 +129,10 @@ h3 { font-size: 1.125rem; line-height: 1.3; font-weight: 700; margin: 0 0 0.35em
 .acrylic-dark {
   background: linear-gradient(140deg, rgba(255,255,255,.14), rgba(255,255,255,.04) 55%, rgba(255,255,255,.1));
   border-color: rgba(255,255,255,.2);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.25);
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,.25), inset -1px -1px 0 rgba(217,177,92,.25);
 }
-.acrylic-dark::after { background-image: linear-gradient(115deg, transparent 28%, rgba(255,255,255,.45) 42%, transparent 56%); }
+.acrylic-dark::after { background-image: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.45) 41%, rgba(243,217,143,.4) 47%, transparent 56%); }
+.acrylic:hover::after { background-position: 100% 0; }
 
 /* ---------- Header ---------- */
 
@@ -125,13 +147,22 @@ h3 { font-size: 1.125rem; line-height: 1.3; font-weight: 700; margin: 0 0 0.35em
 .brand img { height: 64px; width: auto; }
 .site-nav { display: flex; gap: 1.75rem; margin-left: auto; }
 .site-nav a { text-decoration: none; font-weight: 500; padding: 0.4rem 0; }
-.site-nav a:hover { color: var(--petrol); }
+.site-nav a:hover { color: var(--gold-text); }
 .header-cta { padding: 0.65rem 1.1rem; }
 .menu-toggle { display: none; }
 
 /* ---------- Hero ---------- */
 
-.hero { padding-block: clamp(2.5rem, 6vw, 5rem) var(--section); }
+.hero { position: relative; isolation: isolate; overflow: hidden; padding-block: clamp(2.5rem, 6vw, 5rem) var(--section); }
+/* Sprinkles scattered behind the photo, fading out before they reach the text. */
+.hero::before {
+  content: "";
+  position: absolute; inset: 0; z-index: -1;
+  background: url("../assets/svg/serpinti.svg") 0 0 / 220px;
+  opacity: .55;
+  -webkit-mask-image: linear-gradient(to left, #000 25%, transparent 65%);
+          mask-image: linear-gradient(to left, #000 25%, transparent 65%);
+}
 .hero-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
@@ -140,7 +171,15 @@ h3 { font-size: 1.125rem; line-height: 1.3; font-weight: 700; margin: 0 0 0.35em
 }
 .lede { font-size: 1.1875rem; color: var(--ink-soft); max-width: 46ch; margin-bottom: 2rem; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-.hero-photo { margin: 0 0 0 auto; width: 100%; max-width: 440px; }
+.hero-art { position: relative; isolation: isolate; width: 100%; max-width: 440px; margin-left: auto; }
+.hero-photo { margin: 0; }
+
+/* Balloons tied behind the photo; their colour comes from --balon-renk (the #balon symbol in index.html). */
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.hero-balloons .balon { position: absolute; z-index: -1; width: clamp(56px, 8vw, 92px); height: auto; aspect-ratio: 120 / 232; }
+.balon-1 { --balon-renk: var(--pink); left: -13%; top: -9%; rotate: -12deg; }
+.balon-2 { --balon-renk: var(--gold); left: 2%; top: -14%; rotate: -3deg; scale: .85; }
+.balon-3 { --balon-renk: var(--turquoise); right: -9%; top: -6%; rotate: 10deg; scale: .9; }
 
 /* ---------- Sections ---------- */
 
@@ -163,9 +202,14 @@ h3 { font-size: 1.125rem; line-height: 1.3; font-weight: 700; margin: 0 0 0.35em
   display: block; width: 100%; cursor: zoom-in;
   border-radius: 16px;
 }
-.gallery button:focus-visible { outline: 3px solid var(--petrol); outline-offset: 4px; }
+.gallery button:focus-visible { outline: 3px solid var(--navy-2); outline-offset: 4px; }
 .gallery .acrylic { --edge: 7px; --r: 16px; }
 .gallery img { aspect-ratio: 1; object-fit: cover; }
+.gallery-title::before {
+  content: "";
+  display: inline-block; width: 1.1em; height: 1.1em; margin-right: 0.45em; vertical-align: -0.15em;
+  background: url("../assets/svg/yildiz.svg") center / contain no-repeat;
+}
 .gallery-title { font-family: var(--font-display); font-weight: 600; font-size: 1.25rem; letter-spacing: -0.01em; margin: clamp(3.5rem, 7vw, 5rem) 0 1.25rem; }
 .gallery button:hover .acrylic::after,
 .gallery button:focus-visible .acrylic::after { background-position: 100% 0; }
@@ -177,9 +221,9 @@ h3 { font-size: 1.125rem; line-height: 1.3; font-weight: 700; margin: 0 0 0.35em
 .range-list dd { margin: 0; color: var(--ink-soft); max-width: 52ch; }
 
 /* Stand (dark) */
-.section-dark { background: var(--ink); color: #E8EEF6; }
+.section-dark { background: var(--navy); color: #E8EEF6; }
 .section-dark p { color: #B4C0D2; }
-.section-dark :focus-visible { outline-color: var(--turquoise); }
+.section-dark :focus-visible { outline-color: var(--gold); }
 .stand-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
@@ -209,15 +253,15 @@ h3 { font-size: 1.125rem; line-height: 1.3; font-weight: 700; margin: 0 0 0.35em
   content: counter(step);
   grid-row: span 2;
   font: 600 1.5rem/1.1 var(--font-display);
-  color: var(--petrol);
+  color: var(--gold-text);
 }
 .steps p { margin: 0; color: var(--ink-soft); }
 .steps-dark li { border-top-color: rgba(255,255,255,.18); }
-.steps-dark li::before { color: var(--turquoise); }
+.steps-dark li::before { color: var(--gold); }
 .section-dark .steps-dark p { color: #B4C0D2; }
 
 /* Contact */
-.section-contact { background: var(--mist); }
+.section-contact { background: var(--blush); }
 .contact-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2rem, 6vw, 5rem); align-items: start; }
 .contact-copy .btn { margin-top: 0.5rem; }
 .contact-card { font-style: normal; --edge: 0px; --r: 24px; padding: clamp(1.25rem, 3vw, 2rem); background: rgba(255,255,255,.75); }
@@ -227,7 +271,7 @@ h3 { font-size: 1.125rem; line-height: 1.3; font-weight: 700; margin: 0 0 0.35em
 .contact-card dt { font-size: 0.875rem; color: var(--ink-soft); margin-bottom: 0.15rem; }
 .contact-card dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
 .contact-card a { text-decoration: none; }
-.contact-card a:hover { color: var(--petrol); text-decoration: underline; }
+.contact-card a:hover { color: var(--gold-text); text-decoration: underline; }
 
 /* Footer */
 .site-footer { border-top: 1px solid var(--steel); padding-block: 2.5rem; }
@@ -236,7 +280,27 @@ h3 { font-size: 1.125rem; line-height: 1.3; font-weight: 700; margin: 0 0 0.35em
 .footer-inner p { margin: 0; color: var(--ink-soft); font-size: 0.9375rem; }
 .footer-inner nav { margin-left: auto; display: flex; flex-wrap: wrap; gap: 1.5rem; }
 .footer-inner nav a { text-decoration: none; font-size: 0.9375rem; }
-.footer-inner nav a:hover { color: var(--petrol); }
+.footer-inner nav a:hover { color: var(--gold-text); }
+
+/* Cream-drip divider: the colour of the section above runs down into the next one.
+   --from is the colour above, --to the colour below, --rim an optional layer showing just under the drips. */
+.drip {
+  --h: clamp(34px, 5vw, 64px);
+  position: relative;
+  height: var(--h);
+  background: var(--to);
+}
+.drip::before, .drip::after {
+  content: "";
+  position: absolute; inset: 0;
+  -webkit-mask: url("../assets/svg/krema.svg") 0 0 / calc(var(--h) * 5.33) 100% repeat-x;
+          mask: url("../assets/svg/krema.svg") 0 0 / calc(var(--h) * 5.33) 100% repeat-x;
+}
+.drip::before { background: var(--rim, transparent); transform: translateY(5px); }
+.drip::after { background: var(--from); }
+.drip-icing { --from: var(--paper); --to: var(--navy); }
+.drip-navy { --from: var(--navy); --rim: var(--gold); --to: var(--paper); }
+.drip-blush { --from: #fff; --rim: var(--pink); --to: var(--blush); }
 
 /* Floating WhatsApp (small screens only) */
 .wa-float {
@@ -245,12 +309,12 @@ h3 { font-size: 1.125rem; line-height: 1.3; font-weight: 700; margin: 0 0 0.35em
   width: 3.5rem; height: 3.5rem; border-radius: 50%;
   place-items: center;
   background: #1FAF54; color: #fff;
-  box-shadow: 0 6px 18px rgba(20,32,51,.25);
+  box-shadow: 0 6px 18px rgba(19,28,58,.25);
 }
 
 /* Lightbox */
 .lightbox { border: 0; padding: 0; background: transparent; max-width: min(92vw, 1200px); }
-.lightbox::backdrop { background: rgba(20,32,51,.85); }
+.lightbox::backdrop { background: rgba(19,28,58,.88); }
 .lightbox img { max-height: 84vh; width: auto; border-radius: 14px; }
 .lightbox form { display: flex; justify-content: flex-end; margin-bottom: 0.6rem; }
 .lightbox-close {
@@ -264,7 +328,11 @@ h3 { font-size: 1.125rem; line-height: 1.3; font-weight: 700; margin: 0 0 0.35em
 @media (max-width: 860px) {
   .hero-grid, .section-head, .stand-grid, .production-grid, .contact-grid { grid-template-columns: minmax(0, 1fr); }
   .production-media { max-width: 300px; }
-  .hero-photo { margin: 0; max-width: 380px; }
+  .hero-art { margin: 3.5rem auto 0; max-width: 380px; }
+  .hero::before {
+    -webkit-mask-image: linear-gradient(to top, #000 40%, transparent 62%);
+            mask-image: linear-gradient(to top, #000 40%, transparent 62%);
+  }
   .header-cta { display: none; }
   .menu-toggle {
     display: inline-flex; margin-left: auto;

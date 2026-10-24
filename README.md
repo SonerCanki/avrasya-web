@@ -24,6 +24,16 @@ Yeni stand eklemek için galerideki bir `<li>` satırını kopyalayıp dosya adl
 
 Sayfanın üstündeki büyük stand fotoğrafı `assets/img/stand-600.webp` ve `stand-1000.webp` dosyalarıdır; yenisi gelirse bunlar değiştirilebilir.
 
+## Renkler ve çizimler
+
+Renkler `css/style.css` başındaki `:root` içindedir: logodaki lacivert ve altın ana renk, krema, pasta pembesi ve konfeti renkleri kutlama vurgusu.
+
+Doğum günü çizimleri (`assets/svg/`: pasta, mum, balon, yıldız, krema damlası, şeker serpintisi) elle değil `tools/svg/ciz.mjs` ile üretilir. Bu betik `index.html` içindeki `<!-- ciz:sprite -->` arasını da yeniler (balon sembolü); orayı elle düzenlemeyin. Değişiklikten sonra proje kökünde:
+
+```bash
+node tools/svg/ciz.mjs
+```
+
 ## Logo
 
 Logo, lacivert-altın "Avrasya Toptan Pasta Süsleri" görselinden üretildi.
