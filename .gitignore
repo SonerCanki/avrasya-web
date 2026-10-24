@@ -1,0 +1,7 @@
+# Ham şirket dosyaları (büyük zip'ler, WhatsApp arşivleri) depoya girmez
+sirket-bilgileri/
+
+# Görsel işleme araçları
+node_modules/
+tools/**/cache/
+tools/**/work/
