@@ -102,8 +102,9 @@
   // ---------- Scenes ----------
   // A scene is a function that builds its tweens and ScrollTriggers from { mobile, lenis }.
   // gsap.matchMedia reverts all of them when reduced motion is switched on or the layout
-  // crosses the mobile breakpoint, then builds them again.
-  // Still to come, in page order: stand, koleksiyon, kule, uretim, final.
+  // crosses the mobile breakpoint, then builds them again. A scene that adds elements or
+  // listeners returns a function that removes them.
+  // Still to come, in page order: kule, uretim, final.
   const scenes = [];
   const scene = (name, build) => scenes.push({ name, build });
 
@@ -144,6 +145,134 @@
     });
   });
 
+  // Scene 2: the stand fills up tile by tile, slides onto the counter beside a cake, then one
+  // topper lifts off the stand and flies onto the cake. The stage is sticky (CSS) and the
+  // timeline follows the steps scrolling past it; each step lights up as it reaches the middle.
+  scene('stand', () => {
+    const stage = document.querySelector('.stand-sahne');
+    const stand = stage.querySelector('.sahne-stand');
+    const topper = stage.querySelector('.sahne-sus');
+    const src = stand.querySelector('img').getAttribute('src');
+
+    // Tile edges follow the stand's shelves and columns (pixels of the 1040×976 photo).
+    const W = 1040, H = 976;
+    const rows = [0, 212, 400, 590, H], cols = [0, 220, 420, 625, 825, W];
+    const ghost = document.createElement('div');
+    ghost.className = 'sahne-hayalet';
+    ghost.style.backgroundImage = `url("${src}")`;
+    const tiles = [];
+    for (let r = 0; r < rows.length - 1; r++) {
+      for (let k = 0; k < cols.length - 1; k++) {
+        const x = cols[k], y = rows[r], w = cols[k + 1] - x, h = rows[r + 1] - y;
+        const tile = document.createElement('div');
+        tile.className = 'sahne-karo';
+        Object.assign(tile.style, {
+          left: `${(x / W) * 100}%`, top: `${(y / H) * 100}%`, width: `${(w / W) * 100}%`, height: `${(h / H) * 100}%`,
+          backgroundImage: `url("${src}")`,
+          backgroundSize: `${(W / w) * 100}% ${(H / h) * 100}%`,
+          backgroundPosition: `${x ? (x / (W - w)) * 100 : 0}% ${y ? (y / (H - h)) * 100 : 0}%`,
+        });
+        tiles.push(tile);
+      }
+    }
+    stand.prepend(ghost, ...tiles);
+
+    // Where the topper starts: on the stand's second shelf, in the middle (layout offsets, unaffected by transforms).
+    const fromStand = axis => (axis === 'x'
+      ? stand.offsetLeft + stand.offsetWidth * 0.5 - (topper.offsetLeft + topper.offsetWidth / 2)
+      : stand.offsetTop + stand.offsetHeight * 0.3 - (topper.offsetTop + topper.offsetHeight / 2));
+
+    // Set here rather than as fromTo: staggered tweens that start later would not show their start state.
+    gsap.set(tiles, { autoAlpha: 0, scale: 0.4, y: -14 });
+    const tl = gsap.timeline({
+      defaults: { ease: 'none' },
+      scrollTrigger: { trigger: '.stand-copy .steps', start: 'top 65%', end: 'bottom 65%', scrub: 0.6, invalidateOnRefresh: true },
+    });
+    // 1. Comes full: the toppers take their places shelf by shelf; the photo itself covers the tile seams at the end.
+    tl.fromTo(stand.querySelector('img'), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.1 }, 0.9)
+      .to(tiles, { autoAlpha: 1, scale: 1, y: 0, duration: 0.25, ease: 'back.out(2)', stagger: 0.03 }, 0.1)
+      // 2. Goes beside the counter: the stand moves from the middle onto the counter as it slides in with the cake.
+      .fromTo(stand, { xPercent: 27, yPercent: -6, scale: 1.08 }, { xPercent: 0, yPercent: 0, scale: 1, duration: 0.8, ease: 'power2.inOut' }, 1.1)
+      .fromTo('.sahne-tezgah', { xPercent: 100, autoAlpha: 0 }, { xPercent: 0, autoAlpha: 1, duration: 0.7, ease: 'power2.out' }, 1.1)
+      .fromTo('.sahne-pasta', { xPercent: 120, autoAlpha: 0 }, { xPercent: 0, autoAlpha: 1, duration: 0.7, ease: 'power2.out' }, 1.25)
+      // 3. The customer chooses: a topper lifts off the stand, grows and arcs onto the cake.
+      .fromTo(topper, { autoAlpha: 0, scale: 0.35 }, { autoAlpha: 1, scale: 1.3, duration: 0.25, ease: 'back.out(2)' }, 2.1)
+      .fromTo(topper, { x: () => fromStand('x') }, { x: 0, duration: 0.6, ease: 'power1.inOut' }, 2.35)
+      .fromTo(topper, { y: () => fromStand('y') }, { y: () => Math.min(fromStand('y'), 0) - stage.offsetHeight * 0.12, duration: 0.3, ease: 'power2.out' }, 2.35)
+      .to(topper, { y: 0, duration: 0.3, ease: 'power2.in' }, 2.65)
+      .to(topper, { scale: 1, duration: 0.3, ease: 'power1.in' }, 2.65)
+      .to({}, { duration: 0.1 });
+
+    gsap.utils.toArray('.stand-copy .steps li').forEach(li => {
+      ScrollTrigger.create({ trigger: li, start: 'top 65%', end: 'bottom 65%', toggleClass: 'etkin' });
+    });
+
+    return () => { ghost.remove(); tiles.forEach(t => t.remove()); };
+  });
+
+  // Scene 3: on wide screens the strip of stands slides sideways while the block is pinned;
+  // on phones it is a swipe carousel (CSS). Cards tilt towards the pointer.
+  scene('koleksiyon', ({ mobile, lenis }) => {
+    const block = document.querySelector('.koleksiyon');
+    const track = document.getElementById('gallery');
+    const win = block.querySelector('.koleksiyon-pencere');
+    const header = document.querySelector('.site-header');
+    let strip = null;
+
+    if (!mobile) {
+      const distance = () => Math.max(0, track.scrollWidth - win.clientWidth);
+      strip = gsap.to(track, {
+        x: () => -distance(),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: block,
+          pin: true,
+          // Centred in the space under the header, or right under it if the block is taller than that.
+          start: () => {
+            const room = window.innerHeight - header.offsetHeight;
+            return `top ${header.offsetHeight + Math.max(0, (room - block.offsetHeight) / 2)}`;
+          },
+          end: () => `+=${Math.max(1, distance())}`,
+          scrub: 0.6,
+          invalidateOnRefresh: true,
+        },
+      });
+    }
+
+    // After filtering: re-measure, glide back to the start of the strip if it is pinned, and fade the cards in.
+    const onFilter = () => {
+      ScrollTrigger.refresh();
+      const st = strip?.scrollTrigger;
+      if (st && window.scrollY > st.start) lenis.scrollTo(st.start, { duration: 0.6 });
+      gsap.fromTo(track.querySelectorAll('li:not([hidden])'), { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.35, stagger: 0.04, ease: 'power2.out', overwrite: true });
+    };
+    document.addEventListener('galeri:suzuldu', onFilter);
+
+    // Tilt, for a mouse or trackpad only.
+    const cards = gsap.utils.toArray('#gallery .acrylic');
+    const tilters = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+      ? cards.map(card => {
+        gsap.set(card, { transformPerspective: 800 });
+        const rx = gsap.quickTo(card, 'rotationX', { duration: 0.4, ease: 'power2.out' });
+        const ry = gsap.quickTo(card, 'rotationY', { duration: 0.4, ease: 'power2.out' });
+        const move = e => {
+          const r = card.getBoundingClientRect();
+          ry(((e.clientX - r.left) / r.width - 0.5) * 14);
+          rx(-((e.clientY - r.top) / r.height - 0.5) * 14);
+        };
+        const leave = () => { rx(0); ry(0); };
+        card.addEventListener('pointermove', move);
+        card.addEventListener('pointerleave', leave);
+        return () => { card.removeEventListener('pointermove', move); card.removeEventListener('pointerleave', leave); };
+      })
+      : [];
+
+    return () => {
+      document.removeEventListener('galeri:suzuldu', onFilter);
+      tilters.forEach(fn => fn());
+    };
+  });
+
   // ---------- Smooth scroll and scene setup ----------
   let lenis = null;
   const startedWithMotion = root.classList.contains('anim');
@@ -163,9 +292,10 @@
       gsap.ticker.add(tick);
       gsap.ticker.lagSmoothing(0);
 
-      scenes.forEach(({ build }) => build({ mobile: ctx.conditions.mobile, lenis }));
+      const cleanups = scenes.map(({ build }) => build({ mobile: ctx.conditions.mobile, lenis })).filter(Boolean);
 
       return () => {
+        cleanups.forEach(fn => fn());
         gsap.ticker.remove(tick);
         gsap.ticker.lagSmoothing(500, 33);
         lenis.destroy();

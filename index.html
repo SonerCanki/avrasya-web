@@ -241,10 +241,17 @@
 
     <section class="section section-dark" id="stand" aria-labelledby="stand-title">
       <div class="wrap stand-grid">
-        <div class="stand-media acrylic acrylic-dark">
-          <video class="auto-video" muted loop playsinline preload="none" poster="assets/video/stand-tanitim-poster.jpg" width="848" height="480">
-            <source src="assets/video/stand-tanitim.mp4" type="video/mp4">
-          </video>
+        <!-- Scene 2: the stand fills up, goes onto the counter, a topper flies onto the cake.
+             Without animation this is its final picture. -->
+        <div class="stand-sahne">
+          <div class="sahne-tezgah" aria-hidden="true"></div>
+          <div class="sahne-stand">
+            <img src="assets/img/standlar/stand-cocuk-karakter-kesik.webp" alt="Karakterli çocuk süsleriyle dolu stand, pastane tezgâhında pastanın yanında duruyor" width="1040" height="976" loading="lazy">
+          </div>
+          <img class="sahne-pasta" src="assets/svg/pasta.svg" alt="" width="400" height="460" loading="lazy">
+          <div class="sahne-sus" aria-hidden="true">
+            <img src="assets/img/susler/sus-canim-kizim.webp" alt="" width="421" height="463" loading="lazy">
+          </div>
         </div>
         <div class="stand-copy">
           <h2 id="stand-title">Stand nasıl çalışır</h2>
@@ -256,6 +263,15 @@
           <a class="btn btn-light" data-wa-text="Merhaba, süs standı hakkında bilgi almak istiyorum." href="https://wa.me/905306656373" target="_blank" rel="noopener">Stand için bilgi alın</a>
         </div>
       </div>
+
+      <figure class="wrap stand-video">
+        <div class="stand-media acrylic acrylic-dark">
+          <video class="auto-video" muted loop playsinline preload="none" poster="assets/video/stand-tanitim-poster.jpg" width="848" height="480">
+            <source src="assets/video/stand-tanitim.mp4" type="video/mp4">
+          </video>
+        </div>
+        <figcaption>Standın tanıtım videosu</figcaption>
+      </figure>
     </section>
 
     <div class="drip drip-navy" aria-hidden="true"></div>
@@ -274,14 +290,42 @@
           <div><dt>Karakterli çocuk süsleri</dt><dd>Çocuk doğum günleri için renkli baskılı, karakterli süsler.</dd></div>
         </dl>
 
-        <!-- Yeni stand fotoğrafı eklemek için bir satırı kopyalayıp dosya adlarını ve alt yazısını değiştirin. -->
-        <h3 class="gallery-title">Hazır standlarımızdan örnekler</h3>
+      </div>
+
+      <!-- Scene 3: the stand collection. A sideways strip on wide screens, a swipe carousel on phones.
+           To add a stand: copy an <li>, change the file names, alt text, name and data-kategori
+           (any of: cocuk rakam yazi esprili kadin erkek futbol ayna, space-separated). -->
+      <div class="koleksiyon">
+        <div class="wrap koleksiyon-ust">
+          <h3 class="gallery-title">Hazır standlarımızdan örnekler</h3>
+          <div class="filtre" role="group" aria-label="Standları konuya göre süzün" hidden>
+            <button type="button" data-filtre="hepsi" aria-pressed="true">Tümü</button>
+            <button type="button" data-filtre="cocuk" aria-pressed="false">Çocuk</button>
+            <button type="button" data-filtre="rakam" aria-pressed="false">Rakam</button>
+            <button type="button" data-filtre="yazi" aria-pressed="false">Yazı</button>
+            <button type="button" data-filtre="esprili" aria-pressed="false">Esprili</button>
+            <button type="button" data-filtre="kadin" aria-pressed="false">Kadın</button>
+            <button type="button" data-filtre="erkek" aria-pressed="false">Erkek</button>
+            <button type="button" data-filtre="futbol" aria-pressed="false">Futbol</button>
+            <button type="button" data-filtre="ayna" aria-pressed="false">Ayna</button>
+          </div>
+          <p class="filtre-sayi" aria-live="polite" hidden>11 stand</p>
+        </div>
+        <div class="koleksiyon-pencere">
         <ul class="gallery" id="gallery">
-          <li><button type="button" data-full="assets/img/stand-kral-1040.webp"><span class="acrylic"><img src="assets/img/stand-kral-640.webp" alt="Beyaz standda “Kral”, “Patron”, “Baba”, “Reis” gibi altın çerçeveli lacivert yazı süsleri" width="640" height="640" loading="lazy"></span></button></li>
-          <li><button type="button" data-full="assets/img/stand-pembe-1040.webp"><span class="acrylic"><img src="assets/img/stand-pembe-640.webp" alt="Beyaz standda “Kraliçe”, “Diva”, “Sultanım” gibi pembe baskılı kadın süsleri" width="640" height="640" loading="lazy"></span></button></li>
-          <li><button type="button" data-full="assets/img/stand-yazili-1040.webp"><span class="acrylic"><img src="assets/img/stand-yazili-640.webp" alt="Beyaz standda “Kocam da Kocam”, “Baba Bank”, “Prenses” gibi renkli baskılı esprili yazı süsleri" width="640" height="640" loading="lazy"></span></button></li>
-          <li><button type="button" data-full="assets/img/stand-ayna-1040.webp"><span class="acrylic"><img src="assets/img/stand-ayna-640.webp" alt="Siyah standda renkli ayna pleksi rakamlar ve “Canım Annem”, “Mutlu Yıllar” gibi ayna yazılar" width="640" height="640" loading="lazy"></span></button></li>
+          <li data-kategori="cocuk"><button type="button" data-full="assets/img/standlar/stand-cocuk-karakter-1040.webp"><span class="acrylic"><img src="assets/img/standlar/stand-cocuk-karakter-640.webp" alt="Beyaz standda prenses, deniz kızı, aslan, korsan kaptan gibi karakterli çocuk doğum günü süsleri" width="640" height="640" loading="lazy"></span><span class="kart-ad">Çocuk karakterleri</span></button></li>
+          <li data-kategori="rakam yazi"><button type="button" data-full="assets/img/standlar/stand-rakam-balon-1040.webp"><span class="acrylic"><img src="assets/img/standlar/stand-rakam-balon-640.webp" alt="Beyaz standda renkli çerçeveli rakamlar ve “Canım Annem”, “Kral”, “Prenses” gibi yazılı süsler" width="640" height="640" loading="lazy"></span><span class="kart-ad">Rakamlar ve isimler</span></button></li>
+          <li data-kategori="esprili yazi"><button type="button" data-full="assets/img/standlar/stand-esprili-yazi-1040.webp"><span class="acrylic"><img src="assets/img/standlar/stand-esprili-yazi-640.webp" alt="Beyaz standda “Kral Geri Döndü”, “Level Atladım”, “Ana Karakter” gibi esprili yazı süsleri" width="640" height="640" loading="lazy"></span><span class="kart-ad">Esprili yazılar</span></button></li>
+          <li data-kategori="esprili yazi"><button type="button" data-full="assets/img/standlar/stand-esprili-balon-1040.webp"><span class="acrylic"><img src="assets/img/standlar/stand-esprili-balon-640.webp" alt="Beyaz standda konuşma balonu biçiminde “Kocam da Kocam”, “Baba Bank”, “Prenses” gibi esprili süsler" width="640" height="640" loading="lazy"></span><span class="kart-ad">Konuşma balonları</span></button></li>
+          <li data-kategori="kadin yazi"><button type="button" data-full="assets/img/standlar/stand-kadin-1040.webp"><span class="acrylic"><img src="assets/img/standlar/stand-kadin-640.webp" alt="Beyaz standda “Diva”, “Sultanım”, “Kraliçe”, “Ortamın Kraliçesi” gibi pembe baskılı kadın süsleri" width="640" height="640" loading="lazy"></span><span class="kart-ad">Kadınlara</span></button></li>
+          <li data-kategori="erkek yazi"><button type="button" data-full="assets/img/standlar/stand-erkek-1040.webp"><span class="acrylic"><img src="assets/img/standlar/stand-erkek-640.webp" alt="Beyaz standda “Kral”, “Reis”, “Patron”, “Efsane” gibi altın çerçeveli lacivert yazı süsleri" width="640" height="640" loading="lazy"></span><span class="kart-ad">Erkeklere</span></button></li>
+          <li data-kategori="futbol"><button type="button" data-full="assets/img/standlar/stand-futbol-1040.webp"><span class="acrylic"><img src="assets/img/standlar/stand-futbol-640.webp" alt="Beyaz standda takım renklerinde “Happy Birthday”, “İyi ki Doğdun” gibi futbol temalı süsler" width="640" height="640" loading="lazy"></span><span class="kart-ad">Futbol</span></button></li>
+          <li data-kategori="ayna rakam yazi"><button type="button" data-full="assets/img/standlar/stand-ayna-renkli-1040.webp"><span class="acrylic"><img src="assets/img/standlar/stand-ayna-renkli-640.webp" alt="Standda renkli ayna pleksi rakamlar ve “Canım Annem”, “Mutlu Yıllar”, “Happy Birthday” gibi ayna yazılar" width="640" height="640" loading="lazy"></span><span class="kart-ad">Renkli ayna yazılar</span></button></li>
+          <li data-kategori="ayna rakam yazi"><button type="button" data-full="assets/img/standlar/stand-renkli-ayna-yazi-1040.webp"><span class="acrylic"><img src="assets/img/standlar/stand-renkli-ayna-yazi-640.webp" alt="Beyaz standda renkli ayna pleksi rakamlar, “Happy Birthday” ve “İyi ki Doğdun” yazıları" width="640" height="640" loading="lazy"></span><span class="kart-ad">Ayna “Happy Birthday”</span></button></li>
+          <li data-kategori="ayna rakam yazi"><button type="button" data-full="assets/img/standlar/stand-altin-gumus-1040.webp"><span class="acrylic"><img src="assets/img/standlar/stand-altin-gumus-640.webp" alt="Beyaz standda altın ve gümüş ayna pleksi rakamlar ve “Mutlu Yıllar”, “İyi ki Doğdun” gibi yazılar" width="640" height="640" loading="lazy"></span><span class="kart-ad">Altın ve gümüş ayna</span></button></li>
+          <li data-kategori="ayna rakam yazi"><button type="button" data-full="assets/img/standlar/stand-ahsap-ayna-1040.webp"><span class="acrylic"><img src="assets/img/standlar/stand-ahsap-ayna-640.webp" alt="Ahşap standda altın ve gümüş ayna pleksi rakamlar ve “Canım Babam”, “Mutlu Yıllar” gibi yazılar" width="640" height="640" loading="lazy"></span><span class="kart-ad">Ahşap standda ayna</span></button></li>
         </ul>
+        </div>
       </div>
     </section>
 

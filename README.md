@@ -16,11 +16,15 @@ npx --yes http-server@14.1.1 . -p 5500 -c-1
 
 ## Stand fotoğrafları
 
-"Hazır standlarımızdan örnekler" galerisinde dört stand var: `assets/img/stand-kral`, `stand-pembe`, `stand-yazili`, `stand-ayna` (her biri `-640.webp` galeri, `-1040.webp` büyütülmüş görünüm). Bu fotoğraflar WhatsApp videolarından kare alınarak üretildi: stand arka plandan ayrıldı ve sitenin renklerinde sade bir stüdyo zeminine yerleştirildi. Kaynak videolar 480 px genişliğinde olduğu için büyütüldüğünde hafif yumuşak görünürler; telefonla çekilmiş net fotoğraflar gelirse aynı dosya adlarıyla değiştirilebilir.
+Stand ve süs görselleri (`assets/img/standlar/`, `assets/img/susler/`) telefon fotoğraflarından `tools/stand-gorselleri/` hattıyla üretilir; nasıl çalıştığı o klasörün README dosyasında.
 
-Yeni stand görselleri (`assets/img/standlar/`, `assets/img/susler/`) telefon fotoğraflarından `tools/stand-gorselleri/` hattıyla üretilir; nasıl çalıştığı o klasörün README dosyasında. Bu görseller animasyonlu sürümde galeriye ve sahnelere bağlanacak (bkz. `PLAN.md`).
+"Hazır standlarımızdan örnekler" koleksiyonunda 11 stand var (`#gallery` listesi). Her kart `standlar/stand-…-640.webp` gösterir, tıklanınca `-1040.webp` büyük açılır. Geniş ekranda şerit kaydırdıkça yana kayar, telefonda parmakla kaydırılır.
 
-Yeni stand eklemek için galerideki bir `<li>` satırını kopyalayıp dosya adlarını ve `alt` metnini değiştirin. Fotoğraflar kare olarak gösterilir.
+Yeni stand eklemek için listedeki bir `<li>` satırını kopyalayın; dosya adlarını, `alt` metnini ve kart adını değiştirin. `data-kategori` standın hangi süzgeçlerde görüneceğini belirler; birden fazla konu boşlukla yazılır (`data-kategori="ayna rakam yazi"`). Kullanılabilen konular süzgeç düğmelerindeki `data-filtre` değerleridir: `cocuk`, `rakam`, `yazi`, `esprili`, `kadin`, `erkek`, `futbol`, `ayna`. Yeni bir konu için aynı biçimde bir düğme ekleyin.
+
+"Stand nasıl çalışır" sahnesi `standlar/stand-cocuk-karakter-kesik.webp` ile `susler/sus-canim-kizim.webp` görsellerini kullanır. Raflara tek tek dolan süsler bu stand fotoğrafının raf ve sütun çizgilerine göre kesilir (`js/animations.js` içindeki `rows` ve `cols`); stand fotoğrafı değişirse bu sayıları da yeni fotoğrafa göre güncelleyin.
+
+Eski galeri fotoğrafları (`assets/img/stand-kral`, `stand-pembe`, `stand-yazili`, `stand-ayna`) artık sayfada kullanılmıyor.
 
 Sayfanın üstünde fotoğraf yerine çizim pasta durur; üstündeki süs gerçek bir süs fotoğrafıdır (`assets/img/susler/sus-iyi-ki-dogdun.webp`). Başka bir süs koymak için `tools/svg/ciz.mjs` içindeki `HERO_TOPPER` satırını değiştirip betiği çalıştırın. Eski üst fotoğraf `assets/img/stand-600.webp` ve `stand-1000.webp` şu an sayfada kullanılmıyor.
 
