@@ -365,6 +365,61 @@ h3 { font-size: 1.125rem; line-height: 1.3; font-weight: 700; margin: 0 0 0.35em
 .steps-dark li::before { color: var(--gold); }
 .section-dark .steps-dark p { color: #B4C0D2; }
 
+/* Scene 5: an icon per production step, joined by a gold line. Each line piece runs from its
+   step's icon down to the next step's icon; js/animations.js draws them in turn. */
+.adimlar li { position: relative; }
+.adimlar li::before { content: none; }
+.adim-ikon {
+  grid-row: span 2; position: relative; z-index: 1;
+  display: grid; place-items: center; width: 2.5rem; height: 2.5rem;
+  border: 2px solid var(--gold); border-radius: 50%; background: #fff; color: var(--gold-text);
+}
+.adim-ikon svg { width: 1.35rem; height: 1.35rem; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.adim-cizgi { position: absolute; left: calc(1.25rem - 2px); top: 2.35rem; width: 4px; height: 100%; fill: none; stroke: var(--gold); stroke-width: 3; }
+
+/* Scene 4: the tower stand on the floor, next to its four floors. */
+#kule { overflow-x: clip; } /* the floor shadow is wider than the tower */
+.kule-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(2rem, 6vw, 5.5rem); align-items: center; }
+.kule-katlar { list-style: none; margin: 1.75rem 0 2rem; padding: 0; }
+.kule-katlar li { padding: 0.7rem 0 0.7rem 1.1rem; border-left: 3px solid rgba(217,177,92,.4); }
+.kule-katlar h3 { margin: 0 0 0.15rem; color: #fff; }
+.kule-katlar p { margin: 0; }
+.kule-sahne { justify-self: center; }
+.kule-foto { position: relative; isolation: isolate; width: clamp(210px, calc(min(80vh, 680px) * 0.453), 310px); }
+.kule-foto img { position: relative; display: block; width: 100%; height: auto; filter: drop-shadow(0 16px 20px rgba(0,0,0,.4)); }
+.kule-foto::after {
+  content: ""; position: absolute; left: -12%; right: -12%; bottom: -16px; height: 32px; z-index: -1;
+  background: radial-gradient(closest-side, rgba(0,0,0,.5), transparent);
+}
+
+/* Scene 6: the cake whose candles the visitor blows out (js/main.js), above the contact text. */
+.final { margin-bottom: 1.25rem; }
+.final-dugme { display: block; width: clamp(180px, 22vw, 240px); padding: 0; border: 0; border-radius: 18px; background: none; cursor: pointer; }
+.final-dugme:disabled { cursor: default; }
+.final-dugme:focus-visible { outline: 3px solid var(--navy-2); outline-offset: 6px; }
+.final-pasta { width: 100%; height: auto; }
+.final-ipucu { margin: 0.35rem 0 0; font-size: 0.9375rem; color: var(--ink-soft); }
+.final-baslik { margin: 0 0 0.4rem; font: 600 1rem/1.3 var(--font-display); color: var(--gold-text); }
+.final-pasta .alev, .final-pasta .duman { transform-box: fill-box; transform-origin: 50% 100%; }
+.final-pasta .duman { opacity: 0; }
+.final-pasta .mum.sondu .alev { opacity: 0; transform: scale(0.3); }
+/* After the candles are out the WhatsApp button glows. */
+.btn-wa.parla { position: relative; }
+.btn-wa.parla::after {
+  content: ""; position: absolute; inset: -6px; border-radius: 18px; pointer-events: none;
+  box-shadow: 0 0 0 3px var(--gold), 0 0 28px 8px rgba(243,217,143,.9);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .final-pasta .alev { transition: opacity .3s, transform .3s; }
+  .final-pasta .mum.sondu .duman { animation: duman 1.6s ease-out; }
+  .btn-wa.parla::after { animation: parla 1.1s ease-in-out 3; }
+}
+@keyframes duman {
+  0% { opacity: .9; transform: translateY(0) scaleY(.6); }
+  100% { opacity: 0; transform: translateY(-16px) scaleY(1.2); }
+}
+@keyframes parla { 50% { opacity: .35; } }
+
 /* Contact */
 .section-contact { background: var(--blush); }
 .contact-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2rem, 6vw, 5rem); align-items: start; }
@@ -406,6 +461,7 @@ h3 { font-size: 1.125rem; line-height: 1.3; font-weight: 700; margin: 0 0 0.35em
 .drip-icing { --from: var(--paper); --to: var(--navy); }
 .drip-navy { --from: var(--navy); --rim: var(--gold); --to: var(--paper); }
 .drip-blush { --from: #fff; --rim: var(--pink); --to: var(--blush); }
+.drip-beyaz { --to: #fff; }
 
 /* Floating WhatsApp (small screens only) */
 .wa-float {
@@ -431,7 +487,7 @@ h3 { font-size: 1.125rem; line-height: 1.3; font-weight: 700; margin: 0 0 0.35em
 /* ---------- Responsive ---------- */
 
 @media (max-width: 860px) {
-  .hero-grid, .section-head, .stand-grid, .production-grid, .contact-grid { grid-template-columns: minmax(0, 1fr); }
+  .hero-grid, .section-head, .stand-grid, .production-grid, .contact-grid, .kule-grid { grid-template-columns: minmax(0, 1fr); }
   /* One column: the stage sticks under the header while the steps scroll up behind it. */
   .anim .stand-grid { display: block; }
   .anim .stand-sahne { top: 4.5rem; background: var(--navy); box-shadow: 0 18px 18px -6px var(--navy); margin-inline: calc(-1 * var(--gutter)); padding: 0.75rem var(--gutter) 0; }

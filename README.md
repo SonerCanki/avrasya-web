@@ -24,6 +24,8 @@ Yeni stand eklemek için listedeki bir `<li>` satırını kopyalayın; dosya adl
 
 "Stand nasıl çalışır" sahnesi `standlar/stand-cocuk-karakter-kesik.webp` ile `susler/sus-canim-kizim.webp` görsellerini kullanır. Raflara tek tek dolan süsler bu stand fotoğrafının raf ve sütun çizgilerine göre kesilir (`js/animations.js` içindeki `rows` ve `cols`); stand fotoğrafı değişirse bu sayıları da yeni fotoğrafa göre güncelleyin.
 
+"Kule stand" bölümü `standlar/kule-stand-kesik.webp` kullanır. Kaydırınca stand yerden yukarı doğru raf raf kurulur; raf çizgileri yine `js/animations.js` içinde (`kule` sahnesindeki `rows`). Fotoğraf değişirse bu sayılar da güncellenmeli.
+
 Eski galeri fotoğrafları (`assets/img/stand-kral`, `stand-pembe`, `stand-yazili`, `stand-ayna`) artık sayfada kullanılmıyor.
 
 Sayfanın üstünde fotoğraf yerine çizim pasta durur; üstündeki süs gerçek bir süs fotoğrafıdır (`assets/img/susler/sus-iyi-ki-dogdun.webp`). Başka bir süs koymak için `tools/svg/ciz.mjs` içindeki `HERO_TOPPER` satırını değiştirip betiği çalıştırın. Eski üst fotoğraf `assets/img/stand-600.webp` ve `stand-1000.webp` şu an sayfada kullanılmıyor.
@@ -32,7 +34,7 @@ Sayfanın üstünde fotoğraf yerine çizim pasta durur; üstündeki süs gerçe
 
 Renkler `css/style.css` başındaki `:root` içindedir: logodaki lacivert ve altın ana renk, krema, pasta pembesi ve konfeti renkleri kutlama vurgusu.
 
-Doğum günü çizimleri (`assets/svg/`: pasta, mum, balon, yıldız, krema damlası, şeker serpintisi) elle değil `tools/svg/ciz.mjs` ile üretilir. Bu betik `index.html` içindeki `<!-- ciz:sprite -->` (balon sembolü), `<!-- ciz:pasta -->` (üstteki pasta) ve `<!-- ciz:acilis-mum -->` (açılış mumu) aralarını da yeniler; oraları elle düzenlemeyin. Değişiklikten sonra proje kökünde:
+Doğum günü çizimleri (`assets/svg/`: pasta, mum, balon, yıldız, krema damlası, şeker serpintisi) elle değil `tools/svg/ciz.mjs` ile üretilir. Bu betik `index.html` içindeki `<!-- ciz:sprite -->` (balon sembolü), `<!-- ciz:pasta -->` (üstteki pasta), `<!-- ciz:acilis-mum -->` (açılış mumu) ve `<!-- ciz:final-pasta -->` (iletişim bölümündeki beş mumlu pasta) aralarını da yeniler; oraları elle düzenlemeyin. Değişiklikten sonra proje kökünde:
 
 ```bash
 node tools/svg/ciz.mjs
@@ -41,6 +43,8 @@ node tools/svg/ciz.mjs
 ## Animasyonlar
 
 `js/animations.js` kaydırma hikâyesini kurar (GSAP, ScrollTrigger, Lenis yumuşak kaydırma, konfeti). Kütüphaneler `assets/vendor/` içinde sabit sürümlerle durur; sürümler ve lisanslar o klasörün README dosyasında. Ziyaretçi "hareketi azalt" ayarını açtıysa, JavaScript kapalıysa ya da bir kütüphane yüklenmezse sayfa animasyonsuz, son hâliyle görünür.
+
+İletişim bölümündeki pastanın mumları tıklayınca (ya da fare üzerlerinden geçince) söner; son mum sönünce konfeti patlar ve WhatsApp butonu parlar. Pastaya yeniden tıklamak mumları yakar. Mum söndürme `js/main.js` içindedir ve hareket azaltma açıkken de çalışır (konfeti ve titreme olmadan).
 
 Açılış perdesi (logo, mum, perde kalkışı) her tarayıcıda yalnızca ilk ziyarette oynar; tarayıcının yerel deposuna `avrasya-acilis` kaydı düşer. Yeniden görmek için tarayıcı konsolunda `localStorage.removeItem('avrasya-acilis')` çalıştırıp sayfayı yenileyin.
 

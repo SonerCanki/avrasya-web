@@ -104,7 +104,6 @@
   // gsap.matchMedia reverts all of them when reduced motion is switched on or the layout
   // crosses the mobile breakpoint, then builds them again. A scene that adds elements or
   // listeners returns a function that removes them.
-  // Still to come, in page order: kule, uretim, final.
   const scenes = [];
   const scene = (name, build) => scenes.push({ name, build });
 
@@ -271,6 +270,98 @@
       document.removeEventListener('galeri:suzuldu', onFilter);
       tilters.forEach(fn => fn());
     };
+  });
+
+  // Scene 4: the tower stand builds up from the floor, shelf by shelf, as it scrolls into view.
+  // On wide screens each floor's line in the list lights up as that floor is built.
+  scene('kule', ({ mobile }) => {
+    const photo = document.querySelector('.kule-foto');
+    const img = photo.querySelector('img');
+    const src = img.getAttribute('src');
+
+    // Shelf edges of the 471×1040 photo, top to bottom; the four floors start at strips 0, 4, 8 and 11.
+    const H = 1040;
+    const rows = [0, 88, 142, 200, 300, 345, 405, 462, 560, 625, 690, 800, 860, 912, H];
+    const floorStarts = [0, 4, 8, 11];
+    const ghost = document.createElement('div');
+    ghost.className = 'sahne-hayalet';
+    ghost.style.backgroundImage = `url("${src}")`;
+    const strips = rows.slice(0, -1).map((y, i) => {
+      const h = rows[i + 1] - y;
+      const strip = document.createElement('div');
+      strip.className = 'sahne-karo';
+      Object.assign(strip.style, {
+        left: '0', width: '100%', top: `${(y / H) * 100}%`, height: `${(h / H) * 100}%`,
+        backgroundImage: `url("${src}")`,
+        backgroundSize: `100% ${(H / h) * 100}%`,
+        backgroundPosition: `0 ${y ? (y / (H - h)) * 100 : 0}%`,
+      });
+      return strip;
+    });
+    photo.prepend(ghost, ...strips);
+
+    // From the floor up. Ends with the top of the tower still on screen.
+    const STEP = 0.1;
+    const fromBottom = strips.slice().reverse();
+    gsap.set(fromBottom, { autoAlpha: 0, y: 26, scaleY: 0.7, transformOrigin: '50% 100%' });
+    const tl = gsap.timeline({
+      defaults: { ease: 'none' },
+      scrollTrigger: { trigger: photo, start: 'top 85%', end: 'top 15%', scrub: 0.6 },
+    });
+    tl.to(fromBottom, { autoAlpha: 1, y: 0, scaleY: 1, duration: 0.3, ease: 'back.out(1.6)', stagger: STEP }, 0)
+      .fromTo(img, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.15 }, '>-0.05');
+
+    if (!mobile) {
+      // A floor lights up when its lowest strip starts to rise.
+      gsap.utils.toArray('.kule-katlar li').forEach((li, f) => {
+        const lowest = (floorStarts[f + 1] ?? strips.length) - 1;
+        tl.fromTo(li, { opacity: 0.4 }, { opacity: 1, duration: 0.2 }, (strips.length - 1 - lowest) * STEP);
+      });
+    }
+
+    return () => { ghost.remove(); strips.forEach(s => s.remove()); };
+  });
+
+  // Scene 5: each production step's icon pops in, then the gold line draws itself down to the next one.
+  scene('uretim', () => {
+    const tl = gsap.timeline({
+      defaults: { ease: 'none' },
+      scrollTrigger: { trigger: '.adimlar', start: 'top 70%', end: 'bottom 60%', scrub: 0.6 },
+    });
+    gsap.utils.toArray('.adimlar li').forEach((li, i) => {
+      const line = li.querySelector('.adim-cizgi path');
+      tl.fromTo(li.querySelector('.adim-ikon'), { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.3, ease: 'back.out(2.5)' }, i)
+        .fromTo(li.querySelectorAll('h3, p'), { autoAlpha: 0.3, x: 12 }, { autoAlpha: 1, x: 0, duration: 0.3 }, i);
+      if (line) tl.fromTo(line, { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.7 }, i + 0.3);
+    });
+  });
+
+  // Scene 6: the final cake's flames flicker while it is on screen. When the visitor has blown
+  // them all out (js/main.js), confetti bursts from the cake and the WhatsApp button pulses.
+  scene('final', () => {
+    const cake = document.querySelector('.final-pasta');
+    const wa = document.querySelector('.contact-copy .btn-wa');
+    const loops = [
+      ...gsap.utils.toArray('.final-pasta .alev path').map((el, i) => gsap.to(el, {
+        scaleY: 0.86, scaleX: 1.07, transformOrigin: '50% 100%',
+        duration: 0.14 + (i % 3) * 0.04, ease: 'sine.inOut', repeat: -1, yoyo: true, paused: true,
+      })),
+      gsap.to('.final-pasta .alev-isik', { scale: 0.9, opacity: 0.75, transformOrigin: '50% 50%', duration: 0.3, ease: 'sine.inOut', repeat: -1, yoyo: true, paused: true }),
+    ];
+    ScrollTrigger.create({
+      trigger: cake, start: 'top bottom', end: 'bottom top',
+      onToggle: self => loops.forEach(t => (self.isActive ? t.play() : t.pause())),
+    });
+
+    const celebrate = () => {
+      const r = cake.getBoundingClientRect();
+      const origin = { x: (r.left + r.width / 2) / window.innerWidth, y: (r.top + r.height * 0.15) / window.innerHeight };
+      party({ origin, angle: 60, spread: 60 });
+      party({ origin, angle: 120, spread: 60 });
+      gsap.fromTo(wa, { scale: 1 }, { scale: 1.08, duration: 0.3, ease: 'power2.out', yoyo: true, repeat: 3, delay: 0.25 });
+    };
+    document.addEventListener('mumlar:sondu', celebrate);
+    return () => document.removeEventListener('mumlar:sondu', celebrate);
   });
 
   // ---------- Smooth scroll and scene setup ----------

@@ -52,7 +52,9 @@ const poly = pts => 'M' + pts.map(([x, y]) => `${f(x)},${f(y)}`).join(' L') + ' 
 
 // ---------- Pasta ----------
 // topper: { href, width, height, w } — fotoğrafın yolu, piksel boyutu ve pastadaki genişliği.
-function cake({ topper = null, className = '', title = 'Mumları yanan üç katlı doğum günü pastası' } = {}) {
+// candles: mumların x konumları. smoke: söndürülünce yükselecek duman çizgileri (final pastası).
+// prefix: bütün kimliklerin öneki; aynı sayfada ikinci bir pasta olduğunda kimlikler çakışmasın diye.
+function cake({ topper = null, className = '', title = 'Mumları yanan üç katlı doğum günü pastası', candles = [148, 252], smoke = false, prefix = '' } = {}) {
   const tiers = [
     { id: 'kat-1', cx: 200, top: 300, bottom: 405, rx: 150, ry: 14, body: 'govde-lacivert', icing: 'krema-altin',
       drops: [{ u: -0.86, w: 18, L: 20 }, { u: -0.6, w: 24, L: 38 }, { u: -0.3, w: 16, L: 16 }, { u: -0.05, w: 26, L: 46 }, { u: 0.25, w: 18, L: 24 }, { u: 0.52, w: 24, L: 40 }, { u: 0.8, w: 16, L: 18 }] },
@@ -109,7 +111,7 @@ function cake({ topper = null, className = '', title = 'Mumları yanan üç katl
   </g>`;
   }
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${topper ? '0 -125 400 585' : '0 0 400 460'}"${className ? ` class="${className}"` : ''} role="img" aria-labelledby="pasta-baslik">
+  return prefixIds(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${topper ? '0 -125 400 585' : '0 0 400 460'}"${className ? ` class="${className}"` : ''} role="img" aria-labelledby="pasta-baslik">
   <title id="pasta-baslik">${title}</title>
   <defs>
     <linearGradient id="govde-lacivert" x1="0" x2="1"><stop offset="0" stop-color="#0C1330"/><stop offset=".38" stop-color="#26366B"/><stop offset="1" stop-color="#0C1330"/></linearGradient>
@@ -134,10 +136,13 @@ function cake({ topper = null, className = '', title = 'Mumları yanan üç katl
   </g>
 ${layers}
 ${sus}
-${candle('mum-1', 148)}
-${candle('mum-2', 252)}
-</svg>`;
+${candles.map((x, i) => candle(`mum-${i + 1}`, x, '', smoke)).join('')}
+</svg>`, prefix);
 }
+
+const prefixIds = (svg, p) => (p
+  ? svg.replace(/(id|aria-labelledby)="([^"]+)"/g, `$1="${p}$2"`).replace(/url\(#([^)]+)\)/g, `url(#${p}$1)`)
+  : svg);
 
 // ---------- Mum ----------
 // p: gradyan kimliklerinin öneki; aynı sayfada birden fazla mumlu SVG olduğunda kimlikler çakışmasın diye.
@@ -145,8 +150,11 @@ const candleDefs = (p = '') => `<linearGradient id="${p}mum-golge" x1="0" x2="1"
     <linearGradient id="${p}alev-dis" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFB627"/><stop offset=".7" stop-color="#FF8A1F"/><stop offset="1" stop-color="#E8590C"/></linearGradient>
     <radialGradient id="${p}isik"><stop offset="0" stop-color="#FFD66B" stop-opacity=".6"/><stop offset="1" stop-color="#FFD66B" stop-opacity="0"/></radialGradient>`;
 
-function candle(id, x, p = '') {
+function candle(id, x, p = '', smoke = false) {
   const top = 78, base = 128;
+  const wisp = smoke
+    ? `\n    <path class="duman" d="M${x},${top - 9} c-6,-8 6,-14 0,-22 c-6,-8 5,-13 1,-22" fill="none" stroke="#B7BFCF" stroke-width="2.5" stroke-linecap="round"/>`
+    : '';
   return `
   <g id="${id}" class="mum">
     <clipPath id="${id}-kesit"><rect x="${x - 6}" y="${top}" width="12" height="${base - top}" rx="3"/></clipPath>
@@ -155,7 +163,7 @@ function candle(id, x, p = '') {
       ${[0, 1, 2, 3].map(i => `<path d="M${x - 8},${top + 10 + i * 13} l16,-8 v5 l-16,8 Z"/>`).join('')}
     </g>
     <rect x="${x - 6}" y="${top}" width="12" height="${base - top}" rx="3" fill="url(#${p}mum-golge)"/>
-    <path d="M${x},${top} v-7" stroke="#3B2A1A" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M${x},${top} v-7" stroke="#3B2A1A" stroke-width="1.6" stroke-linecap="round"/>${wisp}
     <g class="alev">
       <circle class="alev-isik" cx="${x}" cy="${top - 18}" r="24" fill="url(#${p}isik)"/>
       <path d="M${x},${top - 40} C${x + 3},${top - 31} ${x + 8},${top - 19} ${x + 8},${top - 13} A8,8 0 0 1 ${x - 8},${top - 13} C${x - 8},${top - 19} ${x - 3},${top - 31} ${x},${top - 40} Z" fill="url(#${p}alev-dis)"/>
@@ -282,4 +290,6 @@ write('serpinti.svg', sprinkles());
 inject('sprite', sprite());
 inject('pasta', cake({ topper: HERO_TOPPER, className: 'pasta', title: 'Üstünde "İyi ki doğdun" pasta süsü olan, mumları yanan üç katlı doğum günü pastası' }));
 inject('acilis-mum', introCandle());
-console.log('assets/svg: pasta, mum, balon, yildiz, krema, serpinti; index.html: sprite, pasta, acilis-mum');
+// Final bölümündeki pasta: beş mum; ziyaretçi mumları üfleyince söner ve duman yükselir.
+inject('final-pasta', cake({ className: 'final-pasta', candles: [150, 175, 200, 225, 250], smoke: true, prefix: 'final-', title: 'Beş mumu yanan üç katlı doğum günü pastası' }));
+console.log('assets/svg: pasta, mum, balon, yildiz, krema, serpinti; index.html: sprite, pasta, acilis-mum, final-pasta');

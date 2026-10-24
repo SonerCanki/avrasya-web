@@ -56,6 +56,40 @@
     document.dispatchEvent(new CustomEvent('galeri:suzuldu'));
   });
 
+  // ---------- Final: blowing out the candles ----------
+  // A click or tap puts out every candle, one after another; a mouse passing over a candle puts
+  // out that one. When the last one goes out the WhatsApp button glows and js/animations.js
+  // hears 'mumlar:sondu' (confetti). Clicking the dark cake lights the candles again.
+  const finalBtn = document.querySelector('.final-dugme');
+  const hint = document.querySelector('.final-ipucu');
+  const candles = [...finalBtn.querySelectorAll('.mum')];
+  const finalWa = document.querySelector('.contact-copy .btn-wa');
+  const hintLit = hint.textContent;
+  finalBtn.disabled = false;
+  hint.hidden = false;
+  const allOut = () => candles.every(c => c.classList.contains('sondu'));
+  const blow = candle => {
+    if (candle.classList.contains('sondu')) return;
+    candle.classList.add('sondu');
+    if (!allOut()) return;
+    hint.textContent = 'Dileğiniz kabul olsun! Standınız için bize yazın.';
+    finalBtn.setAttribute('aria-label', 'Mumları yeniden yak');
+    finalWa.classList.add('parla');
+    document.dispatchEvent(new CustomEvent('mumlar:sondu'));
+  };
+  finalBtn.addEventListener('click', () => {
+    if (allOut()) {
+      candles.forEach(c => c.classList.remove('sondu'));
+      hint.textContent = hintLit;
+      finalBtn.setAttribute('aria-label', 'Mumları üfle');
+      finalWa.classList.remove('parla');
+      return;
+    }
+    candles.filter(c => !c.classList.contains('sondu'))
+      .forEach((c, i) => (reduceMotion ? blow(c) : setTimeout(() => blow(c), i * 110)));
+  });
+  candles.forEach(c => c.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') blow(c); }));
+
   // ---------- Gallery lightbox ----------
   const box = document.getElementById('lightbox');
   const boxImg = box.querySelector('img');
