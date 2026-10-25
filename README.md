@@ -191,10 +191,9 @@ Logo, lacivert-altın "Avrasya Toptan Pasta Süsleri" görselinden üretildi.
 ## Kullanılmayan dosyalar
 
 Şu dosyalar depoda duruyor ama sayfada kullanılmıyor:
-- eski galeri fotoğrafları: `assets/img/stand-kral-*`, `stand-pembe-*`, `stand-yazili-*`, `stand-ayna-*`;
-- eski üst fotoğraf: `assets/img/stand-600.webp`, `stand-1000.webp`;
-- `assets/img/favicon-512.png`;
 - `assets/img/standlar/kule-stand-640.webp` ve `kule-stand-1040.webp`;
 - kesik stand ve süs görsellerinin sahnelerde yer almayanları.
 
-Yüklenseler de ziyaretçiye inmezler. Siteyi küçük tutmak için eski galeri ve üst fotoğraflar silinebilir. Kesik görseller ileride başka sahnelerde kullanılabilir.
+Hepsi stand hattının çıktısıdır ve ileride kart ya da sahne olarak kullanılabilir. Yüklenseler de ziyaretçiye inmezler.
+
+Eski galeri fotoğrafları (`stand-kral`, `stand-pembe`, `stand-yazili`, `stand-ayna`), eski üst fotoğraf (`stand-600`, `stand-1000`) ve `favicon-512.png` silindi. Gerekirse git geçmişinden geri alınabilir.
