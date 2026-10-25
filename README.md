@@ -35,7 +35,7 @@ Barındırmaya yalnızca şunları yükleyin: `index.html`, `robots.txt`, `sitem
 - **HTTPS:** Site HTTPS ile açılmalı. WhatsApp ve sosyal medya önizlemeleri ile kopyala-yapıştır bağlantıları buna güveniyor.
 - **Sıkıştırma:** Barındırmanın gzip ya da brotli sıkıştırması açık olsun. Netlify, Cloudflare Pages, GitHub Pages ve çoğu cPanel hostingde varsayılan olarak açıktır. Lighthouse ölçümleri sıkıştırma açıkken yapıldı.
 - **Önbellek:** Uzun önbellek süresi verilecekse `assets/` için verin. `index.html`, `css/` ve `js/` dosyalarının adı değişmediği için onlara kısa süre ya da `no-cache` uygundur. Aksi hâlde güncellemeler ziyaretçiye geç ulaşır.
-- **Alan adı:** Site `https://www.avrasyasus.com/` adresine göre ayarlı. Başka bir adreste yayınlanacaksa `index.html` başındaki şu yerleri birlikte değiştirin:
+- **Alan adı:** Site `https://www.avrasyasus.com.tr/` adresine göre ayarlı. Başka bir adreste yayınlanacaksa `index.html` başındaki şu yerleri birlikte değiştirin:
   - `<link rel="canonical">`;
   - `og:url` ve `og:image`;
   - JSON-LD'deki `url`, `image`, `logo`;
