@@ -357,6 +357,29 @@ test('JavaScript kapalıyken içerik görünür, etkileşimli parçalar gizli', 
   await expect(page.locator('.final-pasta .mum.sondu')).toHaveCount(0);
 });
 
+// ---------- Search engines ----------
+
+test('robots.txt, sitemap.xml ve sayfadaki adresler aynı alan adını gösterir', async ({ page, request }) => {
+  test.skip(project() !== 'masaustu', 'dosyalar cihaza göre değişmez; bir kez yeterli');
+  await page.goto('/');
+  const canonical = await page.locator('link[rel="canonical"]').getAttribute('href');
+  expect(canonical).toMatch(/^https:\/\/.+\/$/);
+  expect(await page.locator('meta[property="og:url"]').getAttribute('content')).toBe(canonical);
+  expect(await page.locator('meta[property="og:image"]').getAttribute('content')).toMatch(new RegExp(`^${canonical}`));
+  const ld = JSON.parse(await page.locator('script[type="application/ld+json"]').textContent());
+  expect(ld.url).toBe(canonical);
+
+  const robots = await request.get('/robots.txt');
+  expect(robots.ok()).toBe(true);
+  expect(await robots.text()).toContain(`Sitemap: ${canonical}sitemap.xml`);
+
+  const sitemap = await request.get('/sitemap.xml');
+  expect(sitemap.ok()).toBe(true);
+  const xml = await sitemap.text();
+  expect(xml).toContain(`<loc>${canonical}</loc>`);
+  expect(xml).toMatch(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/);
+});
+
 // ---------- Accessibility (axe) ----------
 
 test('erişilebilirlik: axe ciddi ya da kritik ihlal bulmaz', async ({ page }) => {

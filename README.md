@@ -10,6 +10,7 @@ Derleme adımı yok: dosyalar olduğu gibi yayına girer.
 | `js/main.js` | Animasyon dışı davranışlar: WhatsApp bağlantıları, menü, video, süzgeç, büyük görsel, mumlar |
 | `js/animations.js` | Kaydırma hikâyesi: açılış, sahneler, konfeti |
 | `assets/` | Görseller, videolar, SVG çizimler ve sabit sürümlü kütüphaneler (`assets/vendor/`) |
+| `robots.txt`, `sitemap.xml` | Arama motorlarına sitenin taranabileceğini ve sayfanın adresini bildirir |
 | `tools/stand-gorselleri/` | Telefon fotoğraflarından stand ve süs görsellerini üreten hat |
 | `tools/svg/ciz.mjs` | Doğum günü çizimlerini (pasta, mum, balon…) üreten betik |
 | `tools/test/` | Tarayıcı testleri ve Lighthouse ölçümü |
@@ -29,7 +30,7 @@ Ardından tarayıcıda `http://localhost:5500` açın. `index.html` dosyasına �
 
 ## Yayına almak
 
-Barındırmaya yalnızca şunları yükleyin: `index.html`, `css/`, `js/`, `assets/`. `tools/`, `sirket-bilgileri/`, `PLAN.md` ve `README.md` sitenin parçası değil.
+Barındırmaya yalnızca şunları yükleyin: `index.html`, `robots.txt`, `sitemap.xml`, `css/`, `js/`, `assets/`. `tools/`, `sirket-bilgileri/`, `PLAN.md` ve `README.md` sitenin parçası değil.
 
 - **HTTPS:** Site HTTPS ile açılmalı. WhatsApp ve sosyal medya önizlemeleri ile kopyala-yapıştır bağlantıları buna güveniyor.
 - **Sıkıştırma:** Barındırmanın gzip ya da brotli sıkıştırması açık olsun. Netlify, Cloudflare Pages, GitHub Pages ve çoğu cPanel hostingde varsayılan olarak açıktır. Lighthouse ölçümleri sıkıştırma açıkken yapıldı.
@@ -37,11 +38,30 @@ Barındırmaya yalnızca şunları yükleyin: `index.html`, `css/`, `js/`, `asse
 - **Alan adı:** Site `https://www.avrasyasus.com/` adresine göre ayarlı. Başka bir adreste yayınlanacaksa `index.html` başındaki şu yerleri birlikte değiştirin:
   - `<link rel="canonical">`;
   - `og:url` ve `og:image`;
-  - JSON-LD'deki `url`, `image`, `logo`.
+  - JSON-LD'deki `url`, `image`, `logo`;
+  - `robots.txt` içindeki `Sitemap:` satırı ve `sitemap.xml` içindeki `<loc>`.
 
-  WhatsApp ve Facebook önizlemesindeki kapak görseli yalnızca tam adresle (`https://…`) çalışır.
+  WhatsApp ve Facebook önizlemesindeki kapak görseli yalnızca tam adresle (`https://…`) çalışır. Testler bu adreslerin hepsinin aynı alan adını gösterdiğini denetler.
 
 Yayından sonra bağlantıyı WhatsApp'ta kendinize gönderip kapak görselinin göründüğünü kontrol edin.
+
+## Arama motorları (SEO)
+
+Sayfada şunlar hazır:
+- Türkçe başlık ve arama sonucunda görünen açıklama (`<title>`, `meta description`);
+- `canonical` adresi;
+- paylaşım önizlemesi (`og:` etiketleri);
+- Google için işletme bilgisi (JSON-LD, `LocalBusiness`): ad, telefon, e-posta, adres, logo, sosyal medya.
+
+Kök klasördeki iki dosya arama motorları içindir:
+- `robots.txt`: bütün arama motorlarının siteyi taramasına izin verir ve site haritasının yerini bildirir.
+- `sitemap.xml`: sayfanın adresini ve son güncellenme tarihini (`<lastmod>`) verir. Sayfanın içeriği değiştiğinde (yeni stand, yeni bilgi) bu tarihi `YYYY-AA-GG` biçiminde güncelleyin. Google, ne zaman yeniden bakacağına karar verirken bu tarihe de bakar.
+
+İşletme adı, telefon ya da adres değişirse hem iletişim kartını hem de JSON-LD bloğunu güncelleyin (aşağıda, "İletişim bilgileri nerede").
+
+Yayından sonra yapılacaklar (site sahibinin hesabıyla):
+1. **Google Search Console:** Siteyi ekleyin, alan adının size ait olduğunu doğrulayın ve "Site haritaları" bölümüne `sitemap.xml` yazın. Sayfanın dizine girip girmediği ve hangi aramalarda göründüğü buradan izlenir.
+2. **Google İşletme Profili:** İşletmeyi Haritalar'a ekleyip web sitesi olarak bu adresi yazın. Yerel aramalarda ("Bayrampaşa pasta süsü toptan" gibi) görünmenin en etkili yolu budur. Profildeki ad, adres ve telefon sayfadakiyle birebir aynı olmalı.
 
 ## Yeni stand eklemek (baştan sona)
 
