@@ -1,0 +1,97 @@
+/* Temel stil: Tailwind (sıfırlama ve tasarım değerleri), yazı ölçeği, odak çerçevesi, son hâl kuralları.
+   Bölümlerin kendi stilleri src/bolumler ve src/ortak içindedir. */
+@import "tailwindcss";
+
+@theme {
+  --color-kobalt: #2340ff;
+  --color-gunes: #ffd60a;
+  --color-pembe: #ff3d8b;
+  --color-murekkep: #120b3a;
+  --font-sans: "Bricolage Grotesque Variable", system-ui, sans-serif;
+}
+
+:root {
+  /* Gölge yalnızca mürekkep renkli sert gölgedir (bulanıksız). */
+  --golge-kucuk: 4px 4px 0 var(--color-murekkep);
+  --golge: 5px 5px 0 var(--color-murekkep);
+  --golge-buyuk: 8px 8px 0 var(--color-murekkep);
+  --golge-basili: 2px 2px 0 var(--color-murekkep);
+  /* Sayfanın yan boşluğu. */
+  --kenar: clamp(1rem, 4vw, 3rem);
+  /* Odak çerçevesinin rengi; açık zeminli bölümler bunu mürekkebe çevirir. */
+  --odak: var(--color-gunes);
+}
+
+@layer base {
+  body {
+    background: var(--color-kobalt);
+    color: #fff;
+    font-family: var(--font-sans);
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.55;
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3 {
+    overflow-wrap: anywhere;
+  }
+  h1 {
+    font-size: clamp(2.25rem, 7.6vw, 7.5rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.035em;
+  }
+  h2 {
+    font-size: clamp(2rem, 5vw, 4.25rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  p {
+    max-width: 70ch;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--odak);
+    outline-offset: 4px;
+  }
+}
+
+/* Klavyeyle gelen ziyaretçinin ilk durağı; odaklanınca görünür. */
+.atla {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  border-radius: 999px;
+  background: var(--color-gunes);
+  color: var(--color-murekkep);
+  font-weight: 700;
+  box-shadow: var(--golge);
+  translate: 0 -300%;
+}
+.atla:focus {
+  translate: none;
+  --odak: #fff;
+}
+
+/* Son hâl kuralı: hareket serbest değilse (JavaScript yok, site betiği yüklenemedi ya da ziyaretçi
+   hareketi azaltmış) hareketle gizlenen her öğe dinlenme hâlinde görünür. */
+html:not(.hareketli) [data-hareket] {
+  opacity: 1 !important;
+  transform: none !important;
+  clip-path: none !important;
+}
+/* JavaScript'e bağlı denetimler, JavaScript yokken hiç gösterilmez. */
+html:not(.js) .js-gerek {
+  display: none !important;
+}

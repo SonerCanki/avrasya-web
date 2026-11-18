@@ -2,9 +2,8 @@
   "name": "stand-gorselleri",
   "private": true,
   "type": "module",
-  "description": "Stand fotoğraflarının arka planını kaldırıp site için webp üretir.",
+  "description": "Tek süs fotoğraflarının arka planını kaldırıp site için webp üretir (susler.mjs). Stand görselleri uret.mjs ile üretilir; o kurulum istemez.",
   "scripts": {
-    "build": "node build.mjs",
     "susler": "node susler.mjs"
   },
   "dependencies": {

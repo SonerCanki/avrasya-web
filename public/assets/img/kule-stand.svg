@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 880" width="400" height="880">
+  <!-- Kule standın çizimi. Katlar resmin yüksekliğinin %4–27, %27–50, %50–73 ve %73–96'sındadır
+       (src/icerik.ts: KULE.katlar[].bant). Her kat 202,4 birim yüksekliğindedir ve kendi grubunda çizilir. -->
+  <defs>
+    <path id="dalga" d="M-24 2q6-10 12 0t12 0 12 0 12 0" fill="none" stroke-width="4"/>
+    <path id="kalp" d="M0-11C-6-27-32-22-32-3c0 17 21 27 32 38 11-11 32-21 32-38 0-19-26-24-32-8Z"/>
+    <path id="yildiz" d="M0-26 6.8-9.3 24.7-8 10.9 3.6 15.3 21 0 11.5-15.3 21-10.9 3.6-24.7-8-6.8-9.3Z"/>
+    <rect id="raf" x="38" y="180.4" width="324" height="22" rx="6" fill="#fff"/>
+  </defs>
+
+  <g stroke="#120B3A" stroke-width="5" stroke-linejoin="round" stroke-linecap="round" font-family="'Arial Black', Arial, Helvetica, sans-serif" font-size="66" font-weight="900" text-anchor="middle">
+    <!-- Taban, gövde ve tepe levhası -->
+    <rect x="22" y="845" width="356" height="30" rx="8" fill="#fff"/>
+    <rect x="50" y="34" width="300" height="814" rx="10" fill="#fff"/>
+    <path d="M110 36V22q0-16 16-16h148q16 0 16 16v14Z" fill="#FF3D8B"/>
+    <g fill="#FFD60A" stroke-width="3">
+      <circle cx="160" cy="21" r="6"/>
+      <circle cx="200" cy="21" r="6"/>
+      <circle cx="240" cy="21" r="6"/>
+    </g>
+
+    <!-- Üst kat: renkli rakamlar ve renkli yazılar -->
+    <g transform="translate(0 35.2)">
+      <rect x="62" y="9" width="276" height="174" rx="6" fill="#DFE5FF"/>
+      <path d="M98 84v98M166 84v98M234 84v98M302 84v98" fill="none" stroke-width="4"/>
+      <g paint-order="stroke" stroke-width="9">
+        <text x="98" y="86" fill="#FF3D8B">1</text>
+        <text x="166" y="86" fill="#2340FF">2</text>
+        <text x="234" y="86" fill="#FFD60A">3</text>
+        <text x="302" y="86" fill="#00B8C4">4</text>
+      </g>
+      <path d="M112 143v39M200 143v39M288 143v39" fill="none" stroke-width="4"/>
+      <rect x="73" y="111" width="78" height="34" rx="17" fill="#FF6A1A"/>
+      <rect x="161" y="111" width="78" height="34" rx="17" fill="#7A3CFF"/>
+      <rect x="249" y="111" width="78" height="34" rx="17" fill="#0FA958"/>
+      <g stroke="#fff">
+        <use href="#dalga" x="112" y="128"/>
+        <use href="#dalga" x="200" y="128"/>
+        <use href="#dalga" x="288" y="128"/>
+      </g>
+      <use href="#raf"/>
+    </g>
+
+    <!-- İkinci kat: altın ve gümüş ayna rakamlar ve yazılar -->
+    <g transform="translate(0 237.6)">
+      <rect x="62" y="9" width="276" height="174" rx="6" fill="#FFF3BF"/>
+      <path d="M98 84v98M166 84v98M234 84v98M302 84v98" fill="none" stroke-width="4"/>
+      <g paint-order="stroke" stroke-width="9">
+        <text x="98" y="86" fill="#F2B705">5</text>
+        <text x="166" y="86" fill="#CDD3DD">6</text>
+        <text x="234" y="86" fill="#F2B705">7</text>
+        <text x="302" y="86" fill="#CDD3DD">8</text>
+      </g>
+      <path d="M112 143v39M200 143v39M288 143v39" fill="none" stroke-width="4"/>
+      <rect x="73" y="111" width="78" height="34" rx="17" fill="#CDD3DD"/>
+      <rect x="161" y="111" width="78" height="34" rx="17" fill="#F2B705"/>
+      <rect x="249" y="111" width="78" height="34" rx="17" fill="#CDD3DD"/>
+      <use href="#dalga" x="112" y="128"/>
+      <use href="#dalga" x="200" y="128"/>
+      <use href="#dalga" x="288" y="128"/>
+      <use href="#raf"/>
+    </g>
+
+    <!-- Üçüncü kat: kalpler ve renkli ayna yazılar -->
+    <g transform="translate(0 440)">
+      <rect x="62" y="9" width="276" height="174" rx="6" fill="#FFDCEA"/>
+      <path d="M110 84v98M200 84v98M290 84v98" fill="none" stroke-width="4"/>
+      <use href="#kalp" x="110" y="55" fill="#FF3D8B"/>
+      <use href="#kalp" x="200" y="55" fill="#FF4438"/>
+      <use href="#kalp" x="290" y="55" fill="#7A3CFF"/>
+      <path d="M112 143v39M200 143v39M288 143v39" fill="none" stroke-width="4"/>
+      <rect x="73" y="111" width="78" height="34" rx="17" fill="#00B8C4"/>
+      <rect x="161" y="111" width="78" height="34" rx="17" fill="#FF6A1A"/>
+      <rect x="249" y="111" width="78" height="34" rx="17" fill="#2340FF"/>
+      <g stroke="#fff">
+        <use href="#dalga" x="112" y="128"/>
+        <use href="#dalga" x="200" y="128"/>
+        <use href="#dalga" x="288" y="128"/>
+      </g>
+      <use href="#raf"/>
+    </g>
+
+    <!-- Alt kat: karakterli çocuk süsleri -->
+    <g transform="translate(0 642.4)">
+      <rect x="62" y="9" width="276" height="174" rx="6" fill="#D6F5EC"/>
+      <path d="M105 90v92M200 90v92M295 90v92" fill="none" stroke-width="4"/>
+      <!-- Ayı -->
+      <g fill="#FFB23E">
+        <circle cx="84" cy="42" r="11"/>
+        <circle cx="126" cy="42" r="11"/>
+        <circle cx="105" cy="64" r="28"/>
+      </g>
+      <!-- Tavşan -->
+      <g fill="#fff">
+        <ellipse cx="188" cy="36" rx="8" ry="18"/>
+        <ellipse cx="212" cy="36" rx="8" ry="18"/>
+        <circle cx="200" cy="70" r="26"/>
+      </g>
+      <!-- Kedi -->
+      <g fill="#FF3D8B">
+        <path d="M271 56 273 31 292 45Z"/>
+        <path d="M319 56 317 31 298 45Z"/>
+        <circle cx="295" cy="64" r="28"/>
+      </g>
+      <g fill="#120B3A" stroke="none">
+        <circle cx="96" cy="60" r="3.5"/>
+        <circle cx="114" cy="60" r="3.5"/>
+        <circle cx="191" cy="66" r="3.5"/>
+        <circle cx="209" cy="66" r="3.5"/>
+        <circle cx="286" cy="60" r="3.5"/>
+        <circle cx="304" cy="60" r="3.5"/>
+      </g>
+      <path d="M98 72q7 8 14 0M194 77q6 7 12 0M288 72q7 8 14 0" fill="none" stroke-width="3.5"/>
+      <path d="M120 150v32M200 150v32M280 150v32" fill="none" stroke-width="4"/>
+      <use href="#yildiz" x="120" y="130" fill="#FFD60A"/>
+      <path d="M195 149 200 157 205 149Z" fill="#2340FF"/>
+      <circle cx="200" cy="127" r="22" fill="#2340FF"/>
+      <use href="#yildiz" x="280" y="130" fill="#FF3D8B"/>
+      <use href="#raf"/>
+    </g>
+  </g>
+</svg>

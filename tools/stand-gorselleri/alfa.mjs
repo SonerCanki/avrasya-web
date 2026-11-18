@@ -1,4 +1,4 @@
-// Alfa maskesi düzeltme (build.mjs ve susler.mjs ortak kullanır).
+// Alfa maskesi düzeltme (susler.mjs kullanır).
 
 // Beyaz stand açık zeminde çekildiğinde maskenin içi yarı saydam kalabilir.
 // Seviye eğrisiyle alfa sertleştirilir; ardından en büyük parçaya göre küçük kırıntılar silinir.

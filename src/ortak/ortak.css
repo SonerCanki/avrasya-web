@@ -1,0 +1,205 @@
+/* Ortak parçalar: hap düğme, çıkartma çerçevesi, kayan şerit, süs çıkartması. */
+
+/* ---------- Düğme ---------- */
+.dugme {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.65rem 1.15rem;
+  border-radius: 999px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  box-shadow: var(--golge-kucuk);
+  transition:
+    translate 0.15s,
+    box-shadow 0.15s;
+}
+/* Üzerine gelince düğme gölgesinin içine doğru basılır. */
+.dugme:hover {
+  translate: 2px 2px;
+  box-shadow: var(--golge-basili);
+}
+.dugme--buyuk {
+  padding: 1rem 1.7rem;
+  font-size: 1.075rem;
+  font-weight: 800;
+  box-shadow: var(--golge);
+}
+.dugme--buyuk:hover {
+  translate: 3px 3px;
+}
+.dugme--gunes {
+  background: var(--color-gunes);
+  color: var(--color-murekkep);
+}
+.dugme--beyaz {
+  background: #fff;
+  color: var(--color-murekkep);
+}
+/* Beyaz çerçeve, mürekkep gölgeyi açık zeminlerde görünür kılar. */
+.dugme--murekkep {
+  border: 3px solid #fff;
+  background: var(--color-murekkep);
+  color: #fff;
+}
+/* Düz bağlantı: hap değil, altı kalın çizgili yazı. */
+.dugme--duz,
+.dugme--duz:hover {
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+  translate: none;
+}
+.dugme--duz {
+  text-decoration: underline;
+  text-decoration-color: var(--color-gunes);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 0.35em;
+}
+.dugme--duz:hover {
+  text-decoration-thickness: 5px;
+}
+
+/* ---------- Çıkartma çerçevesi (fotoğraf ve video kartları) ---------- */
+.cikartma {
+  border: 10px solid #fff;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: var(--golge-buyuk);
+}
+@media (max-width: 720px) {
+  .cikartma {
+    border-width: 7px;
+    border-radius: 16px;
+    box-shadow: var(--golge);
+  }
+}
+
+/* ---------- Kayan şerit ---------- */
+.kayan-serit {
+  overflow: hidden;
+  background: var(--color-gunes);
+  color: var(--color-murekkep);
+  box-shadow: 0 5px 0 var(--color-murekkep);
+}
+.kayan-serit-ic {
+  display: flex;
+  width: max-content;
+}
+.kayan-serit ul {
+  display: flex;
+}
+.kayan-serit li {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.65rem 0 0.65rem 1.5rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+@media (max-width: 720px) {
+  .kayan-serit li {
+    font-size: 1.1rem;
+  }
+}
+/* Şerit yalnızca hareket serbestken kayar. Dört eş gruptan biri kadar ilerleyip başa döner. */
+html.hareketli .kayan-serit-ic {
+  animation: kayan-serit 30s linear infinite;
+}
+@keyframes kayan-serit {
+  to {
+    transform: translateX(-25%);
+  }
+}
+
+/* ---------- Süs çıkartması ---------- */
+.sus {
+  position: absolute;
+  z-index: 3;
+  width: clamp(6.25rem, 14vw, 13.5rem);
+}
+.sus img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(4px 5px 0 var(--color-murekkep));
+  pointer-events: none;
+  user-select: none;
+}
+@media (pointer: fine) {
+  html.js .sus {
+    cursor: grab;
+  }
+  html.js .sus:active {
+    cursor: grabbing;
+  }
+}
+/* Hafif salınım; süresi her süste ayrıdır (satır içi stil). */
+html.hareketli .sus img {
+  animation: sus-salin 5.5s ease-in-out infinite;
+}
+@keyframes sus-salin {
+  50% {
+    translate: 0 -10px;
+  }
+}
+
+/* ---------- Çizimler: çizgi kalınlığı her ölçüde aynı kalır ---------- */
+.cizim {
+  overflow: visible;
+}
+.cizim * {
+  vector-effect: non-scaling-stroke;
+}
+
+/* ---------- Video: çıkartma çerçevesinde, başlığı ve oynat/duraklat düğmesi üstünde ---------- */
+.video {
+  position: relative;
+  margin: 0;
+}
+.video video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  background: var(--color-murekkep);
+}
+.video-baslik {
+  position: absolute;
+  top: -1.1rem;
+  left: -0.6rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  background: var(--color-pembe);
+  color: var(--color-murekkep);
+  box-shadow: var(--golge-kucuk);
+  font-weight: 800;
+  rotate: -3deg;
+}
+.video-dugme {
+  position: absolute;
+  right: 0.6rem;
+  bottom: 0.6rem;
+  min-width: 6.5rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 1.1rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--color-gunes);
+  color: var(--color-murekkep);
+  box-shadow: var(--golge-kucuk);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  --odak: var(--color-murekkep);
+  transition:
+    translate 0.15s,
+    box-shadow 0.15s;
+}
+.video-dugme:hover {
+  translate: 2px 2px;
+  box-shadow: var(--golge-basili);
+}

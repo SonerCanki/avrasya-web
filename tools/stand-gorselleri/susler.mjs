@@ -1,17 +1,18 @@
 // #26 fotoğrafındaki (beyaz levha üzerinde 8 süs) süsleri tek tek keser.
-// Çıktı: assets/img/susler/sus-<ad>.webp, şeffaf zemin. Şeffaf pleksi çubuklar kesilmez;
+// Çıktı: public/assets/img/susler/sus-<ad>.webp, şeffaf zemin. Şeffaf pleksi çubuklar kesilmez;
 // animasyonda gerekirse çubuk CSS/SVG ile çizilir.
 //
 // Kullanım: npm run susler
 import sharp from 'sharp';
 import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
-import { SRC_DIR } from './standlar.mjs';
 import { cutout } from './kes.mjs';
 import { refineAlpha } from './alfa.mjs';
 
 const SRC = 'WhatsApp Image 2026-10-24 at 22.25.38 (4).jpeg';
-const OUT = '../../assets/img/susler';
+const OUT = '../../public/assets/img/susler';
+// Kaynak fotoğraf depoda yoktur (sirket-bilgileri/ git'e girmez); çalıştırmak için oraya konmalıdır.
+const SRC_DIR = '../../sirket-bilgileri/stant-gorseleri';
 const WORK = 'work/susler';
 const MAX = 640;
 

@@ -1,0 +1,325 @@
+/* Üst çubuk ve telefon menüsü.
+   Çubuk açılışın üzerinde saydamdır ve sayfayla birlikte kayar; açılış geçilince (UstCubuk.tsx: data-yuzen)
+   ekranın üstüne sabitlenen beyaz, sert gölgeli bir hap olur. */
+
+/* ---------- Çubuk: açılışın üzerinde ---------- */
+/* Dizilim dar ekrandan başlar: logo, WhatsApp düğmesi, "Menü" düğmesi. Yer açıldıkça menü, sonra firma adı gelir
+   (aşağıda "Genişleyen çubuk"). */
+.ust {
+  position: absolute;
+  inset: 0 0 auto;
+  /* Bölümlerin her şeyinin üstünde, "İçeriğe geç" bağlantısının (100) altında. */
+  z-index: 50;
+  /* Öğeler ekranın değil, çubuğun kendi genişliğine göre dizilir; ölçü rem olduğu için yazı büyütülünce de
+     dizilim doğru anda daralır. */
+  container: ust / inline-size;
+  display: flex;
+  /* Son çare: yazı çok büyütülür de öğeler yine sığmazsa alt satıra iner, yana taşmaz. */
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem clamp(0.5rem, 2vw, 1.5rem);
+  padding: 1.1rem var(--kenar);
+  color: #fff;
+  white-space: nowrap;
+}
+
+.ust-marka {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 0.7rem;
+  border-radius: 999px;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+/* Logo yuvarlak, koyu bir rozettir; kobalt zeminde beyaz bir halkayla ayrılır. */
+.ust-marka img {
+  flex: none;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px #fff;
+}
+/* Firma adı dar çubukta görünmez, yalnızca logo kalır. Ad ekran okuyucu için yerinde durur; bağlantının adı odur. */
+.ust-marka-ad {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+/* Menü dar çubukta gizlidir, yerinde "Menü" düğmesi durur. JavaScript yokken düğme de gizlidir (temel.css: js-gerek);
+   bölüm bağlantıları alt bilgideki menüde kalır. */
+.ust-menu {
+  display: none;
+}
+.ust-menu ul {
+  display: flex;
+}
+.ust-menu a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 clamp(0.5rem, 1vw, 0.9rem);
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 0.3em;
+}
+.ust-menu a:hover {
+  text-decoration-color: var(--color-gunes);
+}
+
+.ust-eylem {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem 0.6rem;
+  min-width: 0;
+  /* Alt satıra inse de sağda durur. */
+  margin-left: auto;
+}
+.ust .dugme {
+  font-size: 1rem;
+}
+.ust-menu-dugme {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.55rem 1.05rem;
+  border: 3px solid #fff;
+  border-radius: 999px;
+  background: var(--color-murekkep);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+}
+.ust-menu-dugme:hover {
+  background: #fff;
+  color: var(--color-murekkep);
+}
+
+/* ---------- Çubuk: yüzen hap ---------- */
+.ust[data-yuzen='true'] {
+  /* Hapın iç payı. Hap kenardan bu kadar içeri girer, çerçevesi ve iç boşluğu aynı payı geri verir;
+     böylece logo ve düğmeler iki hâlde de aynı hizada durur. Dar ekranda hap kenara yapışmasın diye pay küçülür. */
+  --ic: min(1rem, var(--kenar) - 0.5rem);
+  position: fixed;
+  inset: 0.6rem calc(var(--kenar) - var(--ic)) auto;
+  /* Çok geniş ekranda hap içerikle aynı genişlikte kalır ve ortalanır. */
+  max-width: 84rem;
+  margin-inline: auto;
+  padding: 0.3rem calc(var(--ic) - 3px);
+  border: 3px solid var(--color-murekkep);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--color-murekkep);
+  box-shadow: var(--golge);
+  --odak: var(--color-murekkep);
+}
+.ust[data-yuzen='true'] .ust-marka img {
+  width: 2.75rem;
+  height: 2.75rem;
+  box-shadow: none;
+}
+.ust[data-yuzen='true'] .ust-menu a:hover {
+  text-decoration-color: var(--color-pembe);
+}
+/* Beyaz hapın içinde beyaz düğme kaybolur; WhatsApp düğmesi güneş sarısı olur. */
+.ust[data-yuzen='true'] .dugme--beyaz {
+  background: var(--color-gunes);
+}
+.ust[data-yuzen='true'] .ust-menu-dugme {
+  border-color: var(--color-murekkep);
+}
+.ust[data-yuzen='true'] .ust-menu-dugme:hover {
+  border-color: var(--color-kobalt);
+  background: var(--color-kobalt);
+  color: #fff;
+}
+/* Hap yukarıdan iner. */
+html.hareketli .ust[data-yuzen='true'] {
+  animation: ust-in 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.15);
+}
+@keyframes ust-in {
+  from {
+    translate: 0 -160%;
+  }
+}
+
+/* ---------- Genişleyen çubuk ---------- */
+/* Eşikler çubuğun iç genişliğidir (ekran genişliği eksi iki kenar boşluğu). Kapsayıcı sorgusunu tanımayan eski
+   tarayıcı her genişlikte dar dizilimi gösterir. */
+/* Menü sığar: "Menü" düğmesi gider. (Ekran yaklaşık 957 piksel ve üstü.) */
+@container ust (min-width: 55rem) {
+  .ust-menu {
+    display: block;
+  }
+  .ust-menu-dugme {
+    display: none;
+  }
+  .ust-eylem {
+    margin-left: 0;
+  }
+}
+/* Firma adı da sığar. (Ekran yaklaşık 1216 piksel ve üstü.) */
+@container ust (min-width: 70rem) {
+  .ust-marka-ad {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+  }
+}
+/* Telefon: logo ve düğmeler biraz küçülür. */
+@container ust (max-width: 28rem) {
+  .ust-marka img {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+  .ust-eylem {
+    gap: 0.5rem;
+  }
+  .ust .dugme,
+  .ust-menu-dugme {
+    padding-inline: 0.9rem;
+    font-size: 0.95rem;
+  }
+}
+/* En dar telefonlarda (yaklaşık 371 piksel ve altı) düğmede yalnızca "WhatsApp" görünür; "’tan yazın" ekran okuyucuya kalır. */
+@container ust (max-width: 21.2rem) {
+  .ust-wa-son {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+}
+/* Kapsayıcı kendi boşluğunu sorgusuyla değiştiremez; bu yüzden ekran genişliğine bakılır. */
+@media (max-width: 480px) {
+  .ust {
+    padding-block: 0.75rem;
+  }
+}
+
+/* ---------- Telefon menüsü: tam ekran kobalt örtü ---------- */
+.menu-ortu {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  /* "Kapat" düğmesi, çubuktaki "Menü" düğmesinin durduğu köşeye gelir. */
+  padding: 0.75rem var(--kenar) 2.5rem;
+  border: 0;
+  background: var(--color-kobalt);
+  color: #fff;
+  /* Yatık telefonda bağlantılar ekrana sığmazsa örtünün içi kayar. */
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.menu-ortu[open] {
+  display: flex;
+  flex-direction: column;
+}
+/* Örtü zaten ekranı kaplar; arkası boş kalır ki açılırken sayfanın üzerinde büyüdüğü görülsün. */
+.menu-ortu::backdrop {
+  background: transparent;
+}
+.menu-ortu-kapat {
+  flex: none;
+  align-self: flex-end;
+  min-height: 2.75rem;
+  padding: 0.55rem 1.15rem;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--color-murekkep);
+  box-shadow: var(--golge-kucuk);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+  transition:
+    translate 0.15s,
+    box-shadow 0.15s;
+}
+.menu-ortu-kapat:hover {
+  translate: 2px 2px;
+  box-shadow: var(--golge-basili);
+}
+/* Yer varsa bağlantılar örtünün ortasında durur; sığmazsa üstten başlar ve kayar. */
+.menu-ortu nav {
+  margin-block: auto;
+  padding-block: 1.5rem;
+}
+.menu-ortu ul {
+  display: grid;
+  justify-items: start;
+  gap: 0.25rem;
+}
+.menu-ortu a {
+  display: inline-block;
+  padding-block: 0.35rem;
+  font-size: clamp(2.75rem, 13vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 0.1em;
+  text-underline-offset: 0.14em;
+}
+.menu-ortu a:hover {
+  text-decoration-color: var(--color-gunes);
+}
+/* Yatık, alçak ekran: bağlantılar küçülür, yine de sığmazsa örtü kayar. */
+@media (max-height: 520px) {
+  .menu-ortu {
+    padding-bottom: 1.25rem;
+  }
+  .menu-ortu nav {
+    padding-block: 0.75rem;
+  }
+  .menu-ortu a {
+    padding-block: 0.2rem;
+    font-size: clamp(1.75rem, 9vh, 2.5rem);
+  }
+}
+
+/* Örtü "Menü" düğmesinin köşesinden büyüyerek açılır, bağlantılar sırayla gelir. */
+html.hareketli .menu-ortu[open] {
+  animation: menu-ac 0.35s ease-out;
+}
+@keyframes menu-ac {
+  from {
+    clip-path: circle(0% at calc(100% - 3.5rem) 2.25rem);
+  }
+  to {
+    clip-path: circle(150% at calc(100% - 3.5rem) 2.25rem);
+  }
+}
+html.hareketli .menu-ortu[open] li {
+  animation: menu-gel 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+  animation-delay: calc(0.1s + var(--sira) * 0.06s);
+}
+@keyframes menu-gel {
+  from {
+    opacity: 0;
+    translate: 0 1.5rem;
+  }
+}

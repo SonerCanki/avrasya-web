@@ -14,7 +14,7 @@ export default defineConfig({
   reporter: [['list'], ['html', { outputFolder: './sonuc/rapor', open: 'never' }]],
   use: { baseURL: `http://localhost:${PORT}`, trace: 'retain-on-failure' },
   webServer: {
-    command: `npx http-server ../.. -p ${PORT} -c-1 --silent`,
+    command: `npx http-server ../../dist -p ${PORT} -c-1 --silent`,
     url: `http://localhost:${PORT}/`,
     reuseExistingServer: true,
   },

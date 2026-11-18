@@ -1,13 +1,12 @@
-// Lighthouse for the site, phone and desktop, in the installed Google Chrome.
-// Serves the project root on port 5511. Each round starts a fresh Chrome and audits the page twice:
-// the first visit (with the opening curtain) and a repeat visit (Lighthouse clears the HTTP cache
-// between runs but keeps localStorage, so the curtain is skipped). Three rounds; for each case the
-// run with the median performance score is kept, since one run varies too much.
+// Lighthouse for the built site, phone and desktop, in the installed Google Chrome.
+// Serves dist/ (run `npm run build` first; `npm run lighthouse` at the repo root does both) on port 5511.
+// Each round starts a fresh Chrome and audits the page once. Three rounds; for each device the run with
+// the median performance score is kept, since one run varies too much.
 // Reports go to sonuc/lighthouse/.
 // Text files are sent gzip-compressed, as any real static host does (http-server would send them
 // uncompressed and Lighthouse would time three times the bytes).
 import { createServer } from 'node:http';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { extname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { gzipSync } from 'node:zlib';
@@ -18,8 +17,12 @@ import desktopConfig from 'lighthouse/core/config/desktop-config.js';
 const PORT = 5511;
 const ROUNDS = 3;
 const URL_ = `http://localhost:${PORT}/`;
-const root = fileURLToPath(new URL('../..', import.meta.url));
+const root = fileURLToPath(new URL('../../dist', import.meta.url));
 const out = new URL('./sonuc/lighthouse/', import.meta.url);
+if (!existsSync(join(root, 'index.html'))) {
+  console.error('dist/index.html yok. Önce site derlenmeli: depo kökünde `npm run lighthouse` (derler, sonra ölçer).');
+  process.exit(1);
+}
 mkdirSync(out, { recursive: true });
 
 const CATEGORIES = ['performance', 'accessibility', 'best-practices', 'seo'];
@@ -78,19 +81,17 @@ const summarize = (runs, name) => {
 const summary = {};
 try {
   for (const [name, config] of [['telefon', undefined], ['masaustu', desktopConfig]]) {
-    const first = [], repeat = [];
+    const runs = [];
     for (let i = 0; i < ROUNDS; i++) {
       const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless=new'] });
       try {
         const flags = { port: chrome.port, output: ['html', 'json'], onlyCategories: CATEGORIES, logLevel: 'error' };
-        first.push(await lighthouse(URL_, flags, config));
-        repeat.push(await lighthouse(URL_, flags, config));
+        runs.push(await lighthouse(URL_, flags, config));
       } finally {
         await chrome.kill();
       }
     }
-    summary[`${name}-ilk`] = summarize(first, `${name}-ilk`);
-    summary[`${name}-tekrar`] = summarize(repeat, `${name}-tekrar`);
+    summary[name] = summarize(runs, name);
   }
 } finally {
   server.close();

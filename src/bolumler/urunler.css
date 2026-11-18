@@ -1,0 +1,296 @@
+/* 3. bölüm — Süsler ve standlar (pembe → seçilen konseptin rengi). Süs türleri, süzgeç, galeri, büyük görsel. */
+
+.urunler {
+  padding: clamp(5.5rem, 9vw, 8rem) var(--kenar) clamp(5rem, 10vw, 9rem);
+  /* --zemin ve --uzeri seçili süzgeçten gelir (Urunler.tsx). */
+  background-color: var(--zemin, var(--color-pembe));
+  color: var(--uzeri, var(--color-murekkep));
+  --odak: var(--uzeri, var(--color-murekkep));
+  transition:
+    background-color 0.4s,
+    color 0.4s;
+}
+.urunler-ic {
+  max-width: 80rem;
+  margin-inline: auto;
+}
+.urunler h2 {
+  margin: 0 0 1rem;
+}
+.urunler-metin {
+  font-size: 1.2rem;
+}
+
+/* ---------- Süs türleri: büyük yazılı liste ---------- */
+.tur-listesi {
+  margin: clamp(2rem, 4vw, 3.25rem) 0 clamp(4rem, 8vw, 7rem);
+  border-bottom: 3px solid currentColor;
+}
+.tur-listesi > div {
+  display: grid;
+  gap: 0.4rem 2rem;
+  padding: 1.1rem 0 1.3rem;
+  border-top: 3px solid currentColor;
+}
+.tur-listesi dt {
+  font-size: clamp(1.6rem, 3.4vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+.tur-listesi dd {
+  max-width: 36rem;
+  margin: 0;
+}
+@media (min-width: 900px) {
+  .tur-listesi > div {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    align-items: baseline;
+  }
+}
+
+/* ---------- Süzgeç ---------- */
+.galeri-baslik {
+  margin: 0 0 1.4rem;
+  font-size: clamp(1.75rem, 3.6vw, 3rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+.suzgec {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-bottom: 2.25rem;
+}
+.suzgec button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.45rem 1.05rem;
+  border: 3px solid #fff;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--color-murekkep);
+  box-shadow: var(--golge-kucuk);
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    translate 0.15s,
+    box-shadow 0.15s,
+    background-color 0.15s,
+    color 0.15s;
+}
+.suzgec button:hover {
+  translate: 2px 2px;
+  box-shadow: var(--golge-basili);
+}
+/* Seçili süzgeç basılı durur: mürekkep zemin, beyaz yazı. Beyaz çerçeve onu her zeminde ayırır. */
+.suzgec button[aria-pressed='true'] {
+  background: var(--color-murekkep);
+  color: #fff;
+  translate: 2px 2px;
+  box-shadow: var(--golge-basili);
+}
+/* Süzgecin bölümü boyayacağı renk. */
+.suzgec-nokta {
+  flex: none;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px currentColor;
+}
+/* Stand sayısı ekranda yazmaz; yalnızca ekran okuyucu duyar. */
+.suzgec-sayi {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- Galeri: eğik çıkartma kartlar ---------- */
+.galeri {
+  /* Süzülürken çıkan kart yerinden kalkıp bu kutuya göre konumlanır. */
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.75rem, 3.2vw, 2.75rem) clamp(1.25rem, 2.6vw, 2.25rem);
+}
+@media (min-width: 1040px) {
+  .galeri {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.stand-kart {
+  position: relative;
+  display: block;
+  rotate: var(--egim, 0deg);
+  transition:
+    rotate 0.25s,
+    translate 0.25s;
+}
+/* Üzerine gelince (ya da klavyeyle gelince) kart düzelir ve hafifçe kalkar. */
+.stand-kart:hover,
+.stand-kart:focus-visible {
+  rotate: 0deg;
+  translate: 0 -6px;
+}
+html.js .stand-kart {
+  cursor: zoom-in;
+}
+.stand-kart img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 12px;
+}
+/* Ad etiketi: standın ilk konusunun renginde. Beyaz kenar, aynı renkli zeminde de onu çıkartma gibi ayırır. */
+.stand-kart span {
+  position: absolute;
+  left: -0.85rem;
+  bottom: 1rem;
+  max-width: calc(100% + 0.25rem);
+  padding: 0.35rem 0.85rem;
+  border: 3px solid #fff;
+  border-radius: 1.5rem;
+  box-shadow: 3px 3px 0 var(--color-murekkep);
+  font-weight: 700;
+  line-height: 1.2;
+  rotate: -3deg;
+}
+
+/* Telefonda süzgeç ve galeri yana kaydırılan birer sıradır; sayfa uzamaz. */
+@media (max-width: 719.98px) {
+  .suzgec {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin-inline: calc(-1 * var(--kenar));
+    padding: 0.25rem var(--kenar) 0.6rem;
+    scrollbar-width: none;
+  }
+  .suzgec button {
+    flex: none;
+  }
+  .galeri {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--kenar);
+    margin-inline: calc(-1 * var(--kenar));
+    /* Üstte ve altta eğik kartlara ve gölgelerine yer kalır. */
+    padding: 1rem calc(var(--kenar) + 0.5rem) 2rem;
+  }
+  .galeri > li {
+    flex: 0 0 min(72vw, 19rem);
+    scroll-snap-align: start;
+  }
+  .stand-kart span {
+    left: -0.5rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* ---------- Büyük görsel penceresi ---------- */
+/* Pencere açıkken arkadaki sayfa kaymaz. */
+html:has(dialog[open]) {
+  overflow: hidden;
+}
+.buyuk-gorsel {
+  position: fixed;
+  inset: 0;
+  /* Kare fotoğraf, altındaki ad ve düğmeyle birlikte ekrana sığar. */
+  width: min(92vw, 52rem, 100svh - 9rem);
+  max-width: none;
+  max-height: none;
+  margin: auto;
+  padding: 0.65rem;
+  border: 0;
+  border-radius: 22px;
+  background: #fff;
+  color: var(--color-murekkep);
+  box-shadow: var(--golge-buyuk);
+  --odak: var(--color-murekkep);
+}
+.buyuk-gorsel::backdrop {
+  background: rgb(18 11 58 / 0.82);
+}
+.buyuk-gorsel[open] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.7rem 1rem;
+}
+.buyuk-gorsel img {
+  grid-column: 1 / -1;
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: 14px;
+  background-size: cover;
+}
+.buyuk-gorsel p {
+  margin: 0 0 0.3rem 0.45rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.buyuk-gorsel button {
+  min-height: 2.75rem;
+  margin: 0 0.4rem 0.4rem 0;
+  padding: 0.5rem 1.4rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--color-gunes);
+  color: var(--color-murekkep);
+  box-shadow: var(--golge-kucuk);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    translate 0.15s,
+    box-shadow 0.15s;
+}
+.buyuk-gorsel button:hover {
+  translate: 2px 2px;
+  box-shadow: var(--golge-basili);
+}
+/* Yatık, alçak ekranda (yan çevrilmiş telefon) fotoğraf solda, ad ve düğme sağında durur. */
+@media (max-height: 520px) and (orientation: landscape) {
+  .buyuk-gorsel {
+    width: fit-content;
+  }
+  .buyuk-gorsel[open] {
+    grid-template-columns: auto minmax(8rem, 14rem);
+    grid-template-rows: 1fr auto;
+    align-items: start;
+  }
+  .buyuk-gorsel img {
+    grid-column: 1;
+    grid-row: 1 / -1;
+    width: min(100svh - 3.5rem, 60vw);
+  }
+  .buyuk-gorsel p,
+  .buyuk-gorsel button {
+    grid-column: 2;
+    justify-self: start;
+    margin: 0.4rem 0.4rem 0.4rem 0;
+  }
+  .buyuk-gorsel button {
+    align-self: end;
+  }
+}

@@ -1,0 +1,106 @@
+/* 1. bölüm — Açılış (kobalt). Renk ve hareket süslerin kendisinden gelir. */
+
+.acilis {
+  position: relative;
+  min-height: max(100svh, 44rem);
+  display: grid;
+  place-items: center;
+  padding: 7rem var(--kenar) 8rem;
+  /* hidden değil clip: sürüklenen süs bölümü kaydırılabilir yapmasın. */
+  overflow: clip;
+  background: var(--color-kobalt);
+  color: #fff;
+  text-align: center;
+}
+.acilis-metin {
+  position: relative;
+  z-index: 2;
+}
+.acilis h1 {
+  margin: 0 0 1.5rem;
+}
+.acilis h1 span {
+  display: block;
+}
+.acilis-aciklama {
+  max-width: 38rem;
+  margin: 0 auto 2rem;
+  font-size: 1.15rem;
+  color: #e6eaff;
+}
+.acilis-eylem {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem 1.75rem;
+}
+
+/* ---------- Süslerin yerleri ---------- */
+.acilis-sus--1 {
+  left: 4%;
+  top: 15%;
+}
+.acilis-sus--2 {
+  right: 4%;
+  top: 13%;
+}
+.acilis-sus--3 {
+  left: 11%;
+  bottom: 15%;
+}
+.acilis-sus--4 {
+  right: 10%;
+  bottom: 16%;
+}
+.acilis-sus--5 {
+  left: 1.5%;
+  top: 47%;
+  width: clamp(5.5rem, 12vw, 11.5rem);
+}
+.acilis-sus--6 {
+  right: 2%;
+  top: 46%;
+  width: clamp(5.5rem, 12vw, 11.5rem);
+}
+
+/* ---------- Eğik kayan şerit ---------- */
+.acilis-serit {
+  position: absolute;
+  left: -2%;
+  right: -2%;
+  bottom: 1.75rem;
+  z-index: 1;
+  rotate: -1.6deg;
+}
+
+/* Telefonda dört süs köşelere yerleşir; başlık aralarında kalır. */
+@media (max-width: 720px) {
+  .acilis {
+    padding-top: 12.5rem;
+    padding-bottom: 14.5rem;
+  }
+  .acilis .sus {
+    width: 27vw;
+  }
+  .acilis-sus--1 {
+    left: 5%;
+    top: 5.25rem;
+  }
+  .acilis-sus--2 {
+    right: 5%;
+    top: 5.75rem;
+  }
+  .acilis-sus--3 {
+    left: 8%;
+    bottom: 6.25rem;
+  }
+  .acilis-sus--4 {
+    right: 8%;
+    bottom: 6.75rem;
+  }
+  .acilis-sus--5,
+  .acilis-sus--6 {
+    display: none;
+  }
+}

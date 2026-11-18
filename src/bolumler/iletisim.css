@@ -1,0 +1,287 @@
+/* 6. bölüm — Stand için fiyat alın (kobalt) ve alt bilgi (mürekkep). Açılışın eşi: sayfa başladığı renkle biter. */
+
+/* ---------- İkinci ve son kayan şerit: beyaz bölümle kobalt bölümün ek yerine eğik oturur ---------- */
+/* Sıfır boylu taşıyıcı sayfada yer tutmaz; yalnızca yana taşan uçları keser, şerit ek yerinin iki yanına sarkar. */
+.iletisim-serit {
+  position: relative;
+  z-index: 4;
+  height: 0;
+  overflow-x: clip;
+}
+.iletisim-serit-ic {
+  position: absolute;
+  left: -2%;
+  right: -2%;
+  top: 0;
+  translate: 0 -50%;
+  rotate: 1.4deg;
+}
+
+/* ---------- Bölüm ---------- */
+.iletisim {
+  position: relative;
+  padding: clamp(6.5rem, 12vw, 10rem) var(--kenar) clamp(4.5rem, 9vw, 7rem);
+  /* hidden değil clip: sürüklenen süs bölümü kaydırılabilir yapmasın. */
+  overflow: clip;
+  background: var(--color-kobalt);
+  color: #fff;
+  text-align: center;
+}
+.iletisim-sahne {
+  position: relative;
+  max-width: 80rem;
+  margin-inline: auto;
+}
+.iletisim-metin {
+  position: relative;
+  z-index: 2;
+  max-width: 44rem;
+  margin-inline: auto;
+}
+/* Normal yazımlı bir cümle; başlığın üstünde etiket gibi değil, onun girişi gibi durur. */
+.iletisim-ust {
+  max-width: none;
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.35rem, 2.6vw, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+/* Dev başlık: açılıştaki başlığın eşi. */
+.iletisim h2 {
+  margin: 0 0 1.5rem;
+  font-size: clamp(2.75rem, 8.5vw, 7rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+.iletisim-aciklama {
+  max-width: 34rem;
+  margin: 0 auto 2.25rem;
+  font-size: 1.2rem;
+  color: #e6eaff;
+}
+.iletisim-eylem {
+  display: inline-block;
+  max-width: 100%;
+}
+/* Sayfanın en büyük düğmesi. */
+.iletisim .dugme--buyuk {
+  padding: 1.2rem clamp(1.25rem, 5vw, 2.4rem);
+  font-size: clamp(1.2rem, 2.4vw, 1.75rem);
+  box-shadow: var(--golge-buyuk);
+  overflow-wrap: anywhere;
+}
+.iletisim .dugme--buyuk:hover {
+  translate: 6px 6px;
+  box-shadow: var(--golge-basili);
+}
+
+/* ---------- Süsler ---------- */
+/* Dar ve orta ekranda süsler akışın içinde birer sıradır: yazıya, düğmeye, karta binemezler.
+   720 pikselin altında yalnızca yazının üstündeki dört süs görünür. */
+.iletisim-susler {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4%;
+  margin-bottom: 2.25rem;
+}
+.iletisim-susler--alt {
+  display: none;
+  margin: 3rem 0 0;
+}
+.iletisim .sus {
+  position: relative;
+  flex: none;
+  width: 21%;
+  max-width: 9rem;
+}
+/* Sıra dümdüz durmasın: her ikinci süs biraz aşağıdadır. */
+.iletisim .sus:nth-child(even) {
+  margin-top: 1.5rem;
+}
+@media (min-width: 720px) {
+  .iletisim-susler--alt {
+    display: flex;
+  }
+}
+
+/* Geniş ekranda sekiz süs başlığın iki yanına dağılır: her yanda dördü, iki sütunda zikzak. */
+@media (min-width: 1200px) {
+  .iletisim-sahne {
+    display: grid;
+    align-items: center;
+    min-height: 36rem;
+  }
+  .iletisim-susler,
+  .iletisim-susler--alt {
+    display: contents;
+  }
+  .iletisim .sus,
+  .iletisim .sus:nth-child(even) {
+    position: absolute;
+    width: clamp(7rem, 10vw, 9.5rem);
+    max-width: none;
+    margin: 0;
+  }
+  .iletisim .iletisim-sus--1 {
+    left: 0;
+    top: 0;
+  }
+  .iletisim .iletisim-sus--3 {
+    left: 9.5%;
+    top: 25%;
+  }
+  .iletisim .iletisim-sus--5 {
+    left: 0.5%;
+    top: 50%;
+  }
+  .iletisim .iletisim-sus--7 {
+    left: 9.5%;
+    top: 75%;
+  }
+  .iletisim .iletisim-sus--2 {
+    right: 9.5%;
+    top: 1%;
+  }
+  .iletisim .iletisim-sus--4 {
+    right: 0;
+    top: 26%;
+  }
+  .iletisim .iletisim-sus--6 {
+    right: 9.5%;
+    top: 51%;
+  }
+  .iletisim .iletisim-sus--8 {
+    right: 0.5%;
+    top: 76%;
+  }
+}
+
+/* Fare büyük düğmeye gelince süsler bir kez kıpırdar. Kıpırtı eğim katmanındadır (duruş açısı `rotate` ile,
+   kıpırtı `transform` ile verilir; ikisi üst üste biner), salınım ise görselin kendisinde sürer. */
+html.hareketli .iletisim[data-kipirti] .sus-egim {
+  animation: iletisim-kipirti 0.5s ease-in-out;
+}
+@keyframes iletisim-kipirti {
+  25% {
+    transform: rotate(-9deg) scale(1.08);
+  }
+  60% {
+    transform: rotate(7deg) scale(1.08);
+  }
+}
+
+/* ---------- İletişim kartı: beyaz çıkartma ---------- */
+.iletisim-kart {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 1rem 2rem;
+  max-width: 62rem;
+  margin: clamp(3.5rem, 8vw, 6rem) auto 0;
+  padding: clamp(0.9rem, 3vw, 1.75rem) clamp(1rem, 3.5vw, 2.25rem);
+  color: var(--color-murekkep);
+  text-align: left;
+  --odak: var(--color-murekkep);
+}
+@media (min-width: 640px) {
+  .iletisim-kart {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1000px) {
+  .iletisim-kart {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.iletisim-kart dt {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-kobalt);
+}
+.iletisim-kart dd {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+/* Bağlantı, parmakla rahat basılacak kadar yüksektir (en az 44 piksel). */
+.iletisim-kart a {
+  display: inline-block;
+  padding-block: 0.5rem;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.25em;
+}
+.iletisim-kart a:hover {
+  text-decoration-color: var(--color-pembe);
+  text-decoration-thickness: 4px;
+}
+.iletisim-adres {
+  padding-top: 0.5rem;
+  font-weight: 600;
+}
+.iletisim-adres span {
+  display: block;
+}
+@media (max-width: 479.98px) {
+  .iletisim-kart dd {
+    font-size: 1.05rem;
+  }
+}
+
+/* ---------- Alt bilgi ---------- */
+.alt {
+  padding: 2.25rem var(--kenar) 2.5rem;
+  background: var(--color-murekkep);
+  color: #fff;
+}
+.alt-ic {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem 2rem;
+  max-width: 80rem;
+  margin-inline: auto;
+}
+.alt-marka {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+/* Logo yuvarlak, koyu bir rozettir; koyu zeminde beyaz bir halkayla ayrılır. */
+.alt-logo {
+  flex: none;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px #fff;
+}
+.alt p {
+  margin: 0;
+  font-size: 1rem;
+}
+.alt nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.25rem;
+  /* İlk bağlantının yazısı, üstündeki satırla aynı hizada başlasın. */
+  margin-inline: -0.8rem;
+}
+.alt nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 0.8rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 0.3em;
+}
+.alt nav a:hover {
+  text-decoration-color: var(--color-gunes);
+}

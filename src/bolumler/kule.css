@@ -1,0 +1,155 @@
+/* 4. bölüm — Kule stand (mürekkep). Sabitlenmez; resim kat kat kurulur, etkin kat sarı çerçeveyle işaretlenir. */
+
+.kule {
+  padding: clamp(5.5rem, 10vw, 8.5rem) var(--kenar) clamp(5rem, 10vw, 8.5rem);
+  background: var(--color-murekkep);
+  color: #fff;
+  /* İşaret çerçevesi resmin dışına taşar; sayfayı yana taşırmasın. */
+  overflow: clip;
+  /* Mürekkep zeminde mürekkep gölge görünmez; bu bölümde gölgeler pembedir. */
+  --golge: 5px 5px 0 var(--color-pembe);
+  --golge-basili: 2px 2px 0 var(--color-pembe);
+}
+.kule-ic {
+  display: grid;
+  gap: clamp(2.5rem, 6vw, 4rem);
+  max-width: 80rem;
+  margin-inline: auto;
+}
+.kule-giris h2 {
+  margin: 0 0 1rem;
+}
+.kule-giris p {
+  max-width: 34rem;
+  margin: 0 0 1.9rem;
+  font-size: 1.2rem;
+}
+
+/* ---------- Resim ve kat listesi yan yana ---------- */
+.kule-govde {
+  display: grid;
+  grid-template-columns: minmax(0, 38%) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(1.4rem, 4vw, 3rem);
+}
+/* Dar ekranda liste resimden uzundur: resim, liste kayarken ekranda kalır ve ekrana sığacak kadar küçülür. */
+.kule-resim {
+  position: sticky;
+  top: 5.5rem;
+  justify-self: center;
+  width: min(100%, 20rem, (100svh - 7rem) * 400 / 880);
+}
+.kule-resim img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Kurulum: resim alttan yukarı açılır ve her katın üst kenarında kısaca durur.
+   Gizleme ancak React sayfayı devralınca başlar; devralamazsa resim tam görünür kalır. */
+html.hareketli[data-hazir] .kule-resim:not([data-kuruldu]) img {
+  clip-path: inset(100% 0 0 0);
+}
+html.hareketli[data-hazir] .kule-resim[data-gorundu]:not([data-kuruldu]) img {
+  animation: kule-kur 1.6s ease-out both;
+}
+@keyframes kule-kur {
+  0% {
+    clip-path: inset(100% 0 0 0);
+  }
+  18%,
+  28% {
+    clip-path: inset(calc(var(--k3) * 1%) 0 0 0);
+  }
+  43%,
+  53% {
+    clip-path: inset(calc(var(--k2) * 1%) 0 0 0);
+  }
+  68%,
+  78% {
+    clip-path: inset(calc(var(--k1) * 1%) 0 0 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* İşaret: etkin katın bandını çerçeveler (--ust ve --alt, resmin yüksekliğinin yüzdesi) ve katlar arasında kayar. */
+.kule-isaret {
+  display: none;
+}
+html.hareketli .kule-isaret {
+  position: absolute;
+  top: 0;
+  inset-inline: -7%;
+  display: block;
+  height: calc((var(--alt) - var(--ust)) * 1%);
+  border: 5px solid var(--color-gunes);
+  border-radius: 18px;
+  /* Yüzde, işaretin kendi yüksekliğine göredir: --ust kadar aşağı iner. */
+  transform: translateY(calc(var(--ust) / (var(--alt) - var(--ust)) * 100%));
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.4s cubic-bezier(0.3, 1.35, 0.5, 1),
+    opacity 0.3s;
+}
+html.hareketli .kule-resim[data-kuruldu] .kule-isaret {
+  opacity: 1;
+}
+
+/* ---------- Kat listesi ---------- */
+.kule-katlar {
+  display: grid;
+  gap: clamp(0.9rem, 2vw, 1.5rem);
+}
+.kule-katlar li {
+  padding: 0.15rem 0 0.4rem 1.1rem;
+  border-left: 6px solid rgb(255 255 255 / 0.28);
+  transition:
+    opacity 0.3s,
+    border-color 0.3s;
+}
+.kule-katlar h3 {
+  margin: 0 0 0.2rem;
+  transition: color 0.3s;
+}
+.kule-katlar p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+/* Yalnızca canlıyken: etkin olmayan katlar soluklaşır, etkin kat sarıyla öne çıkar. */
+html.hareketli .kule[data-kat] .kule-katlar li {
+  opacity: 0.6;
+}
+html.hareketli .kule[data-kat] .kule-katlar li[data-etkin='true'] {
+  border-left-color: var(--color-gunes);
+  opacity: 1;
+}
+html.hareketli .kule[data-kat] .kule-katlar li[data-etkin='true'] h3 {
+  color: var(--color-gunes);
+}
+@media (max-width: 719.98px) {
+  .kule-katlar h3 {
+    font-size: 1.3rem;
+  }
+  .kule-katlar p {
+    font-size: 1rem;
+  }
+}
+
+/* Geniş ekranda giriş solda, resim ve liste sağda; liste resimden kısa olduğu için resim sabit durmaz. */
+@media (min-width: 1040px) {
+  .kule-ic {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: center;
+  }
+  .kule-govde {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    align-items: center;
+  }
+  .kule-resim {
+    position: relative;
+    top: auto;
+  }
+}

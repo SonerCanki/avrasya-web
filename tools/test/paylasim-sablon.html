@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Paylaşım görseli şablonu (1200×630)</title>
+    <!-- Bu sayfa siteye girmez. `npm --prefix tools/test run paylasim` onu açıp ekran görüntüsünü
+         public/assets/img/paylasim.jpg olarak kaydeder (paylasim-gorseli.mjs).
+         WhatsApp küçük önizlemede ortadaki 630×630 kareyi gösterir; firma adı bu yüzden alttaki şeritte, ortadadır. -->
+    <style>
+      @font-face {
+        font-family: 'Bricolage Grotesque Variable';
+        font-weight: 200 800;
+        font-display: block;
+        src: url('../../node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-ext-opsz-normal.woff2') format('woff2-variations');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Bricolage Grotesque Variable';
+        font-weight: 200 800;
+        font-display: block;
+        src: url('../../node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-opsz-normal.woff2') format('woff2-variations');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      :root {
+        --kobalt: #2340ff;
+        --gunes: #ffd60a;
+        --murekkep: #120b3a;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      html,
+      body {
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+      }
+      body {
+        position: relative;
+        background: var(--kobalt);
+        color: #fff;
+        font-family: 'Bricolage Grotesque Variable', sans-serif;
+      }
+      h1 {
+        position: absolute;
+        left: 64px;
+        top: 138px;
+        font-size: 82px;
+        font-weight: 800;
+        line-height: 0.98;
+        letter-spacing: -0.035em;
+      }
+      h1 span {
+        display: block;
+      }
+      img {
+        position: absolute;
+        display: block;
+      }
+      .stand {
+        right: 58px;
+        top: 44px;
+        width: 500px;
+        filter: drop-shadow(9px 9px 0 var(--murekkep));
+      }
+      .sus {
+        filter: drop-shadow(5px 6px 0 var(--murekkep));
+      }
+      .sus--1 {
+        left: 568px;
+        top: 16px;
+        width: 168px;
+        rotate: -11deg;
+      }
+      .sus--2 {
+        right: 14px;
+        top: 318px;
+        width: 176px;
+        rotate: 9deg;
+      }
+      .sus--3 {
+        left: 470px;
+        top: 372px;
+        width: 172px;
+        rotate: -6deg;
+      }
+      .serit {
+        position: absolute;
+        inset: auto 0 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        height: 94px;
+        border-top: 5px solid var(--murekkep);
+        background: var(--gunes);
+        color: var(--murekkep);
+        font-size: 37px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        white-space: nowrap;
+      }
+      .serit img {
+        position: static;
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1><span>Pastaneniz için</span><span>süslerle dolu</span><span>teşhir standı</span></h1>
+    <img class="stand" src="../../public/assets/img/standlar/stand-cocuk-karakter-kesik.webp" alt="" />
+    <img class="sus sus--1" src="../../public/assets/img/susler/sus-iyi-ki-dogdun.webp" alt="" />
+    <img class="sus sus--2" src="../../public/assets/img/susler/sus-birthday-queen.webp" alt="" />
+    <img class="sus sus--3" src="../../public/assets/img/susler/sus-canim-babam.webp" alt="" />
+    <div class="serit">
+      <img src="../../public/assets/img/logo-160.webp" alt="" />
+      Avrasya Toptan Pasta Süsleri
+    </div>
+  </body>
+</html>

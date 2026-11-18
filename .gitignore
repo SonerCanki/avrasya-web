@@ -1,6 +1,9 @@
 # Ham şirket dosyaları (büyük zip'ler, WhatsApp arşivleri) depoya girmez
 sirket-bilgileri/
 
+# Derleme çıktısı
+dist/
+
 # Görsel işleme araçları
 node_modules/
 tools/**/cache/
@@ -8,3 +11,6 @@ tools/**/work/
 
 # Test çıktıları
 tools/test/sonuc/
+
+# Hazır HTML üretiminin geçici çıktısı
+dist-ssr/

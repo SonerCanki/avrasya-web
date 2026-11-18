@@ -1,0 +1,240 @@
+/* 2. bölüm — Stand nasıl çalışır (güneş). Sayfanın ekrana sabitlenen tek sahnesi ve tanıtım videosu. */
+
+.stand {
+  background: var(--color-gunes);
+  color: var(--color-murekkep);
+  --odak: var(--color-murekkep);
+}
+
+/* ---------- Dinlenme düzeni: sabitleme yok, adımlar ve son görüntü alt alta ---------- */
+.sahne {
+  position: relative;
+}
+.sahne-yapiskan {
+  display: grid;
+  align-items: center;
+  gap: 2rem;
+  padding: clamp(5.5rem, 9vw, 7rem) max(var(--kenar), (100% - 80rem) / 2) clamp(2rem, 5vw, 4rem);
+  /* Uçan süsler sayfayı yana taşırmasın. */
+  overflow: clip;
+}
+.sahne-metin h2 {
+  margin: 0 0 1.5rem;
+}
+.sahne-adimlar {
+  display: grid;
+  gap: 1.1rem;
+  margin: 0 0 1.75rem;
+}
+.sahne-adimlar li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1rem;
+  transform-origin: left center;
+  transition:
+    opacity 0.3s,
+    scale 0.3s;
+}
+/* Sıra numarası: beyaz çıkartma yuvarlağı; etkin adımda pembe. */
+.sahne-no {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: var(--golge-kucuk);
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1;
+  transition: background-color 0.3s;
+}
+.sahne-adimlar h3 {
+  margin: 0.4rem 0 0.15rem;
+}
+.sahne-adimlar p {
+  margin: 0;
+}
+.sahne-eylem {
+  transition: opacity 0.3s;
+}
+
+/* ---------- Resim: parçalar yüzdeyle yerleşir, her genişlikte aynı durur ---------- */
+.sahne-resim {
+  position: relative;
+  width: 100%;
+  max-width: 40rem;
+  margin-inline: auto;
+  aspect-ratio: 10 / 9;
+}
+.sahne-resim > * {
+  position: absolute;
+}
+.sahne-resim img,
+.sahne-resim svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+[data-sahne='tezgah'] {
+  left: 0;
+  bottom: 0;
+  z-index: 0;
+  width: 100%;
+}
+/* Uçan süsler standın arkasına iner; üst kenarından başlarını çıkarır. */
+[data-sahne='ucan'] {
+  z-index: 1;
+  width: 14%;
+}
+[data-sahne='ucan'] img,
+[data-sahne='secilen'] img {
+  filter: drop-shadow(3px 4px 0 var(--color-murekkep));
+}
+.sahne-ucan--1 {
+  left: 4%;
+  bottom: 74%;
+  rotate: -10deg;
+}
+.sahne-ucan--2 {
+  left: 20%;
+  bottom: 78%;
+  rotate: 6deg;
+}
+.sahne-ucan--3 {
+  left: 36%;
+  bottom: 77.5%;
+  rotate: -5deg;
+}
+.sahne-ucan--4 {
+  left: 50%;
+  bottom: 74.5%;
+  rotate: 11deg;
+}
+[data-sahne='stand'] {
+  left: 2%;
+  bottom: 17.5%;
+  z-index: 2;
+  width: 60%;
+}
+[data-sahne='stand'] img {
+  filter: drop-shadow(6px 6px 0 var(--color-murekkep));
+}
+/* Seçilen süs pastanın arkasında durur; çubuğu kremanın içine girmiş görünür. */
+[data-sahne='secilen'] {
+  left: 71.5%;
+  bottom: 33.5%;
+  z-index: 3;
+  width: 19%;
+  rotate: -4deg;
+}
+[data-sahne='pasta'] {
+  right: 4%;
+  bottom: 17.5%;
+  z-index: 4;
+  width: 30%;
+  transform-origin: 50% 100%;
+}
+
+/* ---------- Tanıtım videosu ---------- */
+.stand-video {
+  display: grid;
+  justify-items: center;
+  padding: clamp(2rem, 6vw, 5rem) var(--kenar) clamp(4.5rem, 10vw, 8rem);
+}
+.stand-video .video {
+  width: min(100%, 52rem);
+}
+
+@media (min-width: 900px) {
+  .sahne-yapiskan {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(2rem, 4vw, 4rem);
+  }
+}
+@media (max-width: 899.98px) {
+  .sahne-metin h2 {
+    margin-bottom: 1rem;
+  }
+  .sahne-adimlar {
+    gap: 0.7rem;
+    margin-bottom: 1.1rem;
+  }
+  .sahne-adimlar li {
+    gap: 0.75rem;
+  }
+  .sahne-no {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 1.15rem;
+  }
+  .sahne-adimlar h3 {
+    margin-top: 0.3rem;
+    font-size: 1.2rem;
+  }
+  .sahne-adimlar p {
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+}
+
+/* ---------- Canlı sahne: hareket serbest ve ekran yeterince yüksek ----------
+   Aynı iki koşul StandSahnesi.tsx içinde de aranır (useHareketli ve min-height: 520px). */
+@media (min-height: 520px) {
+  /* Telefonda yaklaşık iki, geniş ekranda yaklaşık üç ekran boyu kaydırma. */
+  html.hareketli .sahne {
+    height: 220svh;
+  }
+  html.hareketli .sahne-yapiskan {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: 1rem;
+    /* Üstte yüzen çubuğa yer kalır. */
+    padding-block: 5rem 1.25rem;
+  }
+  /* Resim, kalan yüksekliğe ve genişliğe sığan en büyük ölçüyü alır. */
+  html.hareketli .sahne-resim-kap {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    min-height: 0;
+    container-type: size;
+  }
+  html.hareketli .sahne-resim {
+    width: min(100cqw, 100cqh * 10 / 9);
+    max-width: none;
+    margin: 0;
+  }
+  /* Sıradaki adım öne çıkar, ötekiler soluklaşır. 0,65'in altı sarı zeminde okunaklılık sınırını (4,5:1) aşar.
+     Kurallar sayfa hazır olmadan da geçerlidir (ilk adım önde, düğme gizli); böylece açılışta hiçbir şey yanıp sönmez. */
+  html.hareketli .sahne-adimlar li {
+    opacity: 0.65;
+    scale: 0.94;
+  }
+  html.hareketli .sahne-adimlar li[data-etkin='true'],
+  html.hareketli .sahne:not([data-adim]) .sahne-adimlar li:first-child {
+    opacity: 1;
+    scale: 1;
+  }
+  html.hareketli .sahne-adimlar li[data-etkin='true'] .sahne-no,
+  html.hareketli .sahne:not([data-adim]) .sahne-adimlar li:first-child .sahne-no {
+    background: var(--color-pembe);
+  }
+  /* Düğme üçüncü adımda belirir; klavyeyle gelindiğinde her adımda görünür. */
+  html.hareketli .sahne:not([data-adim='3']) .sahne-eylem:not(:focus-within) {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+@media (min-height: 520px) and (min-width: 900px) {
+  html.hareketli .sahne {
+    height: 300svh;
+  }
+  html.hareketli .sahne-yapiskan {
+    grid-template-rows: minmax(0, 1fr);
+    gap: clamp(2rem, 4vw, 4rem);
+    padding-block: 6rem 2rem;
+  }
+}

@@ -1,59 +1,68 @@
-# Stand görselleri hattı
+# Stand ve süs görselleri
 
-`sirket-bilgileri/stant-gorseleri/` içindeki telefon fotoğraflarından site görsellerini üretir.
-Her şey bu bilgisayarda çalışır; fotoğraflar hiçbir servise gönderilmez. Bu klasör siteye yüklenmez.
+Fotoğraflardan site görsellerini üreten iki araç. Her şey bu bilgisayarda çalışır; fotoğraflar hiçbir servise
+gönderilmez. Bu klasör siteye yüklenmez.
 
-## Kurulum (bir kez)
+| Araç | Ne üretir | Kurulum |
+|---|---|---|
+| `uret.mjs` | Stand fotoğrafları: `public/assets/img/standlar/` | İstemez |
+| `susler.mjs` | Tek tek süsler: `public/assets/img/susler/` | İster (aşağıda) |
 
-```bash
-npm install
-```
+## Stand fotoğrafları (`uret.mjs`)
 
-Arka plan kaldırma modeli (BiRefNet, MIT lisanslı, ~970 MB) `cache/birefnet.onnx` olarak indirilir:
-
-```bash
-curl -L -o cache/birefnet.onnx https://huggingface.co/onnx-community/BiRefNet-ONNX/resolve/main/onnx/model.onnx
-```
-
-## Çalıştırma
+Kaynak: proje kökündeki `yeni-fotograflar/` (stüdyo çekimi, düz gri zemin). Proje kökünde:
 
 ```bash
-npm run build
+node tools/stand-gorselleri/uret.mjs
 ```
 
-Tüm standları üretir. `npm run build -- futbol` yalnızca adında "futbol" geçenleri üretir.
-`npm run susler` ise #26 fotoğrafındaki tek süsleri `assets/img/susler/` altına keser.
+Yeni bir şey kurmaz: `tools/test` içindeki Playwright ile bilgisayardaki Google Chrome'u kullanır. Bu yüzden önce
+test araçlarının kurulu olması gerekir (`npm --prefix tools/test ci`, bir kez).
 
-## Nasıl çalışır
+Her stand için şunları yazar:
 
-1. **Kırpma ve damga silme:** `standlar.mjs` içindeki `crop` ve `erase` uygulanır, sonuç `work/girdi/` altına yazılır.
-2. **Model (`kes.mjs`):** BiRefNet süsleri çok iyi bulur ama beyaz stand iskeletini çoğu zaman arka plan sayar.
-   Sonucu `work/kesim/` altında saklanır; yeniden hesaplatmak için oradaki PNG'yi silin.
-3. **Stand maskesi (`maske.mjs`):** Her standın kaba dış hattı `standlar.mjs` içinde `outline` olarak yüzde
-   koordinatlarla yazılıdır. GrabCut bu hattın çevresindeki dar şeritte kenarı piksel düzeyinde bulur;
-   panelin üstüne taşan süsler modelin maskesinden eklenir.
-4. **Alfa düzeltme (`alfa.mjs`):** Maskenin yarı saydam kalan içi sertleştirilir, standdan kopuk küçük kırıntılar silinir.
-   `build.mjs` ve `susler.mjs` ikisi de kullanır.
-5. **Renk ve çıktı (`build.mjs`):** Beyaz denge standın beyaz panellerine göre düzeltilir, hafif keskinleştirilir.
-   Her stand için `assets/img/standlar/<ad>-640.webp`, `-1040.webp` (stüdyo zemini) ve `-kesik.webp` (şeffaf) yazılır.
-   Stüdyo karesinde stand varsayılan olarak genişliğin %84'ünü kaplar; uzun kule stand gibi dar olanlar için
-   `standlar.mjs` içinde `fit` küçültülür.
+- `<ad>-640.webp`: galeri kartı;
+- `<ad>-1040.webp`: tıklanınca açılan büyük görsel;
+- `<ad>-kesik.webp`: zemini silinmiş, şeffaf görsel. Yalnızca listede `kesik: true` olan stand için üretilir;
+  sayfada onu "Stand nasıl çalışır" sahnesi kullanır.
 
-Sitede kullanılanlar: koleksiyon kartları `-640` ve `-1040` dosyalarını, "Stand nasıl çalışır" ve "Kule stand"
-sahneleri `stand-cocuk-karakter-kesik.webp` ile `kule-stand-kesik.webp` dosyalarını gösterir. Diğer `-kesik`
-dosyaları ileride başka sahnelerde kullanılmak üzere duruyor.
+### Yeni stand eklemek
+
+1. Fotoğrafı `yeni-fotograflar/` içine koyun.
+2. `uret.mjs` içindeki `STANDLAR` listesine bir satır ekleyin: `saat` (dosya adındaki saat) ve `ad` (sitedeki adı).
+3. Aracı çalıştırın. Her stand için bir satır yazar: karenin ölçüsü ve standın fotoğrafta bulunduğu yer.
+4. Satırın sonunda "UYARI: stand fotoğrafın kenarına değiyor" çıkarsa araç standı zeminden ayıramamıştır. O satıra
+   standın fotoğraftaki yerini elle verin: `kutu: [x, y, en, boy]` (piksel). Stand fotoğrafın alt kenarında
+   kesiliyorsa `altaDayali: true` ekleyin.
+5. Standı sayfaya eklemek için `src/icerik.ts` içindeki `STANDLAR` listesine de bir satır yazın
+   (ayrıntı [ana README dosyasında](../../README.md)).
+
+Sitedeki stand klasöründe listede olmayan dosya kalırsa içerik testi hata verir; adı değişen bir standın eski
+dosyalarını silin.
 
 ## Tek süsler (`susler.mjs`)
 
-#26 fotoğrafındaki sekiz süs `SUSLER` listesindeki `box` dikdörtgenlerine göre (yüzde olarak `[x0, y0, x1, y1]`)
-kesilir, arka planı kaldırılır ve en uzun kenarı en fazla 640 px olacak şekilde `assets/img/susler/sus-<ad>.webp` olarak yazılır.
-Yeni bir süs fotoğrafı için `SRC` satırını ve listeyi değiştirip `npm run susler` çalıştırın.
+Açılışta ve iletişim bölümünde çıkartma gibi duran sekiz süsü, hepsinin beyaz bir levha üzerinde durduğu tek bir
+fotoğraftan keser. Süsler `SUSLER` listesindeki `box` dikdörtgenlerine göre (yüzde olarak `[x0, y0, x1, y1]`) kesilir,
+arka planı kaldırılır ve en uzun kenarı en fazla 640 piksel olacak şekilde `sus-<ad>.webp` olarak yazılır.
 
-## Yeni stand eklemek
+Bu araç ayrı kurulum ister ve kaynak fotoğrafı depoda değildir:
 
-1. Fotoğrafı `sirket-bilgileri/stant-gorseleri/` içine koyun, `standlar.mjs` içine `name` ve `src` ile ekleyin.
-2. `npm run build -- <ad>` bir kez çalıştırın (dış hat olmadan yalnızca model kullanılır).
-3. `node izgara.mjs <ad>` ile `work/izgara-<ad>.jpg` üzerinde %5 ızgara çıkar. Standın köşelerini okuyup
-   `outline` dizisine yazın: arka panelin üst kenarından başlayıp saat yönünde dolaşın.
-4. Yeniden üretin ve şeffaf çıktıyı koyu bir zeminde kontrol edin. Standa değen arka plan nesneleri için
-   `mask: { reach, exclude }` ayarları kullanılabilir (`maske.mjs` içinde açıklanıyor).
+1. Kaynak fotoğrafı `sirket-bilgileri/stant-gorseleri/` içine koyun (bu klasör git'e girmez). Dosya adı
+   `susler.mjs` içinde `SRC` satırındadır.
+2. Bu klasörde bir kez `npm install` çalıştırın.
+3. Arka plan kaldırma modelini (BiRefNet, MIT lisanslı, yaklaşık 970 MB) `cache/birefnet.onnx` olarak indirin:
+
+   ```bash
+   curl -L -o cache/birefnet.onnx https://huggingface.co/onnx-community/BiRefNet-ONNX/resolve/main/onnx/model.onnx
+   ```
+
+4. `npm run susler` çalıştırın.
+
+Modeli `kes.mjs` çalıştırır; `alfa.mjs` maskenin yarı saydam kalan içini sertleştirir ve kopuk kırıntıları siler.
+
+Yeni bir süs fotoğrafı için `SRC` satırını ve `SUSLER` listesini değiştirin. Sitedeki süs listesi
+`src/icerik.ts` içindeki `SUSLER` kaydıdır; ölçüler (`en`, `boy`) üretilen dosyanın ölçüleriyle aynı olmalıdır.
+
+Eski stand hattı (`build.mjs`, `maske.mjs`, `standlar.mjs`, `izgara.mjs`) kaldırıldı; yerini `uret.mjs` aldı.
+Gerekirse git geçmişinden geri alınabilir.
