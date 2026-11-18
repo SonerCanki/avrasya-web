@@ -6,7 +6,7 @@
 
 export const SITE = {
   ad: 'Avrasya Toptan Pasta Süsleri',
-  adres: 'https://www.avrasyasus.com.tr/',
+  adres: 'https://avrasyasus.com/',
 } as const
 
 // --- WhatsApp ---

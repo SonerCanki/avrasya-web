@@ -1,5 +1,4 @@
-import { useRef } from 'react'
-import { motion } from 'motion/react'
+import { type CSSProperties, useRef } from 'react'
 import { ACILIS, SUSLER, SUZGECLER } from '../icerik'
 import { Dugme, WaDugme } from '../ortak/Dugme'
 import { KayanSerit } from '../ortak/KayanSerit'
@@ -18,7 +17,10 @@ const DURUS = [
 
 const KONSEPT_ADLARI = SUZGECLER.filter((s) => s.id !== 'hepsi').map((s) => s.ad)
 
-/** 1. bölüm: dev başlık, iki eylem, kenarlara dağılan süs çıkartmaları ve altta kayan konsept şeridi. */
+/**
+ * 1. bölüm: dev başlık, iki eylem, kenarlara dağılan süs çıkartmaları ve altta kayan konsept şeridi.
+ * Giriş hareketi CSS ile oynar (acilis.css); site betiği gecikse ya da hiç gelmese de yazı görünür.
+ */
 export function Acilis() {
   const sahne = useRef<HTMLElement>(null)
 
@@ -26,42 +28,24 @@ export function Acilis() {
     <section id="acilis" className="acilis" ref={sahne}>
       <div className="acilis-metin">
         <h1>
-          {/* Satırlar opaklıkla gizlenmez; başlık ilk boyamada görünür, yalnızca yerine yaylanır. */}
+          {/* Satırlar opaklıkla gizlenmez; başlık ilk boyamada görünür, yalnızca yerine yaylanır (acilis.css: acilis-satir). */}
           {ACILIS.satirlar.map((satir, i) => (
-            <motion.span
-              key={satir}
-              data-hareket=""
-              initial={{ y: 70, rotate: i % 2 ? 4 : -4 }}
-              animate={{ y: 0, rotate: 0 }}
-              transition={{ type: 'spring', stiffness: 170, damping: 13, delay: 0.1 + i * 0.1 }}
-            >
+            <span key={satir} data-hareket="" style={{ '--sira': i, '--donus': i % 2 ? '4deg' : '-4deg' } as CSSProperties}>
               {`${satir} `}
-            </motion.span>
+            </span>
           ))}
         </h1>
-        <motion.p
-          className="acilis-aciklama"
-          data-hareket=""
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.55 }}
-        >
+        <p className="acilis-aciklama" data-hareket="">
           {ACILIS.aciklama}
-        </motion.p>
-        <motion.div
-          className="acilis-eylem"
-          data-hareket=""
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ type: 'spring', stiffness: 260, damping: 16, delay: 0.7 }}
-        >
+        </p>
+        <div className="acilis-eylem" data-hareket="">
           <WaDugme mesaj="fiyat" tur="gunes" buyuk>
             {ACILIS.cta}
           </WaDugme>
           <Dugme href="#urunler" tur="duz">
             {ACILIS.ikincil}
           </Dugme>
-        </motion.div>
+        </div>
       </div>
 
       {SUSLER.slice(0, DURUS.length).map((sus, i) => (

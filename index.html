@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <!-- Sayfa çizilmeden önce çalışır: JavaScript varsa "js", hareket de serbestse "hareketli" sınıfını ekler.
-         Site betiği yüklenemezse ikisini de kaldırır; sayfa o zaman hazır HTML'in son hâlini gösterir. -->
+         Site betiği yüklenemezse ya da altı saniyede sayfayı devralamazsa ikisini de kaldırır;
+         sayfa o zaman hazır HTML'in son hâlini gösterir. -->
     <script>
       (function (k) {
         k.add('js');
@@ -11,20 +12,23 @@
         addEventListener('error', function (o) {
           if (o.target && o.target.tagName === 'SCRIPT') k.remove('js', 'hareketli');
         }, true);
+        setTimeout(function () {
+          if (!document.documentElement.hasAttribute('data-hazir')) k.remove('js', 'hareketli');
+        }, 6000);
       })(document.documentElement.classList);
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Avrasya Toptan Pasta Süsleri | Pastaneler için dolu süs standı</title>
     <meta name="description" content="Pastaneler için pleksi pasta süsleriyle dolu teşhir standı. Ayna pleksi yazılar, rakamlar ve baskılı süsler standa dizili olarak gelir; kendi atölyemizde üretiyoruz." />
     <meta name="theme-color" content="#2340FF" />
-    <link rel="canonical" href="https://www.avrasyasus.com.tr/" />
+    <link rel="canonical" href="https://avrasyasus.com/" />
 
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="tr_TR" />
     <meta property="og:title" content="Avrasya Toptan Pasta Süsleri" />
     <meta property="og:description" content="Pastaneler için pleksi pasta süsleriyle dolu teşhir standı." />
-    <meta property="og:url" content="https://www.avrasyasus.com.tr/" />
-    <meta property="og:image" content="https://www.avrasyasus.com.tr/assets/img/paylasim.jpg" />
+    <meta property="og:url" content="https://avrasyasus.com/" />
+    <meta property="og:image" content="https://avrasyasus.com/assets/img/paylasim.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 
@@ -37,9 +41,9 @@
         "@type": "LocalBusiness",
         "name": "Avrasya Toptan Pasta Süsleri",
         "description": "Pastaneler için pleksi pasta süsleriyle dolu teşhir standı.",
-        "url": "https://www.avrasyasus.com.tr/",
-        "image": "https://www.avrasyasus.com.tr/assets/img/paylasim.jpg",
-        "logo": "https://www.avrasyasus.com.tr/assets/img/logo.png",
+        "url": "https://avrasyasus.com/",
+        "image": "https://avrasyasus.com/assets/img/paylasim.jpg",
+        "logo": "https://avrasyasus.com/assets/img/logo.png",
         "telephone": "+90 530 665 63 73",
         "email": "mustafa.kuscu@avrasyasus.com.tr",
         "address": {

@@ -65,7 +65,7 @@ varsayar.
    her "pull request" de kendi önizleme adresini alır ("Deploy Preview"). Canlı site bu sırada değişmez.
 2. **Kontrol:** Önizleme adresini bilgisayarda ve telefonda açıp bakın.
 3. **Canlıya alma:** GitHub'da `v2-react` → `main` için bir "pull request" açıp birleştirin. Netlify `main` dalını
-   yeniden derler ve `avrasyasus.com.tr` yeni siteyi göstermeye başlar.
+   yeniden derler ve `avrasyasus.com` yeni siteyi göstermeye başlar.
 4. **Geri dönmek:** Bir sorun çıkarsa Netlify panelinde "Deploys" altında eski yayını açıp "Publish deploy" seçin;
    eski site saniyeler içinde geri gelir.
 
@@ -76,7 +76,7 @@ Başka bir barındırmada yayınlanacaksa `npm run build` çalıştırıp `dist/
 
 ## Alan adı ve arama motorları
 
-Site `https://www.avrasyasus.com.tr/` adresine göre ayarlı. Adres değişirse şunları birlikte değiştirin:
+Site `https://avrasyasus.com/` adresine göre ayarlı. Adres değişirse şunları birlikte değiştirin:
 
 - `index.html`: `canonical`, `og:url`, `og:image` ve JSON-LD içindeki `url`, `image`, `logo`;
 - `public/robots.txt` içindeki `Sitemap:` satırı ve `public/sitemap.xml` içindeki `<loc>`;

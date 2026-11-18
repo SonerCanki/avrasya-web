@@ -13,7 +13,9 @@ import { useYumusakKaydirma } from './ortak/kancalar'
 export default function App() {
   useYumusakKaydirma()
   // React sayfayı devraldı: testler ve stiller bunu `html[data-hazir]` ile anlar.
+  // Geç kaldıysa index.html içindeki bekçi `js` sınıfını kaldırmıştır; düğmeler artık çalıştığı için geri eklenir.
   useEffect(() => {
+    document.documentElement.classList.add('js')
     document.documentElement.dataset.hazir = ''
   }, [])
 

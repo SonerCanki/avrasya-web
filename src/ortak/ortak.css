@@ -137,6 +137,16 @@ html.hareketli .kayan-serit-ic {
     cursor: grabbing;
   }
 }
+/* Giriş: süs yerinde büyüyerek belirir; gecikmesi her süste ayrıdır (satır içi stil). */
+html.hareketli .sus-giris {
+  animation: sus-gel 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+}
+@keyframes sus-gel {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
 /* Hafif salınım; süresi her süste ayrıdır (satır içi stil). */
 html.hareketli .sus img {
   animation: sus-salin 5.5s ease-in-out infinite;

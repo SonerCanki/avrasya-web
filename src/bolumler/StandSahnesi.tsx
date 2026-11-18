@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { type MotionStyle, type MotionValue, motion, useMotionValueEvent, useScroll, useTransform } from 'motion/react'
 import { STAND_SAHNESI, SUSLER, type Sus, VIDEOLAR, standGorseli, susGorseli } from '../icerik'
 import { Pasta } from '../cizimler/Pasta'
@@ -109,16 +109,41 @@ function CanliSahneResmi({ ilerleme }: { ilerleme: MotionValue<number> }) {
   return <SahneResmi stiller={useSahneStilleri(ilerleme)} />
 }
 
+/** Dar ekranda sabit sahnede resme kalması gereken en az yükseklik (piksel). */
+const EN_AZ_RESIM = 220
+
 /**
  * 2. bölüm: sayfanın ekrana sabitlenen tek sahnesi ve altında tanıtım videosu.
- * Sahne yalnızca "canlı"yken (hareket serbest ve ekran yeterince yüksek) kaydırmaya bağlanır;
- * değilken üç adım ve son görüntü alt alta durur. Sabitleme ve yükseklik stand-sahnesi.css içinde,
- * aynı iki koşulla açılır.
+ * Sahne yalnızca "canlı"yken (hareket serbest, ekran yeterince yüksek ve yazı bir ekrana sığıyor) kaydırmaya
+ * bağlanır; değilken üç adım ve son görüntü alt alta durur. Sabitleme ve yükseklik stand-sahnesi.css içinde,
+ * aynı koşullarla açılır; sığmama durumunu oraya `data-sigmaz` bildirir.
  */
 export function StandSahnesi() {
   const hareketli = useHareketli()
   const yeterinceYuksek = useMedya('(min-height: 520px)')
-  const canli = hareketli && yeterinceYuksek
+  // Yazı (dar ekranda altındaki resimle birlikte) bir ekrana sığmıyorsa sahne sabitlenmez; yoksa yazı kesilirdi.
+  const metin = useRef<HTMLDivElement>(null)
+  const [sigar, setSigar] = useState(true)
+  useEffect(() => {
+    const kutu = metin.current
+    if (!kutu) return
+    const olc = () => {
+      const rem = parseFloat(getComputedStyle(document.documentElement).fontSize)
+      // Sabit sahnenin kendi boşlukları (stand-sahnesi.css): geniş ekranda üst-alt 8rem;
+      // dar ekranda üst-alt 6,25rem, 1rem ara ve resme kalması gereken en az yer.
+      const gereken = window.matchMedia('(min-width: 900px)').matches ? 8 * rem : 7.25 * rem + EN_AZ_RESIM
+      setSigar(kutu.offsetHeight + gereken <= window.innerHeight)
+    }
+    olc()
+    const gozcu = new ResizeObserver(olc)
+    gozcu.observe(kutu)
+    window.addEventListener('resize', olc)
+    return () => {
+      gozcu.disconnect()
+      window.removeEventListener('resize', olc)
+    }
+  }, [])
+  const canli = hareketli && yeterinceYuksek && sigar
 
   const sahne = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: sahne, offset: ['start start', 'end end'] })
@@ -127,9 +152,9 @@ export function StandSahnesi() {
 
   return (
     <section id="stand" className="stand">
-      <div className="sahne" ref={sahne} data-adim={canli ? adim : undefined}>
+      <div className="sahne" ref={sahne} data-adim={canli ? adim : undefined} data-sigmaz={sigar ? undefined : ''}>
         <div className="sahne-yapiskan">
-          <div className="sahne-metin">
+          <div className="sahne-metin" ref={metin}>
             <h2>{STAND_SAHNESI.baslik}</h2>
             <ol className="sahne-adimlar" role="list">
               {STAND_SAHNESI.adimlar.map((a, i) => (

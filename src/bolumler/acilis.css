@@ -36,6 +36,35 @@
   gap: 1rem 1.75rem;
 }
 
+/* ---------- Giriş: betik beklemeden, yalnızca hareket serbestken oynar ----------
+   Dinlenme hâli son hâldir; hareket oradan geriye doğru tanımlanır. Açıklama opaklıkla gizlenmez:
+   sayfanın en büyük yazısıdır, ilk boyamada görünmesi gerekir. */
+html.hareketli .acilis h1 span {
+  animation: acilis-satir 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) calc(0.1s + var(--sira) * 0.1s) backwards;
+}
+@keyframes acilis-satir {
+  from {
+    transform: translateY(70px) rotate(var(--donus));
+  }
+}
+html.hareketli .acilis-aciklama {
+  animation: acilis-kay 0.7s ease-out 0.55s backwards;
+}
+@keyframes acilis-kay {
+  from {
+    transform: translateY(16px);
+  }
+}
+html.hareketli .acilis-eylem {
+  animation: acilis-buyu 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.7s backwards;
+}
+@keyframes acilis-buyu {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
 /* ---------- Süslerin yerleri ---------- */
 .acilis-sus--1 {
   left: 4%;

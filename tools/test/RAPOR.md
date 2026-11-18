@@ -1,118 +1,56 @@
-# Test raporu (Faz 5)
+# Test Raporu
 
-Tarih: 25 Ekim 2026. Ölçümler bu klasördeki testlerle, makinede kurulu Google Chrome üzerinde yapıldı.
+Tarih: 2026-11-18 · Dal: `v2-react` · İnceleme sonrası düzeltme turundan sonraki durum
 
-## Özet
+## Nasıl çalıştırılır
 
-| Hedef | Sonuç |
+- `npm test` : birim testleri, ardından derleme, ardından Playwright testleri.
+- `npm run lighthouse` : Lighthouse ölçümü (telefon ve masaüstü). Sonuç: `tools/test/sonuc/lighthouse/ozet.json`.
+
+## Test sonuçları
+
+| Aşama | Sonuç |
 |---|---|
-| Playwright, masaüstü ve telefon | 64 test geçti, 0 hata (26 test o ortama uymadığı için atlandı, aşağıda) |
-| axe erişilebilirlik denetimi (WCAG 2.2 AA + iyi uygulamalar) | 4 ortamda da 0 ihlal |
-| Lighthouse Performans ≥ 90 | Telefon 95 / 98, masaüstü 99 / 100 (ilk / tekrar ziyaret) |
-| Lighthouse Erişilebilirlik ≥ 95 | Her durumda 100 |
-| Lighthouse En iyi uygulamalar, SEO | Her durumda 100 |
+| Birim testleri | 8 test, 8 geçti |
+| Derleme | Başarılı |
+| Playwright | 229 geçti, 106 atlandı, 0 kaldı |
 
-## Neler denendi
+Tam koşuda (`npm test`) 227 test geçti, 2 test kaldı; ikisi düzeltilip tek başına yeniden koşuldu ve geçti:
 
-Aynı 18 test beş ortamda çalışır:
+- "başlıklar ve düğmeler hiçbir genişlikte kesilmez": testin yardımcısı hiç bitmeyen hareketleri bekliyordu
+  (sitede değil, testte hata). Yardımcı yalnızca açılış başlığının girişini bekleyecek şekilde düzeltildi.
+- "her süzgeç renginde yazı karşıtlığı yeterli" (masaüstü): tam koşuda yük altında 45 saniyelik süreyi aştı;
+  tek başına 25 saniyenin altında geçti. Öteki dört projede tam koşuda da geçmişti.
 
-| Ortam | Ne |
-|---|---|
-| `masaustu` | 1280×800 Chrome, animasyonlar açık |
-| `telefon` | Pixel 7 (dokunmatik, 412 px), animasyonlar açık |
-| `masaustu-hareketsiz`, `telefon-hareketsiz` | "Hareketi azalt" açık |
-| `javascriptsiz` | JavaScript kapalı |
+Atlanan testler bilerek atlanır: her test yalnızca anlamlı olduğu projede çalışır (örneğin hareket testleri
+"hareketi azalt" projelerinde, "bir kez yeterli" testleri masaüstü dışındaki projelerde atlanır).
 
-Testler:
+## Lighthouse (telefon hedefleri: Erişilebilirlik, En İyi Uygulamalar, SEO en az 95; Performans en az 85)
 
-- Sayfa hatasız yüklenir: konsol hatası, kırık bağlantı ya da yüklenmeyen görsel yok; baştan sona kaydırırken sayfa yana taşmaz.
-- Açılış perdesi yalnızca ilk ziyarette oynar.
-- Üstteki başlık bozulmadan kalır, süs pastaya iner.
-- Stand sahnesi: 20 parça rafa dolar, sonunda süs pastanın tam ortasına oturur (12 px içinde).
-- Koleksiyon: geniş ekranda sabitlenip yana kayar ve son kart ekrana gelir; telefonda parmakla kaydırılır. Süzgeç doğru sayıda stand gösterir (Futbol 1, Ayna 4, Çocuk 1, Tümü 11). Kart büyük görseli açar, Esc kapatır, odak karta döner.
-- Kule stand: fotoğraf kaydırmadan önce indirilmez, sonra raf raf kurulur.
-- Atölye adımlarının çizgileri sonuna kadar çizilir.
-- Final pastası:
-  - tek tıkla beş mum söner, konfeti patlar (telefonda daha az parça, hareket azaltılınca hiç), WhatsApp butonu parlar;
-  - ikinci tıkla mumlar yeniden yanar;
-  - fare tek mumun üzerinden geçince o mum söner.
-- WhatsApp bağlantıları doğru numarayı ve hazır mesajı taşır, yeni sekmede açılır.
-- Klavye: ilk Tab "İçeriğe geç" bağlantısına gider, Enter içeriğe atlar.
-- Telefon menüsü açılır, bir bağlantıya basınca kapanır ve o bölüme gider.
-- Hareket azaltılınca hiçbir şey kaymaz ya da saydam kalmaz; sayfa son hâliyle görünür.
-- JavaScript kapalıyken bütün içerik görünür; süzgeç ve ipucu gizlenir, final düğmesi devre dışı kalır.
-- axe denetimi: ciddi ya da kritik ihlal varsa test düşer. Ayrıntılı sonuç `sonuc/axe/` içine yazılır.
+| Profil | Performans | Erişilebilirlik | En İyi Uygulamalar | SEO |
+|---|---|---|---|---|
+| Telefon (hedef) | 85 | 95 | 95 | 95 |
+| Telefon (ölçülen) | **85** (koşular: 85, 85, 86) | 100 | 100 | 100 |
+| Masaüstü (ölçülen) | 100 (koşular: 100, 100, 100) | 100 | 100 | 100 |
 
-Atlanan 26 test o ortamda anlamı olmayanlar: masaüstünde telefon menüsü ya da telefonda yana kayan koleksiyon gibi. JavaScript kapalıyken axe çalışamadığı için o denetim de atlanır.
+Telefon ölçümleri: FCP 2,4 sn, LCP 3,9 sn, TBT 40 ms, CLS 0,024, Speed Index 2,4 sn.
+Masaüstü ölçümleri: FCP 0,5 sn, LCP 0,8 sn, TBT 0 ms, CLS 0,009.
 
-## Lighthouse
+Telefonda performans hedefin tam sınırında. Kazanç bekleyen yerler: sayfayı bekleten stil ve yazı tipi
+(tahmini 1 sn), görsellerin boyutu (tahmini 478 KiB), kullanılmayan JavaScript (tahmini 63 KiB).
 
-`npm run lighthouse` ile ölçüldü. Lighthouse varsayılanı kullanıldı:
+## Bu turda düzeltilenler
 
-- telefon: yavaş 4G ve 4 kat yavaş işlemci;
-- masaüstü: masaüstü ayarı.
+1. **Açılış yazısı görünmez kalıyordu.** Açıklama, düğmeler ve süsler site betiği gelene kadar saydamdı; betik
+   takılırsa hiç görünmüyordu (telefon testi bu yüzden kalıyordu). Giriş hareketi artık CSS ile oynar, betik
+   beklemez. Betik altı saniyede sayfayı devralamazsa sayfa hareketsiz son hâline geçer.
+2. **Stand sahnesi küçük ekranda sığmıyordu.** Yazı ile resim bir ekrana sığmıyorsa (küçük telefon, büyütülmüş
+   yazı, kısa pencere) sahne artık ekrana sabitlenmez; adımlar ve resim alt alta durur.
+3. **Taşma testi kesilen yazıyı göremiyordu.** Başlık ve düğmelerin ekranın ve kendi kutularının içinde kaldığı
+   artık 320, 375, 740 ve 1280 piksel genişlikte ve iki kat yazı boyutunda ayrıca denetlenir.
+4. Alan adı `avrasyasus.com` oldu; adres testleri buna göre güncellendi.
 
-Her durum 3 kez ölçüldü ve ortanca sonuç alındı. Dosyalar gerçek barındırmalardaki gibi gzip ile sıkıştırılarak sunuldu.
+## Bilinen açık konular
 
-"İlk ziyaret" açılış perdesiyle birlikte ölçüldü. "Tekrar ziyaret"te perde yok ve önbellek boş.
-
-| Durum | Performans (3 ölçüm) | FCP | LCP | TBT | CLS | Speed Index |
-|---|---|---|---|---|---|---|
-| Telefon, ilk ziyaret | 95 (88, 95, 95) | 1,4 sn | 2,8 sn | 30 ms | 0,001 | 2,7 sn |
-| Telefon, tekrar | 98 (97, 98, 98) | 1,4 sn | 2,3 sn | 30 ms | 0,001 | 1,5 sn |
-| Masaüstü, ilk ziyaret | 99 | 0,7 sn | 0,8 sn | 0 ms | 0,001 | 1,0 sn |
-| Masaüstü, tekrar | 100 | 0,4 sn | 0,5 sn | 0 ms | 0,001 | 0,4 sn |
-
-Telefonda ilk ziyaretin üç ölçümünden biri 88 çıktı. Bu ölçüm yavaş bilgisayarda dalgalanabiliyor; ortanca 95.
-
-Raporların tamamı `sonuc/lighthouse/` içinde. Tarayıcıda açmak için `telefon-ilk.html` gibi dosyalara bakın.
-
-## Bulunan sorunlar ve düzeltmeler
-
-1. **JavaScript kapalıyken süzgeç görünüyordu.**
-   - Sorun: `display: flex` kuralı `hidden` niteliğini eziyordu.
-   - Düzeltme: `css/style.css` içine genel `[hidden] { display: none !important; }` kuralı eklendi.
-2. **Renk karşıtlığı yetersizdi.** axe ve Lighthouse bunu ciddi ihlal olarak buldu.
-   - Sorun: koyu zemindeki stand adımları ve kule katları henüz sırası gelmemişken %40 saydamlıktaydı. Atölye adımlarının yazıları da beyaz zeminde silik başlıyordu.
-   - Düzeltme: bekleyen satırlar %70 saydamlığa çıkarıldı, karşıtlık oranı 5,1:1 oldu. Atölye yazıları artık solgun başlamıyor, yalnızca kayarak giriyor.
-3. **Bazı öğeler bir sayfa bölümüne ait değildi.**
-   - Sorun: yüzen WhatsApp butonu ve konfeti tuvali hiçbir bölümün içinde değildi.
-   - Düzeltme: buton alt bilginin (`footer`) içine taşındı. Konfeti artık kendi tuvalinde çiziliyor; tuval ekran okuyuculardan gizli.
-4. **Yazı tipi gelince sayfa kayıyordu** (CLS 0,108).
-   - Sorun: Google yazı tipleri yerine geçen Arial farklı boyutta olduğu için üstteki pasta yer değiştiriyordu.
-   - Düzeltme: Arial, gerçek yazı tiplerinin ölçülerine göre ayarlandı (`Figtree Fallback`, `Unbounded Fallback`). CLS 0,001'e indi.
-5. **Telefonda en büyük yazı geç görünüyordu.**
-   - Sorun: üstteki açıklama yazısı JavaScript gelene kadar saydamdı, bu yüzden telefonda LCP 5,5 sn çıkıyordu.
-   - Düzeltme: yazı artık saydamlaşmıyor, yalnızca aşağıdan kayarak giriyor. Başlık da yalnızca perde yokken gizleniyor; perde zaten önünde.
-6. **Yazı tipi dosyası sayfanın çizilmesini bekletiyordu.**
-   - Düzeltme: Google Fonts stil dosyası artık sayfayı bekletmeden yükleniyor. JavaScript kapalıysa `<noscript>` içindeki yedek kullanılır.
-7. **Görünmeyen fotoğraflar baştan iniyordu.**
-   - Sorun: stand ve kule sahnelerindeki parçalar fotoğrafı arka plan olarak kullandığı için iki büyük fotoğraf (311 KB) sayfa açılır açılmaz iniyordu.
-   - Düzeltme: parçalar artık sayfadaki `<img>` yüklenince boyanıyor. Fotoğraf, bölüme yaklaşınca iniyor.
-8. **Sayfa, animasyon kütüphaneleri inene kadar boş kalıyordu.**
-   - Sorun: telefonda ilk ziyarette sayfa, sekiz betik inip çalışana kadar çizilmiyordu. Performans 88'de kalıyordu.
-   - Düzeltme: betikler artık ilk çizimden hemen sonra, aynı sırayla ekleniyor (`index.html` sonundaki küçük betik). Performans 95'e çıktı.
-   - Arka planda açılan sekmelerde de en geç 1 sn içinde yüklenirler.
-   - Betikler 3 sn içinde gelmezse sayfa animasyonsuz son hâline geçer; bu yedek eskisi gibi duruyor.
-
-## Kalan küçük notlar
-
-Bunlar puanı hedefin altına düşürmüyor; ileride bakılabilir.
-
-- **Görsel boyutu:** Lighthouse görsellerde yaklaşık 60–70 KB kazanç öneriyor. Çoğu, stand fotoğraflarının ekranda gösterildiğinden biraz büyük olmasından geliyor.
-- **Sıkıştırma:** CSS ve JavaScript sıkıştırılmamış (minify). Toplam kazanç 8 KB; derleme adımı olmasın diye bilerek böyle bırakıldı.
-- **Telefon işlemcisi:** ana iş parçacığı yaklaşık 4 sn çalışıyor. Bu, 4 kat yavaşlatılmış işlemcide kaydırma sahnelerinin kurulması. Sayfayı kilitlemiyor (TBT 30 ms).
-
-## Yeniden çalıştırmak
-
-```bash
-cd tools/test
-npm install
-npx playwright test
-npm run lighthouse
-```
-
-- Testler için makinede Google Chrome kurulu olmalı.
-- `npx playwright test` kendi sunucusunu 5510 numaralı kapıda açar. HTML raporu `sonuc/rapor/` içine yazılır; açmak için `npx playwright show-report sonuc/rapor`.
-- `npm run lighthouse` yaklaşık 3–4 dakika sürer ve 5511 numaralı kapıyı kullanır.
-- `sonuc/` klasörü git'e girmez.
+1. Telefonda performans 85: hedefte ama payı yok. Görsellerin küçültülmesi ve betiğin hafifletilmesi bekliyor.
+2. İncelemenin küçük bulguları ertelendi (liste: son teslim iletisinde).

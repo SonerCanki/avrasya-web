@@ -39,12 +39,8 @@ export function SusCikartma({ sus, sinir, egim, gecikme, sure, className }: Ozel
       whileDrag={{ scale: 1.14, zIndex: 6 }}
     >
       <div className="sus-egim" style={{ rotate: `${egim}deg` }}>
-        <motion.div
-          data-hareket=""
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: 'spring', stiffness: 240, damping: 13, delay: gecikme }}
-        >
+        {/* Giriş CSS ile oynar (ortak.css: sus-gel); betik gecikse de süs görünür. */}
+        <div className="sus-giris" data-hareket="" style={{ animationDelay: `${gecikme}s` }}>
           <img
             src={susGorseli(sus.dosya)}
             alt={sus.alt}
@@ -53,7 +49,7 @@ export function SusCikartma({ sus, sinir, egim, gecikme, sure, className }: Ozel
             draggable={false}
             style={{ animationDuration: `${sure}s` }}
           />
-        </motion.div>
+        </div>
       </div>
     </motion.div>
   )

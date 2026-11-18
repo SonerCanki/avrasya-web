@@ -178,14 +178,15 @@
   }
 }
 
-/* ---------- Canlı sahne: hareket serbest ve ekran yeterince yüksek ----------
-   Aynı iki koşul StandSahnesi.tsx içinde de aranır (useHareketli ve min-height: 520px). */
+/* ---------- Canlı sahne: hareket serbest, ekran yeterince yüksek ve yazı ekrana sığıyor ----------
+   Aynı koşullar StandSahnesi.tsx içinde de aranır (useHareketli, min-height: 520px ve ölçüm).
+   Yazı sığmıyorsa bileşen sahneye `data-sigmaz` koyar; sahne o zaman dinlenme düzeninde kalır. */
 @media (min-height: 520px) {
   /* Telefonda yaklaşık iki, geniş ekranda yaklaşık üç ekran boyu kaydırma. */
-  html.hareketli .sahne {
+  html.hareketli .sahne:not([data-sigmaz]) {
     height: 220svh;
   }
-  html.hareketli .sahne-yapiskan {
+  html.hareketli .sahne:not([data-sigmaz]) .sahne-yapiskan {
     position: sticky;
     top: 0;
     height: 100svh;
@@ -195,44 +196,44 @@
     padding-block: 5rem 1.25rem;
   }
   /* Resim, kalan yüksekliğe ve genişliğe sığan en büyük ölçüyü alır. */
-  html.hareketli .sahne-resim-kap {
+  html.hareketli .sahne:not([data-sigmaz]) .sahne-resim-kap {
     display: grid;
     place-items: center;
     height: 100%;
     min-height: 0;
     container-type: size;
   }
-  html.hareketli .sahne-resim {
+  html.hareketli .sahne:not([data-sigmaz]) .sahne-resim {
     width: min(100cqw, 100cqh * 10 / 9);
     max-width: none;
     margin: 0;
   }
   /* Sıradaki adım öne çıkar, ötekiler soluklaşır. 0,65'in altı sarı zeminde okunaklılık sınırını (4,5:1) aşar.
      Kurallar sayfa hazır olmadan da geçerlidir (ilk adım önde, düğme gizli); böylece açılışta hiçbir şey yanıp sönmez. */
-  html.hareketli .sahne-adimlar li {
+  html.hareketli .sahne:not([data-sigmaz]) .sahne-adimlar li {
     opacity: 0.65;
     scale: 0.94;
   }
-  html.hareketli .sahne-adimlar li[data-etkin='true'],
-  html.hareketli .sahne:not([data-adim]) .sahne-adimlar li:first-child {
+  html.hareketli .sahne:not([data-sigmaz]) .sahne-adimlar li[data-etkin='true'],
+  html.hareketli .sahne:not([data-sigmaz]):not([data-adim]) .sahne-adimlar li:first-child {
     opacity: 1;
     scale: 1;
   }
-  html.hareketli .sahne-adimlar li[data-etkin='true'] .sahne-no,
-  html.hareketli .sahne:not([data-adim]) .sahne-adimlar li:first-child .sahne-no {
+  html.hareketli .sahne:not([data-sigmaz]) .sahne-adimlar li[data-etkin='true'] .sahne-no,
+  html.hareketli .sahne:not([data-sigmaz]):not([data-adim]) .sahne-adimlar li:first-child .sahne-no {
     background: var(--color-pembe);
   }
   /* Düğme üçüncü adımda belirir; klavyeyle gelindiğinde her adımda görünür. */
-  html.hareketli .sahne:not([data-adim='3']) .sahne-eylem:not(:focus-within) {
+  html.hareketli .sahne:not([data-sigmaz]):not([data-adim='3']) .sahne-eylem:not(:focus-within) {
     opacity: 0;
     pointer-events: none;
   }
 }
 @media (min-height: 520px) and (min-width: 900px) {
-  html.hareketli .sahne {
+  html.hareketli .sahne:not([data-sigmaz]) {
     height: 300svh;
   }
-  html.hareketli .sahne-yapiskan {
+  html.hareketli .sahne:not([data-sigmaz]) .sahne-yapiskan {
     grid-template-rows: minmax(0, 1fr);
     gap: clamp(2rem, 4vw, 4rem);
     padding-block: 6rem 2rem;

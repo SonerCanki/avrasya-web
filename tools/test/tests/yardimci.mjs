@@ -51,6 +51,33 @@ export async function ac(page, yol = '/') {
 export const yanaTasma = page =>
   page.evaluate(() => Math.max(0, document.documentElement.scrollWidth - document.documentElement.clientWidth))
 
+/**
+ * Ekranın yanından taşan ya da kendi kutusuna sığmayan başlık ve düğmeler (boş liste = sorun yok).
+ * `yanaTasma` bunları göremez: bölümler taşanı kırptığı için sayfa genişlemez, yazı sessizce kesilir.
+ * Yana kaydırılan şeritlerin (galeri, kayan şerit) içindekiler sayılmaz. Önce açılış başlığının girişi beklenir.
+ */
+export const kesilenler = page =>
+  page.evaluate(async () => {
+    const girisler = document.querySelector('#acilis h1').getAnimations({ subtree: true })
+    await Promise.allSettled(girisler.map(h => h.finished))
+    const en = document.documentElement.clientWidth
+    const kaydirilan = oge => {
+      for (let ata = oge.parentElement; ata; ata = ata.parentElement) {
+        const tasma = getComputedStyle(ata).overflowX
+        if ((tasma === 'auto' || tasma === 'scroll') && ata.scrollWidth > ata.clientWidth) return true
+        if (ata.matches('.kayan-serit, dialog:not([open])')) return true
+      }
+      return false
+    }
+    return [...document.querySelectorAll('h1, h2, h3, .dugme')]
+      .filter(oge => oge.getClientRects().length && !kaydirilan(oge))
+      .filter(oge => {
+        const kutu = oge.getBoundingClientRect()
+        return kutu.left < -1 || kutu.right > en + 1 || oge.scrollWidth > oge.clientWidth + 1
+      })
+      .map(oge => `${oge.tagName.toLowerCase()}: ${oge.textContent.trim().slice(0, 40)}`)
+  })
+
 /** Öğenin üst kenarını ekran yüksekliğinin `oran` katına getirir (0 = ekranın en üstü). */
 export const kaydir = (page, secici, oran = 0) =>
   page.evaluate(

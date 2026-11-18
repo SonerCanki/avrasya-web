@@ -48,6 +48,35 @@ test('kısa ekranda sahne sabitlenmez', async ({ page }) => {
   expect(await yanaTasma(page)).toBe(0)
 })
 
+test('küçük telefonda sahne sabitlenmez; resim küçülmez', async ({ page }) => {
+  test.skip(proje() !== 'masaustu', 'bir kez yeterli')
+  await page.setViewportSize({ width: 375, height: 667 })
+  await ac(page)
+  await expect(page.locator('.sahne-yapiskan')).not.toHaveCSS('position', 'sticky')
+  await expect(page.locator('.sahne')).not.toHaveAttribute('data-adim', /./)
+  expect((await page.locator('.sahne-resim').boundingBox()).width).toBeGreaterThan(300)
+  await expect(page.locator('.sahne-eylem')).toHaveCSS('opacity', '1')
+})
+
+test('yazı büyüyüp sahneye sığmayınca sabitleme kalkar', async ({ page }) => {
+  test.skip(proje() !== 'masaustu', 'bir kez yeterli')
+  await ac(page)
+  await expect(page.locator('.sahne-yapiskan')).toHaveCSS('position', 'sticky')
+  await page.evaluate(() => { document.documentElement.style.fontSize = '200%' })
+  await expect(page.locator('.sahne-yapiskan')).not.toHaveCSS('position', 'sticky')
+  await expect(page.locator('.sahne-eylem')).toHaveCSS('opacity', '1')
+})
+
+test('sabit sahnede yazı ve düğme ekranın içinde kalır', async ({ page }) => {
+  test.skip(!hareketVar(), 'sabitleme yalnızca hareket açıkken')
+  await ac(page)
+  await sonaKaydir(page)
+  await expect(page.locator('.sahne')).toHaveAttribute('data-adim', '3')
+  const dugme = await page.locator('.sahne-eylem a').boundingBox(), ekran = page.viewportSize()
+  expect(dugme.y + dugme.height).toBeLessThanOrEqual(ekran.height)
+  expect((await page.locator('.sahne-resim').boundingBox()).height).toBeGreaterThan(200)
+})
+
 test('stand düğmesi kendi mesajını taşır', async ({ page }) => {
   await ac(page)
   await expect(page.locator('#stand').getByRole('link', { name: 'Stand için bilgi alın' })).toHaveAttribute('href', waAdresi('Merhaba, süs standı hakkında bilgi almak istiyorum.'))
